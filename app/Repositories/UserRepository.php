@@ -2,7 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
-
+use App\Models\Academic;
 class UserRepository {
     /**
      * @var User
@@ -23,6 +23,13 @@ class UserRepository {
              ['id' => 3, 'name' => 'Hoa'],
          ];
      }
+
+     
+    public function getList()
+    {
+        return Academic::find(2);
+        // return ['id' => '1', 'name' => 'Mai Vu'];
+    }
 
 
 }

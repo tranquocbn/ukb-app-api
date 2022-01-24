@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScoresTable extends Migration
+class CreateDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateScoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('scores_', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->integer('schedule_id');
-            $table->float('diligent')->nullable();
-            $table->float('test_one')->nullable();
-            $table->float('test_two')->nullable();
-            $table->float('test_first')->nullable();
-            $table->float('test_second')->nullable();
+            $table->integer('relationship_id');
+            $table->integer('user_id');
+            $table->tinyInteger('role');
+            $table->tinyInteger('type');
+            $table->string('file_url');
+            $table->string('file_name');
+            $table->string('file_icon');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateScoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scores_');
+        Schema::dropIfExists('documents');
     }
 }

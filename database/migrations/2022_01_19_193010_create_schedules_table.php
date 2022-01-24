@@ -15,15 +15,15 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->bigInteger('class_id');
-            $table->bigInteger('subject_id');
-            $table->string('room');
-            $table->date('date_start');
-            $table->tinyInteger('day');
+            $table->integer('user_id');
+            $table->integer('class_id');
+            $table->integer('subject_id');
+            $table->integer('room_id')->nullable();
+            $table->date('date_start_learn')->nullable();
+            $table->tinyInteger('day')->nullable();
             $table->date('date_change')->nullable();
-            $table->tinyInteger('session');
-            $table->tinyInteger('semester');
+            $table->tinyInteger('session')->nullable();
+            $table->tinyInteger('semester')->nullable();
             $table->timestamps();
         });
     }

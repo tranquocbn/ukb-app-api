@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/relationship/one-to-one', function() {
+    $info = \App\Models\Department::find(3);
+    echo "name {$info->academic_department->academic_id}";
+    dd($info);
+
+});
+
+

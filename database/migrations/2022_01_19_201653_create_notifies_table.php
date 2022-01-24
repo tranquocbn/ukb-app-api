@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTestStudentAnswersTable extends Migration
+class CreateNotifiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTestStudentAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::create('test_student_answers', function (Blueprint $table) {
+        Schema::create('notifies', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('test_student_id');
-            $table->bigInteger('test_id');
-            $table->string('answer')->nullable();
+            $table->integer('user_id');
+            $table->tinyInteger('type');
+            $table->tinyInteger('state')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateTestStudentAnswersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_student_answers');
+        Schema::dropIfExists('notifies');
     }
 }

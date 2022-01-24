@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
+
 class UserController extends Controller
 {
     private UserService $userService;
@@ -29,5 +30,17 @@ class UserController extends Controller
         if($request->wantsJson()) {
             return $this->responseSuccess($users, 'get users list successfully');
         }
+        return $this->responseSuccess($users, 'get users list successfully');
+
     }
+
+    public function getList(Request $request)
+    {
+        $getList = $this->userService->getList();
+        if($request->wantsJson()) {
+            return $this->responseSuccess($getList, 'get users list successfully');
+        }
+        return $getList;
+    }
+
 }

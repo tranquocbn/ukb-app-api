@@ -15,13 +15,13 @@ class CreateLeavesTable extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('schedule_id');
-            $table->bigInteger('user_id');
+            $table->integer('schedule_id');
+            $table->integer('user_id');
             $table->date('date_application');
             $table->date('date_want');
             $table->date('date_change')->nullable();
-            $table->string('reason');
-            $table->string('reason_refusal')->nullable();
+            $table->text('reason');
+            $table->text('reason_refusal')->nullable();
             $table->timestamps();
         });
     }

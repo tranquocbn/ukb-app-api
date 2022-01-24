@@ -27,4 +27,9 @@ class UserService
     {
         return $this->userRepository->users();
     }
+
+    public function getList()
+    {
+        return $this->userRepository->getList();
+    }
 }
