@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\Academic;
+use DB;
 class UserRepository {
     /**
      * @var User
@@ -31,5 +32,21 @@ class UserRepository {
         // return ['id' => '1', 'name' => 'Mai Vu'];
     }
 
+
+
+
+    public function findUserByCode($code)
+    {
+        $user = DB::select('SELECT * FROM users WHERE code = ?', [$code]);
+        return $user;
+    }
+
+    public function checkInfoLogin($code, $password)
+    {
+        $user = DB::select('SELECT * FROM users 
+                            WHERE code = ? AND password = ?', 
+                            [$code, $password]);
+        return $user;
+    }
 
 }

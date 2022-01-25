@@ -32,4 +32,25 @@ class UserService
     {
         return $this->userRepository->getList();
     }
+
+    /**
+     * check info login status
+     * @param $code, $pass
+     * @return array
+     */
+    public function checkInfoLogin($code, $pass)
+    {
+        $user = $this->userRepository->findUserByCode($code);
+        if(! $user) {
+            return 'Mã không tồn tại';
+        } else {
+            $user = $this->userRepository->checkInfoLogin($code, $pass);
+            if(! $user) {
+                return 'Thông tin đăng nhập không chính xác';
+            } else {
+                return $user;
+            }
+        }
+    }
+
 }

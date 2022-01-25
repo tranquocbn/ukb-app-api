@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/users', UserController::class);
 Route::get('/get-list', [UserController::class, 'getList']);
-
+Route::get('/login', [UserController::class, 'login']);
+Route::get('/attendance', [AttendanceController::class, 'attendance']);
