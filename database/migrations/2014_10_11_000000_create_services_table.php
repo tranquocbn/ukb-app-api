@@ -17,7 +17,6 @@ class CreateServicesTable extends Migration
             $table->increments('id');
             $table->date('start_date');
             $table->date('end_date');
-            $table->timestamps();
         });
     }
 

@@ -28,7 +28,7 @@ class UserService extends BaseService
      */
     public function login(LoginRequest $request)
     {
-        $user = $this->userRepository->getByEmail($request->email);
+        $user = $this->userRepository->getByCode($request->code);
         
         if(!$user || !Hash::check($request->password, $user->password)) {
             return $this->resSuccessOrFail(null, trans('text.account.unauthorized'), Response::HTTP_UNAUTHORIZED);

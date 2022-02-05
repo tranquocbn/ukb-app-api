@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         ]);
         // \App\Models\User::factory(10)->create();
         DB::table('users')->insert([
-            'code' => 'K6',
+            'code' => '06d4800036',
             'name' => 'Tran Quoc',
             'email' => 'tranquocbn@gmail.com',
             'phone' => '0988088943',
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'current_password' => 'password',
             'service_id' => 1,
             'relation_id' => 1,
-            'relation_type' => 'classes'
+            'role_id' => 2
         ]);
     }
 }

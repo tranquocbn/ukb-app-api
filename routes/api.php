@@ -15,10 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [UserController::class, 'login']);
+
+Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
+    Route::get('user', function() {
+        echo 'Vao duoc voi quyen la hoc sinh!';
+    });
 });
 
-Route::apiResource('/users', UserController::class);
+Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
+    Route::get('test', function(Request $request) {
+        return $request->user();
+    });
+    //route teacher
+});
 
-Route::post('login', [UserController::class, 'login']);
+Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
+    //route homeroom_teacher
+});
