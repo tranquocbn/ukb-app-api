@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -19,27 +22,14 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * index function
-     * 
-     * @param Request $request
+     /**
+     * login function
+     *
+     * @param LoginRequest $request
+     * @return mixed
      */
-    public function index(Request $request)
+    public function login(LoginRequest $request)
     {
-        $users = $this->userService->getUsers();
-        if($request->wantsJson()) {
-            return $this->responseSuccess($users, 'get users list successfully');
-        }
-    }
-
-    public function login(Request $request)
-    {
-        $user = User::where('email', $request->email)->first();
-        $token = $user->createToken('ukb-api-token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], 200);
+       return $this->userService->login($request);
     }
 }

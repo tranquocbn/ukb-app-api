@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
+use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
-class UserService
+class UserService extends BaseService
 {
-    /**
-     * @var $userRepository
-     */
     protected UserRepository $userRepository;
 
     /**
-     * UserService Constructor
      * @param UserRepository $userRepository
      */
     public function __construct(UserRepository $userRepository)
@@ -21,10 +21,23 @@ class UserService
     }
 
     /**
-     * @return array
+     * login function
+     *
+     * @param LoginRequest $request
+     * @return mixed
      */
-    public function getUsers()
+    public function login(LoginRequest $request)
     {
-        return $this->userRepository->users();
+        $user = $this->userRepository->getByEmail($request->email);
+        
+        if(!$user || !Hash::check($request->password, $user->password)) {
+            return $this->resSuccessOrFail(null, trans('text.account.unauthorized'), Response::HTTP_UNAUTHORIZED);
+        }
+
+        $tokenResult = $user->createToken('ukb-api-token')->plainTextToken;
+        return $this->resSuccessOrFail([
+            'user' => $user,
+            'token' => $tokenResult
+        ], trans('text.account.login_successfully'));
     }
 }

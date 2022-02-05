@@ -15,14 +15,14 @@ class UserRepository {
         $this->user = $user;
      }
 
-     public function users()
+     /**
+      * getByEmail function
+      *
+      * @param string $email
+      * @return mixed
+      */
+     public function getByEmail(string $email)
      {
-         return [
-             ['id' => 1, 'name' => 'Quoc'],
-             ['id' => 2, 'name' => 'Mai'],
-             ['id' => 3, 'name' => 'Hoa'],
-         ];
+        return $this->user->whereEmail($email)->first();
      }
-
-
 }
