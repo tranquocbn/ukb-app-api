@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    echo 'Dang nhap vs token';
     return $request->user();
 });
 
