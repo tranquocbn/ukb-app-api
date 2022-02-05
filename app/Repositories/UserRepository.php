@@ -16,13 +16,13 @@ class UserRepository {
      }
 
      /**
-      * getByEmail function
+      * getByCode function
       *
-      * @param string $email
+      * @param string $code
       * @return mixed
       */
-     public function getByEmail(string $email)
+     public function getByCode(string $code)
      {
-        return $this->user->whereEmail($email)->first();
+        return $this->user->whereCode($code)->first();
      }
 }
