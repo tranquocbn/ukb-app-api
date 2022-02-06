@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('userable_id')->unsigned();
+            $table->string('userable_type')->comment('classes | department');
             $table->string('code')->unique();
             $table->string('name');
             $table->boolean('gender')->default(0)->comment('0: female, 1: male');
@@ -26,7 +28,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('current_password');
             $table->integer('service_id')->unsigned();
-            $table->integer('relation_id')->unsigned();
             $table->integer('role_id')->unsigned()->comment('1: teacher | 2: student | 3: homeroom_teacher');
             $table->rememberToken();
             $table->timestamps();

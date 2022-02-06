@@ -53,15 +53,24 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return hasOne
+     * @return belongsTo
      */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * getRole function
+     * @return string
+     */
     public function getRole()
     {
         return optional(optional($this)->role)->name;
+    }
+
+    public function userable()
+    {
+        return $this->morphTo(null, 'userable_type', 'userable_id');
     }
 }

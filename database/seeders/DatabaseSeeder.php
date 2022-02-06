@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'start_date' => now(),
             'end_date' => now()
         ]);
-        // \App\Models\User::factory(10)->create();
+        
         DB::table('users')->insert([
             'code' => '06d4800036',
             'name' => 'Tran Quoc',
@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'current_password' => 'password',
             'service_id' => 1,
-            'relation_id' => 1,
+            'userable_id' => 1,
+            'userable_type' => 'classes',
             'role_id' => 2
         ]);
     }

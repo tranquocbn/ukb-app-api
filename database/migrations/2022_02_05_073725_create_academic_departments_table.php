@@ -13,7 +13,7 @@ class CreateAcademicDepartmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_departments', function (Blueprint $table) {
+        Schema::create('academic_department', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('academic_id')->unsigned();
             $table->integer('department_id')->unsigned();

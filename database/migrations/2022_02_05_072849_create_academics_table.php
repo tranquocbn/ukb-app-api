@@ -18,6 +18,7 @@ class CreateAcademicsTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->float('price_credit');
+            $table->integer('year_start')->unsigned();
             $table->timestamps();
         });
     }
