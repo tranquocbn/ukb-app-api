@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Models\Classroom;
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +22,13 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::get('user', function() {
-        echo 'Vao duoc voi quyen la hoc sinh!';
+        // $user = User::whereHasMorph('userable', [Classroom::class])->get();
+        $user = Department::first();
+        dd($user->users);
     });
 });
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
-    Route::get('test', function(Request $request) {
-        return $request->user();
-    });
     //route teacher
 });
 

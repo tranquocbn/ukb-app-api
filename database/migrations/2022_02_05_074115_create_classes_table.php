@@ -20,7 +20,7 @@ class CreateClassesTable extends Migration
             $table->integer('academic_department_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('academic_department_id')->references('id')->on('academic_departments');
+            $table->foreign('academic_department_id')->references('id')->on('academic_department');
         });
     }
 
