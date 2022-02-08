@@ -18,9 +18,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'service_id',
+        'relation_id',
+        'role_id',
+        'code',
         'name',
+        'gender',
+        'phone',
+        'address',
         'email',
+        'birthday',
+        'avatar',
         'password',
+        'current_password'
     ];
 
     /**
@@ -41,4 +51,51 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return belongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * getRole function
+     * @return string
+     */
+    public function getRole()
+    {
+        return optional(optional($this)->role)->name;
+    }
+
+    public function userable()
+    {
+        return $this->morphTo(null, 'userable_type', 'userable_id');
+    }
+
+     /**
+      * @return belongsToMany
+      */
+      public function subjects()
+      {
+         return $this->belongsToMany(Subject::class, 'schedules', 'user_id', 'subject_id');
+      }
+
+       /**
+      * @return belongsToMany
+      */
+     public function classes()
+     {
+        return $this->belongsToMany(User::class, 'schedules', 'user_id', 'class_id');
+     }
+
+     /**
+      * @return belongsToMany
+      */
+      public function rooms()
+      {
+         return $this->belongsToMany(Room::class, 'schedules', 'user_id', 'room_id');
+      }
+
 }

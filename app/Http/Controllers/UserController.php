@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -18,16 +18,14 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * index function
-     * 
-     * @param Request $request
+     /**
+     * login function
+     *
+     * @param LoginRequest $request
+     * @return mixed
      */
-    public function index(Request $request)
+    public function login(LoginRequest $request)
     {
-        $users = $this->userService->getUsers();
-        if($request->wantsJson()) {
-            return $this->responseSuccess($users, 'get users list successfully');
-        }
+       return $this->userService->login($request);
     }
 }
