@@ -15,19 +15,21 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         DB::table('departments')->insert([
-            'id' => 1,
-            'code' => 'CNTT',
-            'name' => 'Công nghệ thông tin'
-        ],
-        [
-            'id' => 2,
-            'code' => 'KT',
-            'name' => 'Kinh tế'
-        ],
-        [
-            'id' => 3,
-            'code' => 'DL',
-            'name' => 'Du lịch'
+            [
+                'id' => 1,
+                'code' => 'CNTT',
+                'name' => 'Công nghệ thông tin'
+            ],
+            [
+                'id' => 2,
+                'code' => 'KT',
+                'name' => 'Kinh tế'
+            ],
+            [
+                'id' => 3,
+                'code' => 'DL',
+                'name' => 'Du lịch'
+            ]
         ]);
     }
 }

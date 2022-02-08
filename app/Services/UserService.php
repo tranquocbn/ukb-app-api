@@ -29,9 +29,12 @@ class UserService extends BaseService
     public function login(LoginRequest $request)
     {
         $user = $this->userRepository->getByCode($request->code);
+        if(!$user) {
+            return $this->resSuccessOrFail(null, trans('text.account.login.fail.user'), Response::HTTP_UNAUTHORIZED);
+        }
         
-        if(!$user || !Hash::check($request->password, $user->password)) {
-            return $this->resSuccessOrFail(null, trans('text.account.unauthorized'), Response::HTTP_UNAUTHORIZED);
+        if(!Hash::check($request->password, $user->password)) {
+            return $this->resSuccessOrFail(null, trans('text.account.login.fail.password'), Response::HTTP_UNAUTHORIZED);
         }
 
         $tokenResult = $user->createToken('ukb-api-token')->plainTextToken;
