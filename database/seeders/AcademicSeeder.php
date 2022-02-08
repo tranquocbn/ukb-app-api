@@ -15,16 +15,20 @@ class AcademicSeeder extends Seeder
     public function run()
     {
         DB::table('academics')->insert([
-            'id' => 1,
-            'code' => 'K6',
-            'name' => 'Khóa 6',
-            'price_credit' => 420
-        ],
-        [
-            'id' => 2,
-            'code' => 'K8',
-            'name' => 'Khóa 8',
-            'price_credit' => 440
+            [
+                'id' => 1,
+                'code' => 'K6',
+                'name' => 'Khóa 6',
+                'price_credit' => 420,
+                'year_start' => 2016
+            ],
+            [
+                'id' => 2,
+                'code' => 'K8',
+                'name' => 'Khóa 8',
+                'price_credit' => 440,
+                'year_start' => 2018
+            ]
         ]);
     }
 }

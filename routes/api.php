@@ -22,9 +22,10 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::get('user', function() {
-        // $user = User::whereHasMorph('userable', [Classroom::class])->get();
-        $user = Department::first();
-        dd($user->users);
+        echo 'La SV';
+        $user = User::whereHasMorph('userable', [Department::class])->get();
+        // $user = Department::first();
+        dd($user);
     });
 });
 
