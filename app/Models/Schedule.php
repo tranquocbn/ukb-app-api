@@ -21,4 +21,13 @@ class Schedule extends Model
         'semester'
     ];
 
+    /**
+     * 
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class, 'schedule_id', 'id');
+    }
+
+
 }
