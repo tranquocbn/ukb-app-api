@@ -6,6 +6,8 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
+    Route::get('getInfoLesson', [AttendanceController::class, 'getInfoLesson']);
+
 });
 
 Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {

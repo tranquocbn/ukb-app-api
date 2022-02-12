@@ -29,6 +29,7 @@ class UserService extends BaseService
     public function login(LoginRequest $request)
     {
         $user = $this->userRepository->getByCode($request->code);
+        
         if(!$user) {
             return $this->resSuccessOrFail(null, trans('text.account.login.fail.user'), Response::HTTP_UNAUTHORIZED);
         }
