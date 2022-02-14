@@ -35,13 +35,13 @@ class AttendanceService extends BaseService
         }
 
         $schedule_id = $this->attendanceRepository
-                           ->checkSchedule($user_code, '2022-02-05', 1);
+                           ->checkSchedule($user_code, '2022-02-12', $session);
         
         if(!$schedule_id) {
             return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
         } else {
             return $this->attendanceRepository
-                        ->getInfoLesson($user_code, 1);
+                        ->getInfoLesson($user_code, 1, '2022-02-12');
         }
     }
 }
