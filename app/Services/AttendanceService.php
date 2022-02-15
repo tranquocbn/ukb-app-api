@@ -36,7 +36,7 @@ class AttendanceService extends BaseService
         $scheduleId = $this->attendanceRepository
                            ->checkSchedule($userCode, '2022-02-12', 1);
         if(!$scheduleId) {
-            return $this->resSuccessOrFail(null, trans('text.account.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
+            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
         }
         return $this->attendanceRepository
                     ->getInfoLesson($userCode, 1, '2022-02-12');

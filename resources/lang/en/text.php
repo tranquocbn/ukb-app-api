@@ -10,9 +10,9 @@ return [
                 'user'      => 'Tài khoản không tồn tại',
                 'password'  => 'Mật khẩu sai'
             ]
-        ],
-        'attendance' => [
-            'check_schedule' => 'Hôm nay bạn không có tiết!'
         ]
+    ],
+    'attendance' => [
+        'check_schedule' => 'Hôm nay bạn không có tiết!'
     ]
 ];
