@@ -5,7 +5,6 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\AttendanceRepository;
-use Carbon\Carbon;
 
 class AttendanceService extends BaseService
 {
@@ -21,10 +20,10 @@ class AttendanceService extends BaseService
 
     public function getInfoLesson(Request $request)
     {
-        $user_code  = $request->code;
-        $dt         = Carbon::now('Asia/Ho_Chi_Minh');
-        $date       = $dt->toDateString(); 
-        $time       = $dt->hour;
+        $userCode   = $request->code;
+        $dt         = now('Asia/Ho_Chi_Minh');
+        $date       = date_format($dt,"Y-m-d");
+        $time       = date_format($dt,"H");
 
         if($time >= 8 && $time <= 11) {
             $session = 1;
@@ -34,14 +33,12 @@ class AttendanceService extends BaseService
             $session = 1;
         }
 
-        $schedule_id = $this->attendanceRepository
-                           ->checkSchedule($user_code, '2022-02-12', $session);
-        
-        if(!$schedule_id) {
-            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
-        } else {
-            return $this->attendanceRepository
-                        ->getInfoLesson($user_code, 1, '2022-02-12');
+        $scheduleId = $this->attendanceRepository
+                           ->checkSchedule($userCode, '2022-02-12', 1);
+        if(!$scheduleId) {
+            return $this->resSuccessOrFail(null, trans('text.account.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
         }
+        return $this->attendanceRepository
+                    ->getInfoLesson($userCode, 1, '2022-02-12');
     }
 }

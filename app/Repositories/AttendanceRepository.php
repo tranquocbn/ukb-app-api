@@ -16,9 +16,9 @@ class AttendanceRepository {
         $this->attendance = $attendance;
     }
 
-    public function checkSchedule($user_code, $date_current, $session)
+    public function checkSchedule($userCode, $dateCurrent, $session)
     {
-        $schedule_id = DB::select("SELECT s.id
+        $scheduleId = DB::select("SELECT s.id
                                     FROM schedules s
                                     JOIN users u ON s.user_id = u.id
                                     JOIN leaves l ON l.schedule_id = s.id
@@ -34,10 +34,10 @@ class AttendanceRepository {
                                                             WHERE leaves.schedule_id = s.id )
                                         AND l.date_change = ?)
                                     LIMIT 1",
-                                    [ $user_code, $date_current, $session, 
-                                    $date_current, $date_current, $date_current]
+                                    [ $userCode, $dateCurrent, $session, 
+                                    $dateCurrent, $dateCurrent, $dateCurrent]
                                 );
-        // $schedule_id = DB::table('schedules')
+        // $scheduleId = DB::table('schedules')
         //         ->join('users', 'schedules.user_id', 'users.id')
         //         ->join('leaves', 'leaves.schedule_id', 'schedules.id')
         //         ->select('schedules.id')
@@ -64,10 +64,10 @@ class AttendanceRepository {
         //         ->limit(1)
         //         ->get()
         //         ->toArray();
-        return $schedule_id;                    
+        return $scheduleId;                    
     }
 
-    public function getInfoLesson($user_code, $schedule_id, $date_current)
+    public function getInfoLesson($userCode, $scheduleId, $dateCurrent)
     {
         $info = DB::select(
                         "SELECT u.name 'teacher_name', c.name 'class_name', 
@@ -86,8 +86,8 @@ class AttendanceRepository {
                         WHERE u.code = ?
                         AND s.id = ?
                         AND l.date_learn = ?",
-                        [$schedule_id, $user_code, 
-                        $schedule_id, $date_current]);
+                        [$scheduleId, $userCode, 
+                        $scheduleId, $dateCurrent]);
         return $info;
     }
 }
