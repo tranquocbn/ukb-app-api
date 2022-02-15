@@ -37,33 +37,6 @@ class AttendanceRepository {
                                     [ $userCode, $dateCurrent, $session, 
                                     $dateCurrent, $dateCurrent, $dateCurrent]
                                 );
-        // $scheduleId = DB::table('schedules')
-        //         ->join('users', 'schedules.user_id', 'users.id')
-        //         ->join('leaves', 'leaves.schedule_id', 'schedules.id')
-        //         ->select('schedules.id')
-        //         ->where('users.code', 'gv01')
-        //         ->where('schedules.session', 1)
-        //         ->whereRaw("DATEDIFF('2022-02-10', schedules.date_start)%7 = ?",[0])
-        //         ->whereNotIn('2022-02-10', 
-        //                         DB::table('leaves')
-        //                         ->where('leaves.schedule_id', 'schedules.id')
-        //                         ->where('leaves.date_want', '2022-02-10')
-        //                         ->get()
-        //                         ->toArray()
-        //                     )
-        //         ->orWhere(function($query) {
-        //                     $query->whereNotIn('2022-02-10',
-        //                                 DB::table('leaves')
-        //                                 ->select('leaves.date_want')
-        //                                 ->where('leaves.schedule_id', 'schedules.id')
-        //                                 ->get()
-        //                                 ->toArray()
-        //                             )
-        //                         ->where('leaves.date_change', '2022-02-10');
-        //                     })
-        //         ->limit(1)
-        //         ->get()
-        //         ->toArray();
         return $scheduleId;                    
     }
 
