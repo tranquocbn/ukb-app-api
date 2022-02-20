@@ -17,12 +17,16 @@ class Controller extends BaseController
      * @param string $msg
      * @return Response
      */
-    protected function responseSuccess(array $data, string $msg, int $status = Response::HTTP_OK)
+    protected function resSuccessOrFail(array $data = null, string $msg, int $status = Response::HTTP_OK)
     {
-        return response()->json([
-            'data' => $data,
+        $dataRes = [
             'message' => $msg,
             'status' => $status
-        ], $status);
+        ];
+
+        if($data !== null) {
+            $dataRes['data'] = $data;
+        }
+        return response()->json($dataRes, $status);
     }
 }
