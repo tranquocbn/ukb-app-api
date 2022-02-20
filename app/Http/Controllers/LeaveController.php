@@ -26,20 +26,20 @@ class LeaveController extends Controller
      * 
      * @return mixed
      */
-    public function getSubjectsInSemesterCurrent(Request $req)
+    public function getSubjectsInSemesterCurrent(Request $request)
     {
-        return $this->leaveService->getSubjectsInSemesterCurrent($req);
+        return $this->leaveService->getSubjectsInSemesterCurrent($request);
     }
 
-
-     /**
-     * login function
-     *
-     * @param LoginRequest $request
-     * @return mixed
+    /**
+     * checkDate
+     * 
+     * 
      */
-    public function login(LoginRequest $request)
+    public function checkDate(Request $request)
     {
-       return $this->userService->login($request);
+        return 'ok';
     }
+
+
 }

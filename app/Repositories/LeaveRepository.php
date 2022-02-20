@@ -37,8 +37,10 @@ class LeaveRepository {
      public function getSubjectsInSemesterCurrent($classId, $semester)
      {
          return $this->schedule
-                ->whereClassId($classId)
-                ->whereSemester($semester)->get();
+                ->where('class_id', $classId)
+                ->where('semester', $semester)
+                ->join('subjects', 'subjects.id', '=', 'schedules.subject_id')
+                ->select('subjects.name', 'schedules.id', 'schedules.date_start')
+                ->get();
      }
-
 }

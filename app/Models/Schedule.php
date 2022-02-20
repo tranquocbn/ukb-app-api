@@ -29,5 +29,13 @@ class Schedule extends Model
         return $this->hasMany(Leave::class, 'schedule_id', 'id');
     }
 
+    /**
+     * 
+     */
+    public function subject()
+    {
+        return $this->hasOne(Subject::class, 'subject_id', 'id');
+    }
+
 
 }

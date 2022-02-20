@@ -24,8 +24,6 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::get('user', function() {
-        echo 'La SV';
-        $user = null;
         $user = AcademicDepartment::find(1)->classes()->get();
         // $user = User::whereHasMorph('userable', [Department::class])->get();
         // $user = Department::first();
@@ -33,7 +31,12 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     });
 
     Route::group(['prefix'=>'leave'],function(){
-        Route::get('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
+        Route::post('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
+        
+        Route::get('/test', function() {
+            echo 'oki nhe';
+        });
+
         Route::post('/create', [LeaveController::class, 'create']);
     });
 
