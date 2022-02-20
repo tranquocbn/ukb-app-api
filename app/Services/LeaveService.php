@@ -5,21 +5,19 @@ namespace App\Services;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Repositories\LeaveRepository;
+use App\Repositories\ScheduleRepository;
 use Illuminate\Support\Facades\Hash;
-
-use function PHPSTORM_META\type;
 
 class LeaveService extends BaseService
 {
-    protected LeaveRepository $leaveRepository;
+    protected ScheduleRepository $scheduleRepository;
 
     /**
-     * @param LeaveRepository $leaveRepository
+     * @param ScheduleRepository $scheduleRepository
      */
-    public function __construct(LeaveRepository $leaveRepository)
+    public function __construct(ScheduleRepository $scheduleRepository)
     {
-        $this->leaveRepository = $leaveRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
      /**

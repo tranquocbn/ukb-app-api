@@ -37,5 +37,11 @@ class Schedule extends Model
         return $this->hasOne(Subject::class, 'subject_id', 'id');
     }
 
-
+    /**
+     * @return hasMany
+     */
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }

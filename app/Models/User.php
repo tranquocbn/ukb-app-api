@@ -106,4 +106,12 @@ class User extends Authenticatable
           return $this->hasMany(Leave::class, 'user_id', 'id');
       }
 
+      /**
+       * @return hasMany
+       */
+      public function scores()
+      {
+          return $this->hasMany(Score::class);
+      }
+
 }
