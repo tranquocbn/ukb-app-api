@@ -3,19 +3,14 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository {
+class UserRepository extends BaseRepository {
+
+    public function model()
+    {
+        return User::class;
+    }
+
     /**
-     * @var User
-     */
-
-     protected User $user;
-
-     public function __construct(User $user)
-     {
-        $this->user = $user;
-     }
-
-     /**
       * getByCode function
       *
       * @param string $code
@@ -23,6 +18,6 @@ class UserRepository {
       */
      public function getByCode(string $code)
      {
-        return $this->user->whereCode($code)->first();
+        return $this->model->whereCode($code)->first();
      }
 }
