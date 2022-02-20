@@ -21,4 +21,51 @@ class Schedule extends Model
         'semester'
     ];
 
+    /**
+     * @return belongsTo
+     */
+    public function teachers()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class, 'lessons_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function classes()
+    {
+        return $this->belongsTo(Classroom::class, 'classes_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function subjects()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function rooms()
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class, 'schedule_id', 'id');
+    }
 }

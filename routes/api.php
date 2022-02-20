@@ -34,38 +34,14 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
     Route::get('getInfoLesson', [AttendanceController::class, 'getInfoLesson']);
-
+    Route::get('turnOnAttendance', [AttendanceController::class, 'turnOnAttendance']);
 });
 
 Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
     //route homeroom_teacher
 });
 
-Route::get('test', function(){
-    $id = DB::table('schedules')
-                ->join('users', 'schedules.user_id', 'users.id')
-                ->join('leaves', 'leaves.schedule_id', 'schedules.id')
-                ->select('schedules.id')
-                ->where('users.code', 'gv01')
-                ->where('schedules.session', 1)
-                ->whereRaw("DATEDIFF('2022-02-12', schedules.date_start)%7 = ?",[0])
-                ->whereNotIn('2022-02-12', DB::table('leaves')
-                                            ->where('leaves.schedule_id', 'schedules.id')
-                                            ->where('leaves.date_want', '2022-02-12')
-                                            ->get()
-                                            ->toArray()
-                            )
-                ->orWhere(function($query) {
-                            $query->whereNotIn('2022-02-12',
-                                            DB::table('leaves')
-                                        ->select('leaves.date_want')
-                                        ->where('leaves.schedule_id', 'schedules.id')
-                                        ->get()
-                                        ->toArray()
-                                        )
-                                ->where('leaves.date_change', '2022-02-12');
-                            })
-                ->limit(1)
-                ->get();
-    return $id;
-});
+
+
+
+

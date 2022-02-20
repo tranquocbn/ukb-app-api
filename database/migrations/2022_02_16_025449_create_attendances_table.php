@@ -17,7 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->increments('id');
             $table->integer('lesson_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->tinyInteger('state')->comment('trạng thái điểm danh');
+            $table->tinyInteger('state')->default(0)->comment('trạng thái điểm danh');
             $table->string('device')->comment('mã máy của từng user_id');
             $table->timestamps();
 

@@ -26,6 +26,11 @@ class AttendanceController extends Controller
      */
     public function getInfoLesson(Request $request)
     {
-       return $this->attendanceService->getInfoLesson($request);
+        return $this->attendanceService->getInfoLesson($request);
+    }
+
+    public function turnOnAttendance(Request $request)
+    {
+        return $this->attendanceService->checkStateAttendance($request);
     }
 }

@@ -13,6 +13,7 @@ return [
         ]
     ],
     'attendance' => [
-        'check_schedule' => 'Hôm nay bạn không có tiết!'
+        'check_schedule' => 'Hôm nay bạn không có tiết!',
+        'turn_on_attendance' => 'Bật điểm danh thành công'
     ]
 ];

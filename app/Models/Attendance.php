@@ -17,4 +17,19 @@ class Attendance extends Model
         'device'
     ];
 
+    /**
+     * @return belongsTo
+     */
+    public function lessons()
+    {
+        return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

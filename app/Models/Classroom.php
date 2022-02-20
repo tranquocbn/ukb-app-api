@@ -54,4 +54,27 @@ class Classroom extends Model
         return $this->belongsToMany(Room::class, 'schedules', 'class_id', 'room_id');
      }
 
+     /**
+      * @return hasMany
+      */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'class_id', 'id');
+    }
+
+    /**
+     * Get all of the lessons for the class.
+     * @return hasManyThrough
+     */
+    public function lessons()
+    {
+        return $this->hasManyThrough(
+            Lesson::class, 
+            Schedule::class, 
+            'class_id', 
+            'schedule_id', 
+            'id', 
+            'id'
+        );
+    }
 }
