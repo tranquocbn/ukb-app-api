@@ -1,12 +1,9 @@
 <?php
 
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\ScoreController as StudentScoreController;
 use App\Http\Controllers\UserController;
 use App\Models\AcademicDepartment;
-use App\Models\Classroom;
-use App\Models\Department;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +26,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
         // $user = Department::first();
         dd($user);
     });
+
+    Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
     Route::group(['prefix'=>'leave'],function(){
         Route::post('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
