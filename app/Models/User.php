@@ -98,4 +98,12 @@ class User extends Authenticatable
          return $this->belongsToMany(Room::class, 'schedules', 'user_id', 'room_id');
       }
 
+      /**
+       * @return hasMany
+       */
+      public function leaves()
+      {
+          return $this->hasMany(Leave::class, 'user_id', 'id');
+      }
+
 }

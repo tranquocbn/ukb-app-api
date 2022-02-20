@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\UserController;
+use App\Models\AcademicDepartment;
 use App\Models\Classroom;
 use App\Models\Department;
 use App\Models\User;
@@ -22,11 +24,22 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::get('user', function() {
-        echo 'La SV';
-        $user = User::whereHasMorph('userable', [Department::class])->get();
+        $user = AcademicDepartment::find(1)->classes()->get();
+        // $user = User::whereHasMorph('userable', [Department::class])->get();
         // $user = Department::first();
         dd($user);
     });
+
+    Route::group(['prefix'=>'leave'],function(){
+        Route::post('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
+        
+        Route::get('/test', function() {
+            echo 'oki nhe';
+        });
+
+        Route::post('/create', [LeaveController::class, 'create']);
+    });
+
 });
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
