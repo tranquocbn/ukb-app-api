@@ -7,7 +7,8 @@ use Illuminate\Support\Collection;
 use App\Models\Lesson;
 use App\Models\Schedule;
 
-class AttendanceRepository {
+class AttendanceRepository extends BaseRepository 
+{
     /**
      * @var Attendance
      */
