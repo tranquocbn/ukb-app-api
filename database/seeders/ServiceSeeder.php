@@ -14,7 +14,6 @@ class ServiceSeeder extends Seeder
      */
     public function run()
     {
-        //
         DB::table('services')->insert([
             'start_date' => now(),
             'end_date' => now()

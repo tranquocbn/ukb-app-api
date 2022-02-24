@@ -25,17 +25,17 @@ class Lesson extends Model
     /**
      * @return belongsTo
      */
-    public function schedules()
+    public function schedule()
     {
         return $this->belongsTo(Schedule::class, 'schedule_id', 'id');
     }
 
     /**
-     * @return hasOne
+     * @return hasMany
      */
     public function attendances()
     {
-        return $this->hasOne(Attendance::class, 'lesson_id', 'id');
+        return $this->hasMany(Attendance::class, 'lesson_id', 'id');
     }
 
     

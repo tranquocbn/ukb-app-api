@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,15 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ServiceSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(ServiceSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(AcademicSeeder::class);
         $this->call(DepartmentSeeder::class);
         $this->call(AcademicDepartmentSeeder::class);
-        $this->call(ClassSeeder::class);
-        $this->call(SubjectSeeder::class);
         $this->call(RoomSeeder::class);
-        // $this->call(ScheduleSeeder::class);
+        $this->call(SubjectSeeder::class);
+        $this->call(ClassSeeder::class);
+        $this->call(ScheduleSeeder::class);
+        $this->call(LeaveSeeder::class);
+        
     }
 }

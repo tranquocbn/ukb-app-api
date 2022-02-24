@@ -17,14 +17,54 @@ class Schedule extends Model
         'room_id',
         'date_start',
         'date_change',
-        'seesion',
+        'session',
         'semester'
     ];
 
     /**
+     * @return hasMany
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class, 'schedule_id', 'id');
+    }
+
+    /**
      * @return belongsTo
      */
-    public function teachers()
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function class()
+    {
+        return $this->belongsTo(Classroom::class, 'class_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+     */
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'id');
+    }
+
+    /**
+     * @return belongsTo
+    */
+    public function teacher()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
@@ -34,38 +74,6 @@ class Schedule extends Model
      */
     public function lessons()
     {
-        return $this->hasMany(Lesson::class, 'lessons_id', 'id');
-    }
-
-    /**
-     * @return belongsTo
-     */
-    public function classes()
-    {
-        return $this->belongsTo(Classroom::class, 'classes_id', 'id');
-    }
-
-    /**
-     * @return belongsTo
-     */
-    public function subjects()
-    {
-        return $this->belongsTo(Subject::class, 'subject_id', 'id');
-    }
-
-    /**
-     * @return belongsTo
-     */
-    public function rooms()
-    {
-        return $this->belongsTo(Room::class, 'room_id', 'id');
-    }
-
-    /**
-     * @return hasMany
-     */
-    public function leaves()
-    {
-        return $this->hasMany(Leave::class, 'schedule_id', 'id');
+        return $this->hasMany(Lesson::class, 'schedule_id', 'id');
     }
 }

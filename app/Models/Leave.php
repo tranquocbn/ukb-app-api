@@ -23,7 +23,7 @@ class Leave extends Model
     /**
      * @return belongsTo
      */
-    public function schedules()
+    public function schedule()
     {
         return $this->belongsTo(Schedule::class, 'schedule_id', 'id');
     }
@@ -31,8 +31,9 @@ class Leave extends Model
     /**
      * @return belongsTo
      */
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
 }

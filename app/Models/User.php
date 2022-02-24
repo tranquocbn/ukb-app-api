@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,29 +75,29 @@ class User extends Authenticatable
         return $this->morphTo(null, 'userable_type', 'userable_id');
     }
 
-     /**
-      * @return belongsToMany
-      */
-      public function subjects()
-      {
-         return $this->belongsToMany(Subject::class, 'schedules', 'user_id', 'subject_id');
-      }
+    /**
+     * @return belongsToMany
+    */
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'schedules', 'user_id', 'subject_id');
+    }
 
-       /**
-      * @return belongsToMany
-      */
-     public function classes()
-     {
+    /**
+     * @return belongsToMany
+    */
+    public function classes()
+    {
         return $this->belongsToMany(User::class, 'schedules', 'user_id', 'class_id');
-     }
+    }
 
-     /**
-      * @return belongsToMany
-      */
-      public function rooms()
-      {
-         return $this->belongsToMany(Room::class, 'schedules', 'user_id', 'room_id');
-      }
+    /**
+     * @return belongsToMany
+    */
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'schedules', 'user_id', 'room_id');
+    }
 
     /**
      * @return hasMany
@@ -104,6 +105,14 @@ class User extends Authenticatable
     public function leaves()
     {
         return $this->hasMany(Leave::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
     }
 
     /**
@@ -119,6 +128,6 @@ class User extends Authenticatable
      */
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'user_id', 'id');
+        return $this->hasMany(User::class, 'user_id', 'id');
     }
 }

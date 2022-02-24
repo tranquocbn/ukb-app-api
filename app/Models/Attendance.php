@@ -20,7 +20,7 @@ class Attendance extends Model
     /**
      * @return belongsTo
      */
-    public function lessons()
+    public function lesson()
     {
         return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
     }
@@ -28,7 +28,7 @@ class Attendance extends Model
     /**
      * @return belongsTo
      */
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

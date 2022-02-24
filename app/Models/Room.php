@@ -20,7 +20,7 @@ class Room extends Model
      */
     public function schedules()
     {
-        return $this->hasMany(Scheule::class, 'room_id', 'id');
+        return $this->hasMany(Schedule::class, 'room_id', 'id');
     }
 
 }
