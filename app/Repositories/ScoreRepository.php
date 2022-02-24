@@ -21,11 +21,11 @@ class ScoreRepository extends BaseRepository
     public function getScores(Request $request, $scheduleId)
     {
         $user = $request->user();
-            return $this->model
-            ->where('user_id', $user->id)
-            ->where('schedule_id', $scheduleId)
-            ->with('schedule')
-            ->with('scoreFeedbacks')
-            ->get();
+        return $this->model
+        ->where('user_id', $user->id)
+        ->where('schedule_id', $scheduleId)
+        ->with('schedule')
+        ->with('scoreFeedbacks')
+        ->get();
     }
 }

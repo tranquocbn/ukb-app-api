@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
         dd($user);
     });
 
-    Route::get('scores/{scheduleId}', [StudentScoreController::class, 'showScores']);
+    Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
     Route::group(['prefix'=>'leave'],function(){
         Route::post('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
