@@ -16,7 +16,7 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('schedule_id')->unsigned();
-            $table->date('date_learn');
+            $table->date('date_learn')->nullable();
             $table->text('content');
             $table->tinyInteger('radius')->unsigned()->min(5);
             $table->text('latitude');

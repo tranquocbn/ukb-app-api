@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Leave extends Model
+class Lesson extends Model
 {
     use HasFactory;
-    
-    protected $table = 'leaves';
+
+    protected $table = 'lessons';
     protected $fillable = [
         'schedule_id',
-        'user_id',
-        'date_application',
-        'date_want',
-        'date_change',
-        'reason',
-        'reason_refusal'
+        'date_learn',
+        'content',
+        'radius',
+        'latitude',
+        'longitude',
+        'evaluate',
+        'comment',
+        'state'
     ];
 
     /**
@@ -29,11 +31,12 @@ class Leave extends Model
     }
 
     /**
-     * @return belongsTo
+     * @return hasMany
      */
-    public function user()
+    public function attendances()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasMany(Attendance::class, 'lesson_id', 'id');
     }
 
+    
 }

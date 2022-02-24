@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-
 class UserSeeder extends Seeder
 {
     /**
@@ -58,7 +57,7 @@ class UserSeeder extends Seeder
                 'userable_id' => 1,
                 'userable_type' => 'classes',
                 'role_id' => 1
-            ],
-    ]);
+            ]
+        ]);
     }
 }
