@@ -20,51 +20,7 @@ class LeaveService extends BaseService
         $this->scheduleRepository = $scheduleRepository;
     }
 
-     /**
-     * 2021: 1
-     * 2022: 2, 3 = 
-     * 2023: 4, 5
-     * 
-     * year_current - year_start = a * 2
-     * xac dinh ky: 
-     * t 1-> 6: a *2
-     * t6->12: a* 2 + 1
-     * 
-     * semester
-     * @param year_current, month_current
-     *
-     */
-    public function semester($year_start, $year_current, $month_current)
-    {           
-        if ($year_current === $year_start) {
-            return 1;
-        }
 
-        if ($month_current >= 1 && $month_current < 6) {
-            return ($year_current - $year_start) * 2;
-        }
-
-        if ($month_current >= 6 && $month_current <= 12) {
-            return ($year_current - $year_start) * 2 + 1;
-        }
-    }
-
-
-    /**
-     * get subjects in semester current
-     * 
-     * @param REquest $req
-     * 
-     * @return mixed
-     */
-    public function getSubjectsInSemesterCurrent(Request $req)
-    {
-       
-        $semester = $this->semester((int)$req->year_start, (int)$req->year_current, (int)$req->month_current);
-        $subjects = $this->leaveRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
-
-        return $subjects;
-    }
 
 
 
