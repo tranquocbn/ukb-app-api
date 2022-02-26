@@ -42,15 +42,15 @@ class ScheduleService extends BaseService
         // $date = '2019-07-13';
         $session = 1;
 
-        $schedule = $this->scheduleRepository
-                             ->checkSchedule($userId, $date, $session);
-                             return $schedule;
+        $schedule = $this->scheduleRepository->checkSchedule($userId, $date, $session);
+        
         if(!$schedule) {
+            return 'hi';
             return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
         }
-        
-        return $this->scheduleRepository
-                    ->getInfoLesson($userId, $schedule[0]['id'], $date );
+        $info = $this->scheduleRepository
+                    ->getInfoLesson($userId, $schedule->id, $date );
+        return $info[0];
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\Student\LeaveController as StudentLeaveController;
 use App\Http\Controllers\Student\ScoreController as StudentScoreController;
 use App\Http\Controllers\UserController;
 use App\Models\AcademicDepartment;
@@ -32,13 +32,13 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
     Route::group(['prefix'=>'leave'],function(){
-        Route::post('/subjects_current', [LeaveController::class, 'getSubjectsInSemesterCurrent']);
+        Route::post('/subjects_current', [StudentLeaveController::class, 'getSubjectsInSemesterCurrent']);
         
         Route::get('/test', function() {
             echo 'oki nhe';
         });
 
-        Route::post('/create', [LeaveController::class, 'create']);
+        Route::post('/create', [StudentLeaveController::class, 'create']);
     });
 
 });
@@ -46,10 +46,10 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
     Route::group(['prefix'=>'attendance'],function() {
-        Route::get('getInfoLesson', [TeacherScheduleController::class, 'getInfoLesson']);
-        Route::get('checkStateLesson', [TeacherLessonController::class, 'checkStateLesson']);
-        Route::post('turnOnAttendance', [TeacherLessonController::class, 'turnOnAttendance']);
-        Route::get('turnOffAttendance', [TeacherLessonController::class, 'turnOffAttendance']);
+        Route::get('get_info_lesson', [TeacherScheduleController::class, 'getInfoLesson']);
+        Route::get('check_state_lesson', [TeacherLessonController::class, 'checkStateLesson']);
+        Route::post('turn_on_attendance', [TeacherLessonController::class, 'turnOnAttendance']);
+        Route::get('turn_off_attendance', [TeacherLessonController::class, 'turnOffAttendance']);
     });
     
 });

@@ -30,11 +30,11 @@ class Schedule extends Model
     }
 
     /**
-     * 
+     * @return belongsTo
      */
     public function subject()
     {
-        return $this->hasOne(Subject::class, 'subject_id', 'id');
+        return $this->belongsTo(Subject::class, 'subject_id', 'id');
     }
 
     /**

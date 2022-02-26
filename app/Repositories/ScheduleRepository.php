@@ -38,20 +38,14 @@ class ScheduleRepository extends BaseRepository
         return $this->model
             ->where('user_id', $userId)
             ->where('session', $session)
-            ->where(function($query) use ($date){
-                $query->whereRaw('DATEDIFF(?, date_start)%7 = 0',[$date])
-                ->orWhereExists(function() use ($date){
-                        $this->model->with('leaves')
-                            ->where('leaves.date_change', $date);
-                        });
+            ->whereRaw('DATEDIFF(?, date_start) % 7 = 0', [$date])
+            ->whereDoesntHave('leaves', function($query) use ($date){
+                $query->where('date_want', $date);
             })
-            ->whereDoesntHave('leaves', function() use ($date){
-                $this->model
-                    ->with(['leaves'=>function($query)use ($date){
-                            $query->where('leaves.date_want', $date);
-                }]);
+            ->orWhereHas('leaves', function ($query) use ($date){
+                $query->where('date_change', '=', $date);
             })
-            ->toSql();
+            ->first();
     }
 
     public function getInfoLesson($userId, $scheduleId, $dateCurrent)
@@ -59,15 +53,13 @@ class ScheduleRepository extends BaseRepository
         return $this->model
                 ->where('id', $scheduleId)
                 ->where('user_id', $userId)
-                ->with([
-                    'teacher:id,name',
-                    'class:id,name', 
-                    'subject:id,name', 
-                    'room:id,name',])
+                ->with([ 'teacher:id,name', 'class:id,name', 'subject:id,name', 'room:id,name'])
                 ->with(['lessons'=>function($query) use ($dateCurrent){
-                        $query->where('date_learn', $dateCurrent)
-                        ->get();
+                        $query->where('date_learn', $dateCurrent);
                     }])
+                ->withCount(['lessons', 'lessons' => function ($query) {
+                    $query->where('date_learn', '>=', '2019-06-22');
+                }])
                 ->get();
     }
 }
