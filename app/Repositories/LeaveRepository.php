@@ -9,4 +9,6 @@ class LeaveRepository {
     {
         return Leave::class;
     }
+
+    
 }

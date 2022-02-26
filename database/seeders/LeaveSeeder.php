@@ -27,6 +27,16 @@ class LeaveSeeder extends Seeder
                 'reason_refusal' => null
             ],
             [
+                'id' => 3,
+                'schedule_id'  => 1,
+                'user_id' => 1,
+                'date_application' => '2019-07-12',
+                'date_want' => '2019-07-13',
+                'date_change' => '2019-07-14',
+                'reason' => 'Nghi om',
+                'reason_refusal' => null
+            ],
+            [
                 'id' => 2,
                 'schedule_id'  => 1,
                 'user_id' => 3,

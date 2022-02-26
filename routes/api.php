@@ -34,8 +34,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::group(['prefix'=>'leave'],function(){
         Route::post('/subjects_current', [StudentLeaveController::class, 'getSubjectsInSemesterCurrent']);
         
-        Route::get('/test', function() {
-            echo 'oki nhe';
+        Route::post('/test', function() {
+            return 'ok';
         });
 
         Route::post('/create', [StudentLeaveController::class, 'create']);

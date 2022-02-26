@@ -20,14 +20,14 @@ class SubjectRepository extends BaseRepository
      */
     public function getSubjectsInSemesterCurrent($classId, $semester)
     {
-        // return $this->model
-        //     ->select('subjects.name', 'schedules.id', 'schedules.date_start')
-        //     ->where('class_id', $classId)
-        //     ->where('semester', $semester)
-        //     ->join('subjects', 'subjects.id', '=', 'schedules.subject_id')
-        //     ->get();
-
-        return 'ok';
+        //muốn lây: schedule_id, count_lesson
+        return $this->model
+                ->select('id', 'name')
+                ->whereHas('schedules', function($e) use ($classId, $semester) {
+                        $e->where('class_id', $classId)
+                        ->where('semester', $semester);
+                })
+                ->get();
     }
 
     
