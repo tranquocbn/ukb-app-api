@@ -16,9 +16,20 @@ class SubjectController extends Controller
         $this->subjectService = $subjectService;
     }
 
+    /**
+     * get subjects insemester current
+     *
+     * @param Request $request
+     * @return mix
+     */
     public function getSubjectsInSemesterCurrent(Request $request)
     {
         return $this->subjectService->getSubjectsInSemesterCurrent($request);
+    }
+
+    public function getSubjectsSchedule(Request $request)
+    {
+        return $this->subjectService->getSubjectsScheduleStudent($request);
     }
 
 }

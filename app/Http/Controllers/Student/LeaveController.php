@@ -19,14 +19,31 @@ class LeaveController extends Controller
         $this->leaveService = $leaveService;
     }
 
+    /**
+     * check student date selected
+     *
+     * @param Request $request
+     * @return mix
+     */
     public function checkDate(Request $request)
     {
         return $this->leaveService->checkDateLeaveEnable($request);
     }
 
+    /**
+     * student create leave
+     *
+     * @param Request $request
+     * @return mix
+     */
     public function create(Request $request)
     {
         return $this->leaveService->studentCreate($request);
+    }
+
+    public function leavesSemester(Request $request)
+    {
+        return $this->leaveService->studentLeavesSemester($request);
     }
 
 }

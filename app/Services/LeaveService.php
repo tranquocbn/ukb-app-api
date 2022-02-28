@@ -25,11 +25,23 @@ class LeaveService extends BaseService
         $this->leaveRepository = $leaveRepository;
     }
 
+    /**
+     * student create leave
+     *
+     * @param Request $request
+     * @return mix
+     */
     public function studentCreate(Request $request)
     {
         return $this->leaveRepository->studentCreate($request->toArray());
     }
 
+    /**
+     * check date selected by student create leave
+     *
+     * @param Request $request
+     * @return mix
+     */
     public function checkDateLeaveEnable(Request $request)
     {
         $data = $request->merge(['date_diff' => $this->dateDiff($request->date_start, $request->date_selected)]);
@@ -38,6 +50,16 @@ class LeaveService extends BaseService
             return $this->resSuccessOrFail(null, trans('text.leave.date_invalid'));
         }
         return $this->resSuccessOrFail($leaves->toArray(), trans('text.leave.date_uninvalid'));
+    }
+
+    public function studentLeavesSemester(Request $request)
+    {
+        $data = [
+            'user_id' => $request->user()['id'],
+            'schedule_id' => $request->schedule_id
+        ];
+        $leaves = $this->leaveRepository->studentLeavesSemester($data)->toArray();
+        return $this->resSuccessOrFail($leaves);
     }
 
 }

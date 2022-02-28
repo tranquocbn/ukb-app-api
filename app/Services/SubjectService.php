@@ -59,6 +59,12 @@ class SubjectService extends BaseService
         return $subjects;
     }
 
+    public function getSubjectsScheduleStudent(Request $request)
+    {
+        $subjects = $this->subjectRepository->getSubjectsScheduleStudent($request->user()['userable_id'])->toArray();
+        return $this->resSuccessOrFail($subjects);
+    }
+
     
 }
 
