@@ -29,28 +29,5 @@ class LeaveRepository extends BaseRepository{
         })->get();
     }
 
-    // public function checkDateLeaveEnable(array $data)
-    // {
-    //     return $this->model
-    //     ->where('schedule_id', $data['schedule_id'])
-    //     ->whereRaw('DATEDIFF(?, ?) % 7 = 0', [$data['date_selected'], $data['date_start']])
-    //     ->get();
-    // }
-
-    // /**
-    //  * getDateChanges
-    //  *
-    //  * @param $scheduleId
-    //  * @param $userId
-    //  * @return mixed
-    //  */
-    // public function getDateChanges($scheduleId, $userId)
-    // {
-    //     return $this->model
-    //     ->where('schedule_id', $scheduleId)
-    //     ->where('user_id', $userId)
-    //     ->get()
-    //     ->pluck('date_change');
-    // }
 }
 

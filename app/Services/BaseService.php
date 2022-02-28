@@ -21,9 +21,7 @@ class BaseService
 
     protected function dateDiff($dateStart, $dateSecond)
     {
-        $first_date = strtotime($dateStart);
-        $second_date = strtotime($dateSecond);
-        $datediff = abs($first_date - $second_date);
+        $datediff = abs(strtotime($dateStart) - strtotime($dateSecond));
         return floor($datediff / (60*60*24));
     }
 

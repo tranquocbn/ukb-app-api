@@ -32,34 +32,12 @@ class LeaveService extends BaseService
 
     public function checkDateLeaveEnable(Request $request)
     {
-        $data = $request->merge(['date_diff' => $this->dateDiff($request->date_start, $request->date_selected)])->toArray();
-        $leaves = $this->leaveRepository->checkDateLeaveEnable($data);
+        $data = $request->merge(['date_diff' => $this->dateDiff($request->date_start, $request->date_selected)]);
+        $leaves = $this->leaveRepository->checkDateLeaveEnable($data->toArray());
         if($leaves->count() === 0) {
             return $this->resSuccessOrFail(null, trans('text.leave.date_invalid'));
-            // dd('nhap dung');
-            // return;
         }
-        return $this->resSuccessOrFail($leaves, trans('text.leave.date_uninvalid', Response::HTTP_NO_CONTENT));
-        // dd('sai ngay');
+        return $this->resSuccessOrFail($leaves->toArray(), trans('text.leave.date_uninvalid'));
     }
 
-    // public function checkDateLeaveEnable(Request $request)
-    // {
-    //     $isExistDateChange = $this->checkExistInDateChange($request->date_selected, $request->schedule_id, $request->teacher_id);
-    //     $leaves = $this->leaveRepository->checkDateLeaveEnable($request->all());
-    //     if($isExistDateChange || $leaves->count() !== 0) {
-    //         return $this->resSuccessOrFail(null, trans('text.leave.date_invalid'));
-    //     } 
-    //     return $this->resSuccessOrFail(null, null, Response::HTTP_NO_CONTENT);
-    // }
-
-    // public function checkExistInDateChange($dateSelected, $scheduleId, $teacherId)
-    // {
-    //     $dateChanges = $this->leaveRepository->getDateChanges($scheduleId, $teacherId);
-    //     if($dateChanges) {
-    //         $dateChanges = $dateChanges->toArray();
-    //     }
-    //     return in_array($dateSelected, $dateChanges);
-    // }
-    
 }
