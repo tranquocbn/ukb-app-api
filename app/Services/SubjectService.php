@@ -5,17 +5,23 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
+use App\Repositories\ScheduleRepository;
 
 class SubjectService extends BaseService
 {
     protected SubjectRepository $subjectRepository;
+    protected ScheduleRepository $scheduleRepository;
 
     /**
      * @param SubjectRepository $subjectRepository
      */
-    public function __construct(SubjectRepository $subjectRepository)
+    public function __construct(
+        SubjectRepository $subjectRepository,
+        ScheduleRepository $scheduleRepository
+    )
     {
         $this->subjectRepository = $subjectRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     /**
