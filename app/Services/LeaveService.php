@@ -31,7 +31,7 @@ class LeaveService extends BaseService
      * @param Request $request
      * @return mix
      */
-    public function studentCreate(Request $request)
+    public function studentStore(Request $request)
     {
         return $this->leaveRepository->studentCreate($request->toArray());
     }

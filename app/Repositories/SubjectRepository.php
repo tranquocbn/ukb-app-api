@@ -51,5 +51,10 @@ class SubjectRepository extends BaseRepository
        ->get();
    }
 
+   public function getSubjectsSemesterStudent(array $data)
+   {
+       return 'ok';
+   }
+
     
 }
