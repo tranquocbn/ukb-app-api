@@ -3,9 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Schedule;
-use App\Models\Leave;
-
-use Illuminate\Support\Facades\DB;
 class ScheduleRepository extends BaseRepository
 {
 
