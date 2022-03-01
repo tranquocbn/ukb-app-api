@@ -19,8 +19,8 @@ class CreateSchedulesTable extends Migration
             $table->integer('class_id')->unsigned();
             $table->integer('subject_id')->unsigned();
             $table->integer('room_id')->unsigned()->nullable();
+            
             $table->date('date_start')->nullable();
-            $table->date('date_change')->nullable();
             $table->boolean('session')->nullable();
             $table->tinyInteger('semester');
             $table->timestamps();
@@ -29,7 +29,6 @@ class CreateSchedulesTable extends Migration
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->foreign('room_id')->references('id')->on('rooms');
-
 
         });
     }
