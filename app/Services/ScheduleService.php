@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\LeaveRepository;
+use App\Repositories\LessonRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScheduleRepository;
@@ -14,14 +15,17 @@ class ScheduleService extends BaseService
     /**
      * @param ScheduleRepository $scheduleRepository
      * @param LeaveRepository $leaveRepository
+     * @param LessonRepository $leaveRepository
      */
     public function __construct(
         ScheduleRepository $scheduleRepository,
-        LeaveRepository $leaveRepository
+        LeaveRepository $leaveRepository,
+        LessonRepository $lessonRepository
     )
     {
         $this->scheduleRepository = $scheduleRepository;
         $this->leaveRepository = $leaveRepository;
+        $this->$lessonRepository = $lessonRepository;
     }
 
     /**
@@ -44,19 +48,25 @@ class ScheduleService extends BaseService
             $session = 1;
         }
 
-        // $date = '2019-06-22';
-        $date = '2019-07-15';
+        $date = '2019-06-22';
+        // $date = '2019-07-13';
         $session = 1;
 
-        $test = $this->leaveRepository->getDateWant($userId, $date);
-        $schedule = $this->scheduleRepository->checkSchedule($userId, $date, $session);
-        dd($schedule);
-        if(!$schedule) {
-            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'));
+        $dateWant = $this->leaveRepository->getDateWant($userId, $date)->toArray();
+
+        if(!$dateWant) {
+            $schedule = $this->scheduleRepository->checkSchedule($userId, $date, $session);
+
+            if(!$schedule) {
+                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+            }
+            $info = $this->scheduleRepository->getInfoLesson($userId, $schedule[0], $date);
+            
+            $data = $info->merge(['students_count' => $this->lessonRepository->countStudent()]);
+            return $info[0];
         }
-        $info = $this->scheduleRepository
-                    ->getInfoLesson($userId, $schedule->id, $date );
-        return $info[0];
+
+        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
     }
 }
 

@@ -17,4 +17,5 @@ class BaseService
         }
         return response()->json($dataRes, $status);
     }
+
 }

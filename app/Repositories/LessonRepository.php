@@ -26,19 +26,19 @@ class LessonRepository extends BaseRepository
     
     /**
      * turn on attendance lesson
-     * @param $lessonId, $radius, $latitude, $longitude
+     * @param array $data
      * @return mixed
      */
-    public function turnOnAttendance($lessonId, $radius, $latitude, $longitude)
+    public function turnOnAttendance(array $data)
     {
         return $this->model
-                    ->where('id', $lessonId)
+                    ->where('id', $data['lessonId'])
                     ->update(
                         [
-                            'radius'   => $radius,
-                            'latitude' => $latitude,
-                            'longitude' => $longitude,
-                            'state'    => 1
+                            'radius'   => $data['radius'],
+                            'latitude' => $data['latitude'],
+                            'longitude' => $data['longitude'],
+                            'state'    => 2
                         ]
                     );
     }
@@ -52,7 +52,16 @@ class LessonRepository extends BaseRepository
     {
         return $this->model
                     ->where('id', $lessonId)
-                    ->update(['state'=> 0]);
+                    ->update(['state'=> 3]);
+    }
+
+    public function countStudent($lessonId)
+    {
+        return $this->model
+            ->withCount('attendances as students_count')
+            ->where('id', $lessonId)
+            ->get()
+            ->pluck('students_count');
     }
 
 }

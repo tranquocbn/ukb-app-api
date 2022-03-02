@@ -40,24 +40,17 @@ class ScheduleRepository extends BaseRepository
      * @return mixed
      */
 
-
-
-    /**
-     * input: userId, date, session
-     * output: có lịch trình ?
-     * có lịch trình: ngày != date_want và ngày-date_start%7=0 hoặc ngày = date_change
-     * ko có lịch trình: ngày = date_want hoặc (ngày-date_start%7 != 0 và ngày != date_change)
-     */
     public function checkSchedule($userId, $date, $session)
     {
         return $this->model
             ->where('user_id', $userId)
             ->where('session', $session)
-            ->when(true, function($query) use ($date) {
-                $this->model->leaves()->where('date_want', '=', $date);
+            ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
+            ->orWhereHas('leaves', function($query) use ($date){
+                $query->where('date_change', $date);
             })
-            
-            ->get();
+            ->get()
+            ->pluck('id');
     }
 
     public function getInfoLesson($userId, $scheduleId, $dateCurrent)

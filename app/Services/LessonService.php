@@ -18,14 +18,12 @@ class LessonService extends BaseService
 
     /**
      * check state attendance of lesson
-     * @param $lessonId
+     * @param Request $request
      * @return mixed
      */
     public function checkStateLesson(Request $request)
     {
-        $lessonId = $request->lessonId;
-        return $this->lessonRepository
-                    ->checkStateLesson($lessonId);
+        return $this->lessonRepository->checkStateLesson($request->lessonId);
     }
 
     /**
@@ -35,15 +33,11 @@ class LessonService extends BaseService
      */
     public function turnOnAttendance(Request $request)
     {
-        $lessonId   = $request->lessonId;
-        $radius     = $request->radius;
-        $latitude   = $request->latitude;
-        $longitude  = $request->longitude;
-
-        $run = $this->lessonRepository
-            ->turnOnAttendance ($lessonId, $radius, $latitude, $longitude);
+        $data = $request->all();
+        $run = $this->lessonRepository->turnOnAttendance($data);
+            
         if($run)
-            return $this->resSuccessOrFail(null, trans('text.attendance.turn_on_attendance'), Response::HTTP_UNAUTHORIZED);
+            return $this->resSuccessOrFail(null, trans('text.attendance.turn_on_attendance'));
     }
 
     /**
@@ -53,10 +47,9 @@ class LessonService extends BaseService
      */
     public function turnOffAttendance(Request $request)
     {
-        $lessonId = $request->lessonId;
-        $run = $this->lessonRepository
-                ->turnOffAttendance($lessonId);
+        $run = $this->lessonRepository->turnOffAttendance($request->lessonId);
+
         if($run)
-            return $this->resSuccessOrFail(null, trans('text.attendance.turn_off_attendance'), Response::HTTP_UNAUTHORIZED);
+            return $this->resSuccessOrFail(null, trans('text.attendance.turn_off_attendance'));
     }
 }
