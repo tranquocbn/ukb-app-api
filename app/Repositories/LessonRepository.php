@@ -54,14 +54,4 @@ class LessonRepository extends BaseRepository
                     ->where('id', $lessonId)
                     ->update(['state'=> 3]);
     }
-
-    public function countStudent($lessonId)
-    {
-        return $this->model
-            ->withCount('attendances as students_count')
-            ->where('id', $lessonId)
-            ->get()
-            ->pluck('students_count');
-    }
-
 }

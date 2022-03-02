@@ -53,17 +53,17 @@ class ScheduleRepository extends BaseRepository
             ->pluck('id');
     }
 
-    public function getInfoLesson($userId, $scheduleId, $dateCurrent)
+    public function getInfoLesson($userId, $scheduleId, $date)
     {
         return $this->model
                 ->where('id', $scheduleId)
                 ->where('user_id', $userId)
                 ->with([ 'teacher:id,name', 'class:id,name', 'subject:id,name', 'room:id,name'])
-                ->with(['lessons'=>function($query) use ($dateCurrent){
-                        $query->where('date_learn', $dateCurrent);
+                ->with(['lessons'=>function($query) use ($date){
+                        $query->where('date_learn', $date);
                     }])
-                ->withCount(['lessons', 'lessons' => function ($query) {
-                    $query->where('date_learn', '>=', '2019-06-22');
+                ->withCount(['lessons', 'lessons' => function ($query) use ($date) {
+                    $query->whereNotNull('date_learn');
                 }])
                 ->get();
     }

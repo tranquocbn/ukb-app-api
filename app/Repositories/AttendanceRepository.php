@@ -14,4 +14,15 @@ class AttendanceRepository extends BaseRepository
     {
         return Attendance::class;
     }
+
+    /**
+     * count student of lesson
+     * @param $lessonId
+     * @return mixed
+     */
+    public function countStudent($lessonId)
+    {
+        return $this->model->where('lesson_id', $lessonId)->count();
+    }
+
 }
