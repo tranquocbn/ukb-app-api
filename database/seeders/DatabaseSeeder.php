@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Lesson;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClassSeeder::class);
         $this->call(ScheduleSeeder::class);
         $this->call(LeaveSeeder::class);
+        $this->call(LessonSeeder::class);
         
     }
 }

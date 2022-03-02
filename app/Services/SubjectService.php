@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
 
-class ScheduleService extends BaseService
+class SubjectService extends BaseService
 {
     protected SubjectRepository $subjectRepository;
 
@@ -47,9 +47,8 @@ class ScheduleService extends BaseService
      */
     public function getSubjectsInSemesterCurrent(Request $req)
     {
-       
         $semester = $this->semester((int)$req->year_start, (int)$req->year_current, (int)$req->month_current);
-        $subjects = $this->leaveRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
+        $subjects = $this->subjectRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
 
         return $subjects;
     }

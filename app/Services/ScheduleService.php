@@ -2,20 +2,26 @@
 
 namespace App\Services;
 
+use App\Repositories\LeaveRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScheduleRepository;
-
 class ScheduleService extends BaseService
 {
     protected ScheduleRepository $scheduleRepository;
+    protected LeaveRepository $leaveRepository;
 
     /**
      * @param ScheduleRepository $scheduleRepository
+     * @param LeaveRepository $leaveRepository
      */
-    public function __construct(ScheduleRepository $scheduleRepository)
+    public function __construct(
+        ScheduleRepository $scheduleRepository,
+        LeaveRepository $leaveRepository
+    )
     {
         $this->scheduleRepository = $scheduleRepository;
+        $this->leaveRepository = $leaveRepository;
     }
 
     /**
@@ -38,12 +44,13 @@ class ScheduleService extends BaseService
             $session = 1;
         }
 
-        $date = '2019-06-22';
-        // $date = '2019-07-13';
+        // $date = '2019-06-22';
+        $date = '2019-07-15';
         $session = 1;
 
+        $test = $this->leaveRepository->getDateWant($userId, $date);
         $schedule = $this->scheduleRepository->checkSchedule($userId, $date, $session);
-        
+        dd($schedule);
         if(!$schedule) {
             return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'));
         }

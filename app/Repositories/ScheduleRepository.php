@@ -25,24 +25,39 @@ class ScheduleRepository extends BaseRepository
             ->get();
     }
 
+    public function getDateWant($userId, $date)
+    {
+        return $this->model
+            ->with('leaves')
+            ->where('user_id', $userId)
+            ->where('date_want', $date)
+            ->get();
+    }
+
     /**
      * check Schedule of user
      * @param $userId, $dateCurrent, $session
      * @return mixed
+     */
+
+
+
+    /**
+     * input: userId, date, session
+     * output: có lịch trình ?
+     * có lịch trình: ngày != date_want và ngày-date_start%7=0 hoặc ngày = date_change
+     * ko có lịch trình: ngày = date_want hoặc (ngày-date_start%7 != 0 và ngày != date_change)
      */
     public function checkSchedule($userId, $date, $session)
     {
         return $this->model
             ->where('user_id', $userId)
             ->where('session', $session)
-            ->whereRaw('DATEDIFF(?, date_start) % 7 = 0', [$date])
-            ->whereDoesntHave('leaves', function($query) use ($date){
-                $query->where('date_want', $date);
+            ->when(true, function($query) use ($date) {
+                $this->model->leaves()->where('date_want', '=', $date);
             })
-            ->orWhereHas('leaves', function ($query) use ($date){
-                $query->where('date_change', '=', $date);
-            })
-            ->first();
+            
+            ->get();
     }
 
     public function getInfoLesson($userId, $scheduleId, $dateCurrent)
