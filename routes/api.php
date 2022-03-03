@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
 use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
 use App\Http\Controllers\Student\ScheduleController as StudentScheduleController;
-use App\Models\Classroom;
-use App\Models\Schedule;
-use App\Models\User;
+use App\Http\Controllers\Student\attendanceController as StudentAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,9 +45,7 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
     Route::group(['prefix'=>'attendance'],function() {
         Route::get('info-lesson', [StudentScheduleController::class, 'getInfoLessonOfStudent']);
-        Route::get('test', function(){
-            
-        });
+        Route::post('attendance', [StudentAttendanceController::class, 'attendance']);
     });
 
 });

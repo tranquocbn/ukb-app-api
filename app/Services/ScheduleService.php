@@ -85,7 +85,7 @@ class ScheduleService extends BaseService
                 return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
             }
 
-            $info = $this->scheduleRepository->getInfoLesson($teacherId, $schedule[0], $date)->toArray();
+            $info = $this->scheduleRepository->getInfoLesson('user_id', $teacherId, $schedule[0], $date)->toArray();
             
             $lessonId = $info[0]['lessons'][0]['id'];
             $countStudent = $this->attendanceRepository->countStudent($lessonId);
@@ -114,16 +114,12 @@ class ScheduleService extends BaseService
 
         if(!$isLeave) {
             $schedule = $this->scheduleRepository->checkSchedule('class_id',$classId, $date, $session)->toArray();
-            
+           
             if(!$schedule) {
                 return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
             }
 
-            $info = $this->scheduleRepository->getInfoLesson($userId, $schedule[0], $date)->toArray();
-            
-            $lessonId = $info[0]['lessons'][0]['id'];
-            $countStudent = $this->attendanceRepository->countStudent($lessonId);
-
+            $info = $this->scheduleRepository->getInfoLesson('class_id', $classId, $schedule[0], $date)->toArray();
             return $info;
         }
         return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);

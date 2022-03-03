@@ -19,11 +19,25 @@ class LessonRepository extends BaseRepository
     public function checkStateLesson($lessonId)
     {
         return $this->model
-                    ->select('state')
                     ->where('id', $lessonId)
                     ->get();
     }
-    
+
+    /**
+     * enableAttendance function
+     * @param array $data
+     * @return mixed
+     */
+    public function enableAttendance(array $data)
+    {
+        return $this->model
+                    ->where('id', $data['lessonId'])
+                    ->where('radius', '>=', $data['radius'])
+                    ->where('latitude', '=', $data['latitude'])
+                    ->where('longitude', '=', $data['longitude'])
+                    ->get();
+    }
+
     /**
      * turn on attendance lesson
      * @param array $data

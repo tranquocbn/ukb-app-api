@@ -23,7 +23,7 @@ class LessonService extends BaseService
      */
     public function checkStateLesson(Request $request)
     {
-        return $this->lessonRepository->checkStateLesson($request->lessonId);
+        return $this->lessonRepository->checkStateLesson($request->lessonId)->pluck('state');
     }
 
     /**
@@ -48,7 +48,7 @@ class LessonService extends BaseService
     public function turnOffAttendance(Request $request)
     {
         $run = $this->lessonRepository->turnOffAttendance($request->lessonId);
-
+        
         if($run)
             return $this->resSuccessOrFail(null, trans('text.attendance.turn_off_attendance'));
     }

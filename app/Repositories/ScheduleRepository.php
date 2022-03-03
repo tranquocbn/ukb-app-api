@@ -76,11 +76,11 @@ class ScheduleRepository extends BaseRepository
      * @param $userId, $date, $session
      * @return mixed
      */
-    public function getInfoLesson($userId, $scheduleId, $date)
+    public function getInfoLesson($field, $id, $scheduleId, $date)
     {
         return $this->model
                 ->where('id', $scheduleId)
-                ->where('user_id', $userId)
+                ->where($field, $id)
                 ->with([ 'teacher:id,name', 'class:id,name', 'subject:id,name', 'room:id,name'])
                 ->with(['lessons'=>function($query) use ($date){
                         $query->where('date_learn', $date);
