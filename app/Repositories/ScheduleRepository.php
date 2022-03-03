@@ -25,6 +25,11 @@ class ScheduleRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * getDateWant of teacher
+     * @param $userId, $date
+     * @return mixed
+     */
     public function getDateWant($userId, $date)
     {
         return $this->model
@@ -35,15 +40,28 @@ class ScheduleRepository extends BaseRepository
     }
 
     /**
-     * check Schedule of user
-     * @param $userId, $dateCurrent, $session
+     * getDateWant of teacher
+     * @param $classId, $date
      * @return mixed
      */
-
-    public function checkSchedule($userId, $date, $session)
+    public function isLeave($classId, $date)
     {
         return $this->model
-            ->where('user_id', $userId)
+            ->where('class_id', $classId)
+            ->whereHas('leaves', function($query) use ($date){
+                $query->where('date_want', $date);
+            })
+            ->get();
+    }
+    /**
+     * check Schedule of student
+     * @param $classId, $date, $session
+     * @return mixed
+     */
+    public function checkSchedule($field, $id, $date, $session)
+    {
+        return $this->model
+            ->where($field, $id)
             ->where('session', $session)
             ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
             ->orWhereHas('leaves', function($query) use ($date){
@@ -53,6 +71,11 @@ class ScheduleRepository extends BaseRepository
             ->pluck('id');
     }
 
+    /**
+     * getInfoLesson for teacher function
+     * @param $userId, $date, $session
+     * @return mixed
+     */
     public function getInfoLesson($userId, $scheduleId, $date)
     {
         return $this->model
@@ -67,4 +90,7 @@ class ScheduleRepository extends BaseRepository
                 }])
                 ->get();
     }
+
+
+    
 }

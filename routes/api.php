@@ -7,6 +7,10 @@ use App\Models\AcademicDepartment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
 use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
+use App\Http\Controllers\Student\ScheduleController as StudentScheduleController;
+use App\Models\Classroom;
+use App\Models\Schedule;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,15 +45,22 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
         Route::post('/create', [StudentLeaveController::class, 'create']);
     });
 
+    Route::group(['prefix'=>'attendance'],function() {
+        Route::get('info-lesson', [StudentScheduleController::class, 'getInfoLessonOfStudent']);
+        Route::get('test', function(){
+            
+        });
+    });
+
 });
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
     Route::group(['prefix'=>'attendance'],function() {
-        Route::get('get_info_lesson', [TeacherScheduleController::class, 'getInfoLesson']);
-        Route::get('check_state_lesson', [TeacherLessonController::class, 'checkStateLesson']);
-        Route::post('turn_on_attendance', [TeacherLessonController::class, 'turnOnAttendance']);
-        Route::get('turn_off_attendance', [TeacherLessonController::class, 'turnOffAttendance']);
+        Route::get('get-info-lesson', [TeacherScheduleController::class, 'getInfoLesson']);
+        Route::get('check-state-lesson', [TeacherLessonController::class, 'checkStateLesson']);
+        Route::post('turn-on-attendance', [TeacherLessonController::class, 'turnOnAttendance']);
+        Route::get('turn-off-attendance', [TeacherLessonController::class, 'turnOffAttendance']);
     });
     
 });
@@ -57,6 +68,8 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
 Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
     //route homeroom_teacher
 });
+
+
 
 
 

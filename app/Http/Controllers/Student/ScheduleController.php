@@ -27,4 +27,14 @@ class ScheduleController extends Controller
     {
         return $this->scheduleService->getInfoLesson($request);
     }
+
+    /**
+     * getInfoLessonOfStudent function
+     * @param Request $request
+     * @return mixed
+     */
+    public function getInfoLessonOfStudent(Request $request)
+    {
+        return $this->scheduleService->getInfoLessonOfStudent($request);
+    }
 }
