@@ -5,17 +5,23 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
+use App\Repositories\ScheduleRepository;
 
 class SubjectService extends BaseService
 {
     protected SubjectRepository $subjectRepository;
+    protected ScheduleRepository $scheduleRepository;
 
     /**
      * @param SubjectRepository $subjectRepository
      */
-    public function __construct(SubjectRepository $subjectRepository)
+    public function __construct(
+        SubjectRepository $subjectRepository,
+        ScheduleRepository $scheduleRepository
+    )
     {
         $this->subjectRepository = $subjectRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     /**
@@ -51,6 +57,23 @@ class SubjectService extends BaseService
         $subjects = $this->subjectRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
 
         return $subjects;
+    }
+
+    /**
+     * get subjects schedule student
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getSubjectsScheduleStudent(Request $request)
+    {
+        $subjects = $this->subjectRepository->getSubjectsScheduleStudent($request->user()['userable_id'])->toArray();
+        return $this->resSuccessOrFail($subjects);
+    }
+
+    public function getSubjectsSemesterStudent(Request $request)
+    {
+        
     }
 
     
