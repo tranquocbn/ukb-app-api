@@ -40,7 +40,7 @@ class ScheduleRepository extends BaseRepository
     }
 
     /**
-     * getDateWant of teacher
+     * isLeave of student
      * @param $classId, $date
      * @return mixed
      */

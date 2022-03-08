@@ -35,12 +35,6 @@ class AttendanceService extends BaseService
             return $this->resSuccessOrFail(null, trans('text.attendance.is_not_on'), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        $isEnable = $this->lessonRepository->enableAttendance($request->all())->toArray();
-
-        if(!$isEnable){
-            return $this->resSuccessOrFail(null, trans('text.attendance.out_of_range'), Response::HTTP_METHOD_NOT_ALLOWED);
-        }
-
         $attendance = $this->attendanceRepository->attendance($userId, $lessonId, $device);
         if($attendance) {
             return $this->resSuccessOrFail(null, trans('text.attendance.successfully'));
