@@ -2,47 +2,64 @@
 
 namespace App\Services;
 
-use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Repositories\LeaveRepository;
 use App\Repositories\ScheduleRepository;
-use Illuminate\Support\Facades\Hash;
 
 class LeaveService extends BaseService
 {
     protected ScheduleRepository $scheduleRepository;
+    protected LeaveRepository $leaveRepository;
 
     /**
      * @param ScheduleRepository $scheduleRepository
+     * @param LeaveRepository $leaveRepository
      */
-    public function __construct(ScheduleRepository $scheduleRepository)
+    public function __construct(
+        ScheduleRepository $scheduleRepository,
+        LeaveRepository $leaveRepository
+    )
     {
         $this->scheduleRepository = $scheduleRepository;
+        $this->leaveRepository = $leaveRepository;
     }
-
-
 
     /**
-     * login function
+     * student create leave
      *
-     * @param LoginRequest $request
-     * @return mixed
+     * @param Request $request
+     * @return mix
      */
-    public function login(LoginRequest $request)
+    public function studentStore(Request $request)
     {
-        $user = $this->userRepository->getByCode($request->code);
-        if(!$user) {
-            return $this->resSuccessOrFail(null, trans('text.account.login.fail.user'), Response::HTTP_UNAUTHORIZED);
-        }
-        
-        if(!Hash::check($request->password, $user->password)) {
-            return $this->resSuccessOrFail(null, trans('text.account.login.fail.password'), Response::HTTP_UNAUTHORIZED);
-        }
-
-        $tokenResult = $user->createToken('ukb-api-token')->plainTextToken;
-        return $this->resSuccessOrFail([
-            'user' => $user,
-            'token' => $tokenResult
-        ], trans('text.account.login_successfully'));
+        return $this->leaveRepository->studentCreate($request->toArray());
     }
+
+    /**
+     * check date selected by student create leave
+     *
+     * @param Request $request
+     * @return mix
+     */
+    public function checkDateLeaveEnable(Request $request)
+    {
+        $data = $request->merge(['date_diff' => $this->dateDiff($request->date_start, $request->date_selected)]);
+        $leaves = $this->leaveRepository->checkDateLeaveEnable($data->toArray());
+        if($leaves->count() === 0) {
+            return $this->resSuccessOrFail(null, trans('text.leave.date_invalid'));
+        }
+        return $this->resSuccessOrFail($leaves->toArray(), trans('text.leave.date_uninvalid'));
+    }
+
+    public function studentLeavesSemester(Request $request)
+    {
+        $data = [
+            'user_id' => $request->user()['id'],
+            'schedule_id' => $request->schedule_id
+        ];
+        $leaves = $this->leaveRepository->studentLeavesSemester($data)->toArray();
+        return $this->resSuccessOrFail($leaves);
+    }
+
 }

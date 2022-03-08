@@ -1,13 +1,18 @@
 <?php
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Student\LeaveController as StudentLeaveController;
 use App\Http\Controllers\Student\ScoreController as StudentScoreController;
-use App\Http\Controllers\UserController;
-use App\Models\AcademicDepartment;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
+use App\Http\Controllers\Student\UserController as StudentUserController;
+use App\Http\Controllers\Student\SubjectController as StudentSubjectController;
+
+use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
+use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
-use GuzzleHttp\Psr7\Request;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,26 +25,26 @@ use GuzzleHttp\Psr7\Request;
 |
 */
 
-Route::post('login', [UserController::class, 'login']);
+Route::post('login', [LoginController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
-    Route::get('user', function() {
-        $user = AcademicDepartment::find(1)->classes()->get();
-        // $user = User::whereHasMorph('userable', [Department::class])->get();
-        // $user = Department::first();
-        dd($user);
-    });
 
     Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
-    Route::group(['prefix'=>'leave'],function(){
-        Route::post('/subjects_current', [StudentLeaveController::class, 'getSubjectsInSemesterCurrent']);
-        
-        Route::post('/test', function() {
-            return 'ok';
-        });
+    Route::get('test', [StudentUserController::class, 'test']);
 
-        Route::post('/create', [StudentLeaveController::class, 'create']);
+    Route::group(['prefix' => 'leave'],function(){
+        Route::get('subjects-schedule', [StudentSubjectController::class, 'getSubjectsSchedule']); //thừa
+        Route::get('leaves-semester/{schedule_id}', [StudentLeaveController::class, 'leavesSemester']);
+        Route::get('subjects-semester/{schedule_id}');
+
+        Route::post('subjects-current', [StudentSubjectController::class, 'getSubjectsInSemesterCurrent']);
+        Route::post('check-date', [StudentLeaveController::class, 'checkDate']);
+        Route::post('create', [StudentLeaveController::class, 'studentStore']);
+    });
+
+    Route::group(['prefix' => 'notify'], function() {
+        
     });
 
     Route::group(['prefix'=>'attendance'],function() {

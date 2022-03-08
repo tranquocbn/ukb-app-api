@@ -3,39 +3,47 @@
 namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use App\Services\LeaveService;
-use App\Services\SubjectService;
 
 class LeaveController extends Controller
 {
     private LeaveService $leaveService;
-    private SubjectService $subjectService;
 
     /**
      * UserController Constructor
      * @param LeaveService $LeaveService
      */
-    public function __construct(
-        LeaveService $leaveService,
-        SubjectService $subjectService
-        )
+    public function __construct(LeaveService $leaveService)
     {
         $this->leaveService = $leaveService;
-        $this->subjectService = $subjectService;
     }
 
     /**
-     * get subjects in semester
-     * 
-     * 
-     * @return mixed
+     * check student date selected
+     *
+     * @param Request $request
+     * @return mix
      */
-    public function getSubjectsInSemesterCurrent(Request $request)
+    public function checkDate(Request $request)
     {
-        return $this->subjectService->getSubjectsInSemesterCurrent($request);
+        return $this->leaveService->checkDateLeaveEnable($request);
     }
 
+    /**
+     * student create leave
+     *
+     * @param Request $request
+     * @return mix
+     */
+    public function create(Request $request)
+    {
+        // return $this->leaveService->studentCreate($request);
+    }
+
+    public function leavesSemester(Request $request)
+    {
+        return $this->leaveService->studentLeavesSemester($request);
+    }
 
 }

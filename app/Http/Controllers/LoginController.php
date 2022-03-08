@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Services\UserService;
 
-class UserController extends Controller
+class LoginController extends Controller
 {
     private UserService $userService;
 

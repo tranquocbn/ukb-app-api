@@ -19,5 +19,9 @@ return [
         'is_not_on' => 'Điểm danh buổi học không được bật',
         'successfully' => 'Bạn đã điểm danh thành công',
         'fail' => 'Thiết bị không chính xác'
+    ],
+    'leave' => [
+        'date_invalid' => 'Ngày xin nghỉ hợp lệ!',
+        'date_uninvalid' => 'Ngày xin nghỉ không hợp lệ!'
     ]
 ];
