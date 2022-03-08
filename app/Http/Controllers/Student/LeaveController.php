@@ -38,7 +38,7 @@ class LeaveController extends Controller
      */
     public function create(Request $request)
     {
-        return $this->leaveService->studentCreate($request);
+        // return $this->leaveService->studentCreate($request);
     }
 
     public function leavesSemester(Request $request)
