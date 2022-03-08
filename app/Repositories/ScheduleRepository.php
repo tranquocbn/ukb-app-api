@@ -38,6 +38,25 @@ class ScheduleRepository extends BaseRepository
             ->where('date_want', $date)
             ->get();
     }
+    
+    /**
+     * check Schedule of student
+     * @param $classId, $date, $session
+     * @return mixed
+     */
+    public function checkSchedule($field, $id, $date, $session)
+    {
+        return $this->model
+            ->select('id')
+            ->where($field, $id)
+            ->where('session', $session)
+            // ->whereYear('date_start', date_format($date, 'Y'))
+            ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
+            ->orWhereHas('leaves', function($query) use ($date){
+                $query->where('date_change', $date);
+            })
+            ->get();
+    }
 
     /**
      * isLeave of student
@@ -53,43 +72,9 @@ class ScheduleRepository extends BaseRepository
             })
             ->get();
     }
-    /**
-     * check Schedule of student
-     * @param $classId, $date, $session
-     * @return mixed
-     */
-    public function checkSchedule($field, $id, $date, $session)
-    {
-        return $this->model
-            ->where($field, $id)
-            ->where('session', $session)
-            ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
-            ->orWhereHas('leaves', function($query) use ($date){
-                $query->where('date_change', $date);
-            })
-            ->get()
-            ->pluck('id');
-    }
+    
 
-    /**
-     * getInfoLesson for teacher function
-     * @param $userId, $date, $session
-     * @return mixed
-     */
-    public function getInfoLesson($field, $id, $scheduleId, $date)
-    {
-        return $this->model
-                ->where('id', $scheduleId)
-                ->where($field, $id)
-                ->with([ 'teacher:id,name', 'class:id,name', 'subject:id,name', 'room:id,name'])
-                ->with(['lessons'=>function($query) use ($date){
-                        $query->where('date_learn', $date);
-                    }])
-                ->withCount(['lessons', 'lessons' => function ($query) use ($date) {
-                    $query->whereNotNull('date_learn');
-                }])
-                ->get();
-    }
+    
 
 
     

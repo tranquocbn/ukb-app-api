@@ -5,10 +5,9 @@ use App\Http\Controllers\Student\ScoreController as StudentScoreController;
 use App\Http\Controllers\UserController;
 use App\Models\AcademicDepartment;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
-use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
-use App\Http\Controllers\Student\ScheduleController as StudentScheduleController;
-use App\Http\Controllers\Student\attendanceController as StudentAttendanceController;
+use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
+use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+use GuzzleHttp\Psr7\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +43,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     });
 
     Route::group(['prefix'=>'attendance'],function() {
-        Route::get('info-lesson', [StudentScheduleController::class, 'getInfoLessonOfStudent']);
-        Route::post('attendance', [StudentAttendanceController::class, 'attendance']);
+        Route::get('info-lesson', [StudentAttendanceController::class, 'getInfoLesson']);
+        Route::get('attendance/{lesson_id}', [StudentAttendanceController::class, 'attendance']);
     });
 
 });
@@ -53,10 +52,10 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
     Route::group(['prefix'=>'attendance'],function() {
-        Route::get('get-info-lesson', [TeacherScheduleController::class, 'getInfoLesson']);
-        Route::get('check-state-lesson', [TeacherLessonController::class, 'checkStateLesson']);
-        Route::post('turn-on-attendance', [TeacherLessonController::class, 'turnOnAttendance']);
-        Route::get('turn-off-attendance', [TeacherLessonController::class, 'turnOffAttendance']);
+        Route::get('get-info-lesson', [TeacherAttendanceController::class, 'getInfoLesson']);
+        Route::get('check-state-lesson', [TeacherAttendanceController::class, 'checkStateLesson']);
+        Route::post('turn-on-attendance/{lesson_id}', [TeacherAttendanceController::class, 'turnOnAttendance']);
+        Route::get('turn-off-attendance/{lesson_id}', [TeacherAttendanceController::class, 'turnOffAttendance']);
     });
     
 });

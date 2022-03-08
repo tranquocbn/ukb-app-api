@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Attendance;
+use Illuminate\Support\Facades\DB;
 class AttendanceRepository extends BaseRepository
 {
     /**
@@ -16,21 +17,29 @@ class AttendanceRepository extends BaseRepository
     }
 
     /**
-     * count student of lesson
-     * @param $lessonId
+     * insertStudent function
+     * @param $lessonId, $classId
      * @return mixed
      */
-    public function countStudent($lessonId)
+    public function insertStudent($lessonId, $classId)
     {
-        return $this->model->where('lesson_id', $lessonId)->count();
+        $data = DB::table('users')
+        ->selectRaw("(array)(id AS user_id, $lessonId AS lesson_id)")
+        ->where('userable_id', $classId)
+        ->where('role_id', 2)
+        ->get();
+        // dd($data->toArray());
+        return $this->model
+            ->insert( $data->toArray());
+       
+           
     }
-
     /**
-     * student attendance function
+     * studentAttendance function
      * @param $userId, $lessonId
      * @return mixed
      */
-    public function attendance($userId, $lessonId, $device)
+    public function studentAttendance($userId, $lessonId, $device)
     {
         return $this->model
                     ->where('lesson_id', $lessonId)

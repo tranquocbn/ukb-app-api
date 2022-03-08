@@ -37,15 +37,5 @@ class LeaveController extends Controller
         return $this->subjectService->getSubjectsInSemesterCurrent($request);
     }
 
-    /**
-     * checkDate
-     * 
-     * 
-     */
-    public function checkDate(Request $request)
-    {
-        return 'ok';
-    }
-
 
 }

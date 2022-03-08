@@ -29,17 +29,7 @@ class LeaveController extends Controller
      */
     public function getSubjectsInSemesterCurrent(Request $request)
     {
-        return $this->leaveService->getSubjectsInSemesterCurrent($request);
-    }
-
-    /**
-     * checkDate
-     * 
-     * 
-     */
-    public function checkDate(Request $request)
-    {
-        return 'ok';
+        // return $this->leaveService->getSubjectsInSemesterCurrent($request);
     }
 
 

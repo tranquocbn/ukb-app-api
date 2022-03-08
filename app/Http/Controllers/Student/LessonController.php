@@ -16,37 +16,4 @@ class LessonController extends Controller
     {
         $this->lessonService = $lessonService;
     }
-
-    /**
-     * checkStateLesson function
-     * @param Request $request
-     * @return mixed
-     */
-    public function checkStateLesson(Request $request)
-    {
-        return $this->lessonService
-                    ->checkStateLesson($request);
-    }
-
-    /**
-     * turnOnAttendance function
-     * @param Request $request
-     * @return mixed
-     */
-    public function turnOnAttendance(Request $request)
-    {
-        return $this->lessonService
-                ->turnOnAttendance($request);
-    }
-
-    /**
-     * turnOffAttendance function
-     * @param Request $request
-     * @return mixed
-     */
-    public function turnOffAttendance(Request $request)
-    {
-        return $this->lessonService
-                ->turnOffAttendance($request);
-    }
 }

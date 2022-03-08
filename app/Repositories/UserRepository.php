@@ -22,13 +22,4 @@ class UserRepository extends BaseRepository {
         return $this->model->whereCode($code)->first();
     }
 
-    /**
-      * getIdClass function
-      * @param $userId
-      * @return mixed
-      */
-    public function getIdClass($userId)
-    {
-        return $this->model->find($userId)->userable->id;
-    }
 }

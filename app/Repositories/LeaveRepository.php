@@ -15,7 +15,6 @@ class LeaveRepository extends BaseRepository{
         return $this->model
             ->where('user_id', $userId)
             ->where('date_want', $date)
-            ->get()
-            ->pluck('date_want');
+            ->get();
     }
 }

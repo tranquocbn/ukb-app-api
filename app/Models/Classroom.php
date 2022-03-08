@@ -39,6 +39,14 @@ class Classroom extends Model
     }
 
     /**
+     * @return hasMany
+    */
+    public function students()
+    {
+        return $this->hasMany(User::class, 'userable_id', 'id');
+    }
+
+    /**
      * @return belongsToMany
     */
     public function subjects()

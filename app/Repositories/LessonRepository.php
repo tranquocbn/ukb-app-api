@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Classroom;
 use App\Models\Lesson;
 
 class LessonRepository extends BaseRepository
@@ -9,6 +10,31 @@ class LessonRepository extends BaseRepository
     public function model()
     {
         return Lesson::class;
+    }
+
+    /**
+     * getInfoLesson function
+     * @param $scheduleId, $date
+     * @return mixed
+     */
+    public function getInfoLesson($scheduleId)
+    {
+        return $this->model
+            ->where('schedule_id', $scheduleId)
+            ->where('state', '<>', 1)
+            ->with(['schedule' => function($query) {
+                $query->select('id', 'user_id', 'class_id', 'subject_id', 'room_id')
+                    ->with('teacher:id,name')
+                    ->with(['class' => function($e) {
+                        $e -> select('id', 'name')
+                            ->withCount(['students' => function($e) {
+                                $e -> where('role_id', 2);
+                            }]);
+                    }])
+                    ->with('subject:id,name')
+                    ->with('room:id,name');
+            }])
+            ->get();
     }
 
     /**
@@ -20,16 +46,17 @@ class LessonRepository extends BaseRepository
     {
         return $this->model
                     ->where('id', $lessonId)
-                    ->get();
+                    ->get()
+                    ->pluck('state');
     }
 
 
     /**
-     * turn on attendance lesson
+     * teacherTurnOnAttendance function
      * @param array $data
      * @return mixed
      */
-    public function turnOnAttendance(array $data)
+    public function teacherTurnOnAttendance(array $data)
     {
         return $this->model
                     ->where('id', $data['lessonId'])
@@ -44,11 +71,11 @@ class LessonRepository extends BaseRepository
     }
 
     /**
-     * turn off attendance lesson
+     * teacherTurnOffAttendance function
      * @param $lessonId
      * @return mixed
      */
-    public function turnOffAttendance($lessonId)
+    public function teacherTurnOffAttendance($lessonId)
     {
         return $this->model
                     ->where('id', $lessonId)

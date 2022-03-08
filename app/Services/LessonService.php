@@ -23,7 +23,7 @@ class LessonService extends BaseService
      */
     public function checkStateLesson(Request $request)
     {
-        return $this->lessonRepository->checkStateLesson($request->lessonId)->pluck('state');
+        return $this->lessonRepository->checkStateLesson($request->lessonId);
     }
 
     /**
