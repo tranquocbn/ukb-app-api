@@ -3,9 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Schedule;
-use App\Models\Leave;
-
-use Illuminate\Support\Facades\DB;
 class ScheduleRepository extends BaseRepository
 {
 
@@ -31,37 +28,56 @@ class ScheduleRepository extends BaseRepository
     
 
     /**
-     * check Schedule of user
-     * @param $userId, $dateCurrent, $session
+     * getDateWant of teacher
+     * @param $userId, $date
      * @return mixed
      */
-    public function checkSchedule($userId, $date, $session)
+    public function getDateWant($userId, $date)
     {
         return $this->model
+            ->with('leaves')
             ->where('user_id', $userId)
+            ->where('date_want', $date)
+            ->get();
+    }
+    
+    /**
+     * check Schedule of student
+     * @param $classId, $date, $session
+     * @return mixed
+     */
+    public function checkSchedule($field, $id, $date, $session)
+    {
+        return $this->model
+            ->select('id')
+            ->where($field, $id)
             ->where('session', $session)
-            ->whereRaw('DATEDIFF(?, date_start) % 7 = 0', [$date])
-            ->whereDoesntHave('leaves', function($query) use ($date){
-                $query->where('date_want', $date);
+            // ->whereYear('date_start', date_format($date, 'Y'))
+            ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
+            ->orWhereHas('leaves', function($query) use ($date){
+                $query->where('date_change', $date);
             })
-            ->orWhereHas('leaves', function ($query) use ($date){
-                $query->where('date_change', '=', $date);
-            })
-            ->first();
+            ->get();
     }
 
-    public function getInfoLesson($userId, $scheduleId, $dateCurrent)
+    /**
+     * isLeave of student
+     * @param $classId, $date
+     * @return mixed
+     */
+    public function isLeave($classId, $date)
     {
         return $this->model
-                ->where('id', $scheduleId)
-                ->where('user_id', $userId)
-                ->with([ 'teacher:id,name', 'class:id,name', 'subject:id,name', 'room:id,name'])
-                ->with(['lessons'=>function($query) use ($dateCurrent){
-                        $query->where('date_learn', $dateCurrent);
-                    }])
-                ->withCount(['lessons', 'lessons' => function ($query) {
-                    $query->where('date_learn', '>=', '2019-06-22');
-                }])
-                ->get();
+            ->where('class_id', $classId)
+            ->whereHas('leaves', function($query) use ($date){
+                $query->where('date_want', $date);
+            })
+            ->get();
     }
+    
+
+    
+
+
+    
 }

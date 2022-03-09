@@ -2,55 +2,76 @@
 
 namespace App\Services;
 
+use App\Repositories\AttendanceRepository;
+use App\Repositories\LeaveRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\UserRepository;
 
 class ScheduleService extends BaseService
 {
+    protected UserRepository $userRepository;
     protected ScheduleRepository $scheduleRepository;
-
+    protected AttendanceRepository $attendanceRepository;
     /**
+     * @param UserRepository $userRepository
      * @param ScheduleRepository $scheduleRepository
+     * @param LeaveRepository $leaveRepository
+     * @param AttendanceRepository $attendanceRepository
      */
-    public function __construct(ScheduleRepository $scheduleRepository)
+    public function __construct(
+        UserRepository $userRepository,
+        ScheduleRepository $scheduleRepository,
+        AttendanceRepository $attendanceRepository
+    )
     {
+        $this->userRepository = $userRepository;
         $this->scheduleRepository = $scheduleRepository;
+        $this->leaveRepository = $leaveRepository;
+        $this->attendanceRepository = $attendanceRepository;
     }
 
+    
+
     /**
-     * get info getInfoLesson
+     * getInfoLesson for teacher function
      * @param Request $request
      * @return 
      */
     public function getInfoLesson(Request $request)
     {
-        $userId   = $request->user()->id;
-        $dt         = now('Asia/Ho_Chi_Minh');
-        $date       = date_format($dt,"Y-m-d");
-        $time       = date_format($dt,"H");
         
-        if($time >= 8 && $time <= 11) {
-            $session = 1;
-        } elseif($time >= 13 && $time <= 16) {
-            $session = 2;
-        } else {
-            $session = 1;
-        }
+    }
 
-        $date = '2019-06-22';
-        // $date = '2019-07-13';
+    /**
+     * getInfoLesson for student function
+     * @param Request $request
+     * @return 
+     */
+    public function getInfoLessonOfStudent(Request $request)
+    {
+        $data = $this->inputData($request);
+        $userId = $data['id'];
+        $date = $data['date'];
+        $session = $data['session'];
+        $classId = $this->userRepository->getIdClass($userId);
+
+        $date = '2019-06-29';
         $session = 1;
+        $isLeave = $this->scheduleRepository->isLeave($classId, $date)->toArray();
 
-        $schedule = $this->scheduleRepository->checkSchedule($userId, $date, $session);
-        
-        if(!$schedule) {
-            return 'hi';
-            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_UNAUTHORIZED);
+        if(!$isLeave) {
+            $schedule = $this->scheduleRepository->checkSchedule('class_id',$classId, $date, $session)->toArray();
+           
+            if(!$schedule) {
+                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+            }
+
+            $info = $this->scheduleRepository->getInfoLesson('class_id', $classId, $schedule[0], $date)->toArray();
+            return $info;
         }
-        $info = $this->scheduleRepository
-                    ->getInfoLesson($userId, $schedule->id, $date );
-        return $info[0];
+        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
     }
 }
 

@@ -76,4 +76,5 @@ class Schedule extends Model
     {
         return $this->hasMany(Lesson::class, 'schedule_id', 'id');
     }
+
 }

@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Attendance;
+use Illuminate\Support\Facades\DB;
 class AttendanceRepository extends BaseRepository
 {
     /**
@@ -15,17 +16,35 @@ class AttendanceRepository extends BaseRepository
         return Attendance::class;
     }
 
-    public function insertListStudent($lessonId)
+    /**
+     * insertStudent function
+     * @param $lessonId, $classId
+     * @return mixed
+     */
+    public function insertStudent($lessonId, $classId)
     {
-        // return DB::select("INSERT INTO attendances (lesson_id, user_id)
-        //                     SELECT l.id,  u. id
-        //                     FROM lessons l 
-        //                     JOIN schedules s ON l.schedule_id = s.id 
-        //                     JOIN classes c ON s.class_id = c.id 
-        //                     JOIN users u ON u.userable_id = c.id 
-        //                     JOIN roles r ON u.role_id = r.id 
-        //                     WHERE l.id = ? AND r.name = 'student'",
-        //                     [$lessonId]);
+        $data = DB::table('users')
+        ->selectRaw("(array)(id AS user_id, $lessonId AS lesson_id)")
+        ->where('userable_id', $classId)
+        ->where('role_id', 2)
+        ->get();
+        // dd($data->toArray());
+        return $this->model
+            ->insert( $data->toArray());
+       
+           
     }
-  
+    /**
+     * studentAttendance function
+     * @param $userId, $lessonId
+     * @return mixed
+     */
+    public function studentAttendance($userId, $lessonId, $device)
+    {
+        return $this->model
+                    ->where('lesson_id', $lessonId)
+                    ->where('user_id', $userId)
+                    ->where('device', $device)
+                    ->update(['state'=> 1]);
+    }
 }

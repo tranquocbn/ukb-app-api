@@ -11,6 +11,15 @@ class LeaveRepository extends BaseRepository{
         return Leave::class;
     }
 
+
+    public function getDateWant($userId, $date)
+    {
+        return $this->model
+            ->where('user_id', $userId)
+            ->where('date_want', $date)
+            ->get();
+    }
+
     /**
      * student create leave
      *
