@@ -18,14 +18,8 @@ class AttendanceController extends Controller
         $this->attendanceService = $attendanceService;
     }
 
-
-    public function getInfoLesson(Request $request)
+    public function attendance(Request $request)
     {
-    //    return $this->attendanceService->studentGetInfoLesson($request);
-    }
-
-    public function attendance(Request $request, $lessonId)
-    {
-        return $this->attendanceService-> studentAttendance($request, $lessonId);
+        return $this->attendanceService-> studentAttendance($request);
     }
 }

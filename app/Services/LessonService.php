@@ -2,54 +2,126 @@
 
 namespace App\Services;
 
+use App\Repositories\LeaveRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\LessonRepository;
+use App\Repositories\ScheduleRepository;
 class LessonService extends BaseService
 {
     protected LessonRepository $lessonRepository;
+    protected LeaveRepository $leaveRepository;
+    protected ScheduleRepository $scheduleRepository;
     /**
      * @param LessonRepository $lessonRepository
+     * @param LeaveRepository $leaveRepository
+     * @param ScheduleRepository $scheduleRepository
      */
-    public function __construct(LessonRepository $lessonRepository)
+    public function __construct(
+        LessonRepository $lessonRepository,
+        LeaveRepository $leaveRepository,
+        ScheduleRepository $scheduleRepository
+    )
     {
         $this->lessonRepository = $lessonRepository;
+        $this->leaveRepository = $leaveRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     /**
-     * check state attendance of lesson
+     * checkStateLesson function
+     * @param $lessonId
+     * @return mixed
+     */
+    public function checkStateLesson($lessonId)
+    {
+        return $this->lessonRepository->checkStateLesson($lessonId);
+    }
+
+    /**
+     * getTime function
+     * @return array
+     */
+    public function getTime()
+    {
+        $dt = now('Asia/Ho_Chi_Minh');
+        $date = date_format($dt,"Y-m-d");
+        $time = date_format($dt,"H");
+        $year = date_format($dt,"Y");
+        $session = 0;
+
+        if($time >= 8 && $time <= 12) {
+            $session = 1;
+        } 
+        if($time >= 13 && $time <= 16) {
+            $session = 2;
+        }
+        return [
+            'date' => $date,
+            'session' => $session,
+            'year' => $year
+        ];
+    }
+    /**
+     * teacherGetInfoLesson function
      * @param Request $request
      * @return mixed
      */
-    public function checkStateLesson(Request $request)
+    public function teacherGetInfoLesson(Request $request)
     {
-        return $this->lessonRepository->checkStateLesson($request->lessonId);
-    }
+        $userId = $request->user()->id;
+        $data = $this->getTime();
+        $date = $data['date']; 
 
-    /**
-     * turn on attendance function
-     * @param Request $request
-     * @return 
-     */
-    public function turnOnAttendance(Request $request)
-    {
-        $data = $request->all();
-        $run = $this->lessonRepository->turnOnAttendance($data);
+        $dateWant = $this->leaveRepository->getDateWant($userId, $date)->toArray();
+
+        if(!$dateWant) {
+            $schedule = $this->scheduleRepository->checkSchedule('user_id', $userId, $date, $data['session'], $data['year'])->toArray();
             
-        if($run)
-            return $this->resSuccessOrFail(null, trans('text.attendance.turn_on_attendance'));
+            if(!$schedule) {
+                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+            }
+
+            $scheduleId = $schedule[0]['id'];
+            $lessons = $this->lessonRepository->getInfoLesson($scheduleId)->toArray();
+
+            foreach ($lessons as $lesson){
+                if($lesson['date_learn'] === $date){
+                    return array_merge($lesson, ['count' => count($lessons)]);
+                };
+            }
+        }
+        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * turn off attendance function
+     * student getInfoLesson function
      * @param Request $request
-     * @return 
+     * @return mixed
      */
-    public function turnOffAttendance(Request $request)
+    public function studentGetInfoLesson(Request $request)
     {
-        $run = $this->lessonRepository->turnOffAttendance($request->lessonId);
-        
-        if($run)
-            return $this->resSuccessOrFail(null, trans('text.attendance.turn_off_attendance'));
+        $data = $this->getTime();
+        $date = $data['date'];
+        $classId = $request->user()->userable_id;
+
+        $isLeave = $this->scheduleRepository->isLeave($classId, $date)->toArray();
+        if(!$isLeave) {
+            $schedule = $this->scheduleRepository->checkSchedule('class_id', $classId, $date, $data['session'], $data['year'])->toArray();
+            
+            if(!$schedule) {
+                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+            }
+
+            $scheduleId = $schedule[0]['id'];
+            $lessons = $this->lessonRepository->getInfoLesson($scheduleId)->toArray();
+
+            foreach ($lessons as $lesson){
+                if($lesson['date_learn'] === $date){
+                    return array_merge($lesson, ['count' => count($lessons)]);
+                };
+            }
+        }
+        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
     }
 }
