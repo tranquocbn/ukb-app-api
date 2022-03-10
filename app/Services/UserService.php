@@ -43,4 +43,10 @@ class UserService extends BaseService
             'token' => $tokenResult
         ], trans('text.account.login_successfully'));
     }
+
+    public function test()
+    {
+        return $this->userRepository->test();
+    }
+
 }
