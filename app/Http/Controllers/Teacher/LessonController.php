@@ -17,5 +17,18 @@ class LessonController extends Controller
         $this->lessonService = $lessonService;
     }
 
-   
+    /**
+     * getInfoLesson function
+     * @param Request $request
+     * @return mixed
+     */
+    public function getInfoLesson(Request $request)
+    {
+        return $this->lessonService->teacherGetInfoLesson($request);
+    }
+
+    public function checkStateLesson($lessonId)
+    {
+        return $this->lessonService->checkStateLesson($lessonId);
+    }
 }

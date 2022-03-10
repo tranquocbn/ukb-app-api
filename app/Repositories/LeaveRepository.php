@@ -11,7 +11,11 @@ class LeaveRepository extends BaseRepository{
         return Leave::class;
     }
 
-
+    /**
+     * teacher get date want 
+     * @param $userId, $date
+     * @return mix
+     */
     public function getDateWant($userId, $date)
     {
         return $this->model

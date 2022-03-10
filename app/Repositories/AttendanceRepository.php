@@ -34,9 +34,24 @@ class AttendanceRepository extends BaseRepository
        
            
     }
+
+    /**
+     * checkStateAttendance function
+     * @param $userId, $lessonId
+     * @return mixed
+     */
+    public function checkStateAttendance($userId, $lessonId)
+    {
+        return $this->model
+            ->select('state')
+            ->where('user_id', $userId)
+            ->where('lesson_id', $lessonId)
+            ->get();
+    }
+
     /**
      * studentAttendance function
-     * @param $userId, $lessonId
+     * @param $userId, $lessonId, $device
      * @return mixed
      */
     public function studentAttendance($userId, $lessonId, $device)

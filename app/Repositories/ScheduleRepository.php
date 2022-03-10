@@ -24,35 +24,19 @@ class ScheduleRepository extends BaseRepository
             ->withCount('lessons')
             ->get();
     }
-
-    
-
-    /**
-     * getDateWant of teacher
-     * @param $userId, $date
-     * @return mixed
-     */
-    public function getDateWant($userId, $date)
-    {
-        return $this->model
-            ->with('leaves')
-            ->where('user_id', $userId)
-            ->where('date_want', $date)
-            ->get();
-    }
     
     /**
-     * check Schedule of student
-     * @param $classId, $date, $session
+     * teacher, student check Schedule 
+     * @param $field, $id, $date, $session
      * @return mixed
      */
-    public function checkSchedule($field, $id, $date, $session)
+    public function checkSchedule($field, $id, $date, $session, $year)
     {
         return $this->model
             ->select('id')
             ->where($field, $id)
             ->where('session', $session)
-            // ->whereYear('date_start', date_format($date, 'Y'))
+            ->whereYear('date_start', $year)
             ->whereRaw("DATEDIFF(?, date_start)%7 = 0", $date)
             ->orWhereHas('leaves', function($query) use ($date){
                 $query->where('date_change', $date);

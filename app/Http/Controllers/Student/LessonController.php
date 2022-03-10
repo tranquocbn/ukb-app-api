@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Student;
-namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\LessonService;
 class LessonController extends Controller
@@ -15,5 +14,10 @@ class LessonController extends Controller
     public function __construct(LessonService $lessonService)
     {
         $this->lessonService = $lessonService;
+    }
+    
+    public function getInfoLesson(Request $request)
+    {
+        return $this->lessonService->studentGetInfoLesson($request);
     }
 }
