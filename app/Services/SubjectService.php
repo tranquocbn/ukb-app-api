@@ -76,6 +76,28 @@ class SubjectService extends BaseService
         
     }
 
-    
+    /**
+     * teacherGetSubjects
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function teacherGetSubjects(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $dateCurrent = $this->getDateCurrent();
+        $month = $dateCurrent ['month'];
+
+        //0: kì chẵn, 1: kì lẻ
+        if ($month >= 1 && $month <= 6) {
+            $semester = 0;
+        }
+        else {
+            $semester = 1;
+        }
+
+        $data = array_merge($dateCurrent, ['user_id' => $user_id], ['semester' => $semester]);
+        return $this->subjectRepository->teacherGetSubjects($data);
+    }
 }
 

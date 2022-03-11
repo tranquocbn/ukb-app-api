@@ -55,6 +55,17 @@ class SubjectRepository extends BaseRepository
    {
        return 'ok';
    }
-
+     
+   public function teacherGetSubjects(array $data)
+   {
+       return $this->model
+           ->with('schedules:id,subject_id')
+           ->whereHas('schedules', function($e) use ($data) {
+               $e->where('user_id', $data['user_id'])
+                ->whereYear('date_start', $data['year'])
+                ->whereRaw('semester % 2 = ?', [$data['semester']]);
+           })
+           ->get();
+   }
     
 }
