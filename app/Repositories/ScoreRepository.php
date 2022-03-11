@@ -28,4 +28,6 @@ class ScoreRepository extends BaseRepository
         ->with('scoreFeedbacks')
         ->get();
     }
+
+
 }

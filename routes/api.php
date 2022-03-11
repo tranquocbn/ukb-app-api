@@ -10,6 +10,10 @@ use App\Http\Controllers\Student\SubjectController as StudentSubjectController;
 
 use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
 use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+use App\Http\Controllers\Teacher\ScoreController as TeacherScoreController;
+use App\Http\Controllers\Teacher\SubjectController as TeacherSubjectController;
+use App\Http\Controllers\Teacher\ClassController as TeacherClassController;
+
 
 
 
@@ -62,6 +66,10 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
         Route::get('turn-off-attendance/{lesson_id}', [TeacherAttendanceController::class, 'turnOffAttendance']);
     });
     
+    Route::group(['prefix' => 'score'], function() {
+        Route::get('get-subjects', [TeacherSubjectController::class, 'getSubjects']);
+        Route::get('get-classes/{schedule_id}', [TeacherClassController::class, 'getClasses']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
