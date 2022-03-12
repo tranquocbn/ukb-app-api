@@ -13,18 +13,35 @@ class ScheduleService extends BaseService
 {
     protected UserRepository $userRepository;
     protected ScheduleRepository $scheduleRepository;
-    protected AttendanceRepository $attendanceRepository;
+
     /**
      * @param UserRepository $userRepository
      * @param ScheduleRepository $scheduleRepository
-     * @param LeaveRepository $leaveRepository
-     * @param AttendanceRepository $attendanceRepository
      */
     public function __construct(
-        ScheduleRepository $scheduleRepository
+        ScheduleRepository $scheduleRepository, 
+        UserRepository $userRepository
     )
     {
         $this->scheduleRepository = $scheduleRepository;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
+     * getSemesters function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getSemesters(Request $request)
+    {
+        $dateCurrent = $this->getDateCurrent();
+        $data = [
+            'classId' => $request->user()->userable_id,
+            'date' => $dateCurrent['date']
+        ];
+        
+        return $this->scheduleRepository->getSemesters($data);
     }
 }
 

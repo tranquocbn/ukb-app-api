@@ -17,10 +17,10 @@ class CreateScoresTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('schedule_id')->unsigned();
-            $table->float('diligent');
-            $table->float('test_one');
-            $table->float('test_two');
-            $table->float('exam_first');
+            $table->float('diligent')->nullable();
+            $table->float('test_one')->nullable();
+            $table->float('test_two')->nullable();
+            $table->float('exam_first')->nullable();
             $table->float('exam_second')->nullable();
             $table->timestamps();
 

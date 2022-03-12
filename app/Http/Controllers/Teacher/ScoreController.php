@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 class ScoreController extends Controller
 {
-    private ScoreService $scoreService;
+    protected ScoreService $scoreService;
 
     /**
      * @param ScoreService $scoreService
@@ -32,4 +32,30 @@ class ScoreController extends Controller
         return $this->scoreService->getScores($request, $scheduleId);
     }
 
+    /**
+     * getScores function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getScores (Request $request)
+    {
+        return $this->scoreService->teacherGetScores($request);
+    }
+
+    public function getScoreByStudentId(Request $request)
+    {
+        return $this->scoreService->getScoreByStudentId($request);
+    }
+
+    /**
+     * updateScore function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateScore(Request $request)
+    {
+        return $this->scoreService->updateScore($request);
+    }  
 }

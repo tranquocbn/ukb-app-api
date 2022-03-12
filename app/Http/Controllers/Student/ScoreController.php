@@ -31,4 +31,9 @@ class ScoreController extends Controller
     {
         return $this->scoreService->getScores($request, $scheduleId);
     }
+
+    public function getScore(Request $request)
+    {
+        return $this->scoreService->studentGetScore($request);
+    }
 }

@@ -18,4 +18,14 @@ class ScheduleController extends Controller
         $this->scheduleService = $scheduleService;
     }
 
+    /**
+     * getSemesters
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getSemesters(Request $request)
+    {
+        return $this->scheduleService->getSemesters($request);
+    }
 }
