@@ -43,8 +43,8 @@ class AttendanceService extends BaseService
 
         if($state[0] != 2) {
             $data = $request->merge(['lessonId' => $lessonId])->toArray();
-            $this->lessonRepository->teacherTurnOnAttendance($data);
-            // $this->attendanceRepository->insertStudent($request->lesson_id, $request->class_id);
+            // $this->lessonRepository->teacherTurnOnAttendance($data);
+            return $this->attendanceRepository->insertStudent($request->lesson_id, $request->class_id);
 
             return $this->resSuccessOrFail(null, trans('text.attendance.turn_on_attendance'));
         }
