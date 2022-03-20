@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Lesson;
-use App\Models\Role;
-use App\Models\Score;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 class DatabaseSeeder extends Seeder
