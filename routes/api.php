@@ -13,6 +13,9 @@ use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceContro
 use App\Http\Controllers\Teacher\ScoreController as TeacherScoreController;
 use App\Http\Controllers\Teacher\SubjectController as TeacherSubjectController;
 use App\Http\Controllers\Teacher\ClassController as TeacherClassController;
+use App\Http\Controllers\Teacher\LeaveController as TeacherLeaveController;
+
+
 
 
 
@@ -63,6 +66,11 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
+    Route::group(['prefix' => 'leave'], function() {
+        Route::get('subjects', [TeacherSubjectController::class, 'getSubjects']);
+        Route::get('date-learn', [TeacherLeaveController::class], 'dateLearn');
+    });
+
     Route::group(['prefix'=>'attendance'],function() {
         Route::get('get-info-lesson', [TeacherLessonController::class, 'getInfoLesson']);
         Route::get('check-state-lesson/{lesson_id}', [TeacherLessonController::class, 'checkStateLesson']);

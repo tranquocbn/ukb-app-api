@@ -18,7 +18,7 @@ class ScoreSeeder extends Seeder
             [
                 'user_id' => 1,
                 'schedule_id' => 1,
-                'diligent' => 8,
+                'diligent' => 10,
                 'test_one' => 8,
                 'test_two' => 9,
                 'exam_first' => 8.8
@@ -26,15 +26,15 @@ class ScoreSeeder extends Seeder
             [
                 'user_id' => 2,
                 'schedule_id' => 1,
-                'diligent' => 7,
+                'diligent' => 10,
                 'test_one' => 4,
                 'test_two' => 7,
-                'exam_first' => 2
+                'exam_first' => 2,
             ],
             [
                 'user_id' => 2,
                 'schedule_id' => 2,
-                'diligent' => 8,
+                'diligent' => 10,
                 'test_one' => 8,
                 'test_two' => 7,
                 'exam_first' => 9
@@ -42,10 +42,10 @@ class ScoreSeeder extends Seeder
             [
                 'user_id' => 1,
                 'schedule_id' => 2,
-                'diligent' => 8,
+                'diligent' => 10,
                 'test_one' => 5,
                 'test_two' => 7,
-                'exam_first' => 4
+                'exam_first' => 4,
             ]
         ]);
     }

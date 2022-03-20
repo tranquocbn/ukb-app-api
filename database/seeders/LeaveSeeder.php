@@ -23,8 +23,7 @@ class LeaveSeeder extends Seeder
                 'date_application' => '2019-07-12',
                 'date_want' => '2019-07-13',
                 'date_change' => null,
-                'reason' => 'Nghi om',
-                'reason_refusal' => null
+                'reason' => 'Nghi om'
             ],
             [
                 'id' => 3,
@@ -33,8 +32,7 @@ class LeaveSeeder extends Seeder
                 'date_application' => '2019-07-12',
                 'date_want' => '2019-07-13',
                 'date_change' => '2019-07-14',
-                'reason' => 'Nghi om',
-                'reason_refusal' => null
+                'reason' => 'Nghi om'
             ],
             [
                 'id' => 2,
@@ -43,8 +41,7 @@ class LeaveSeeder extends Seeder
                 'date_application' => '2019-07-12',
                 'date_want' => '2019-07-13',
                 'date_change' => null,
-                'reason' => 'Nghi om',
-                'reason_refusal' => null
+                'reason' => 'Nghi om'
             ],
             
         ]);
