@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\LeaveRepository;
 use App\Repositories\ScheduleRepository;
+use App\Traits\DateCalculateTrait;
 
 class LeaveService extends BaseService
 {
+    use DateCalculateTrait;
     protected ScheduleRepository $scheduleRepository;
     protected LeaveRepository $leaveRepository;
 

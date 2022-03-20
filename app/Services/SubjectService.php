@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
 use App\Repositories\ScheduleRepository;
+use App\Traits\DateCalculateTrait;
 
 class SubjectService extends BaseService
 {
+    use DateCalculateTrait;
     protected SubjectRepository $subjectRepository;
     protected ScheduleRepository $scheduleRepository;
 

@@ -32,5 +32,10 @@ class LeaveController extends Controller
         // return $this->leaveService->getSubjectsInSemesterCurrent($request);
     }
 
+    public function dateLearn(Request $request)
+    {
+        return 'ok';
+    }
+
 
 }
