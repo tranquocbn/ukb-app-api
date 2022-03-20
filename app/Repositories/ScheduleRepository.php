@@ -59,9 +59,19 @@ class ScheduleRepository extends BaseRepository
             ->get();
     }
     
-
-    
-
-
+    /**
+     * getSemesters function
+     *
+     * @param array $data
+     * @return mixed
+     */
+    public function getSemesters(array $data)
+    {
+        return $this->model
+            ->where('class_id', $data['classId'])
+            ->where('date_start', '<=', $data['date'])
+            ->with('subject')
+            ->get();
+    }
     
 }

@@ -81,4 +81,12 @@ class LessonRepository extends BaseRepository
                     ->where('id', $lessonId)
                     ->update(['state'=> 3]);
     }
+
+    public function countLessonCurrent($scheduleId, $date)
+    {
+        return $this->model
+            ->where('schedule_id', $scheduleId)
+            ->where('date_learn', '<=', $date)
+            ->count();
+    }
 }

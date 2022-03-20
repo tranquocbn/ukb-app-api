@@ -133,6 +133,14 @@ class User extends Authenticatable
      */
     public function attendances()
     {
-        return $this->hasMany(User::class, 'user_id', 'id');
+        return $this->hasMany(Attendance::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function notifies()
+    {
+        return $this->hasMany(Notify::class);
     }
 }

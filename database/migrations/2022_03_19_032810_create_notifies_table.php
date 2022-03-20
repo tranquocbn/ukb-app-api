@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScoresTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,15 @@ class CreateScoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('scores', function (Blueprint $table) {
+        Schema::create('notifies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('schedule_id')->unsigned();
-            $table->float('diligent')->nullable();
-            $table->float('test_one')->nullable();
-            $table->float('test_two')->nullable();
-            $table->float('exam_first')->nullable();
-            $table->float('exam_second')->nullable();
+            $table->integer('notifiable_id');
+            $table->text('notifiable_type');
+            $table->tinyInteger('state')->default(0)->comment('0: new | 1: watched');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('schedule_id')->references('id')->on('schedules');
         });
     }
 
@@ -36,6 +32,6 @@ class CreateScoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scores');
+        Schema::dropIfExists('notifies');
     }
-}
+};

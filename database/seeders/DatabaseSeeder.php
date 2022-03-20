@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LeaveSeeder::class);
         $this->call(LessonSeeder::class);
         $this->call(AttendanceSeeder::class);
-        // $this->call(ScoreSeeder::class);
+        $this->call(ScoreSeeder::class);
+        $this->call(ScoreFeedbackSeeder::class);
     }
 }

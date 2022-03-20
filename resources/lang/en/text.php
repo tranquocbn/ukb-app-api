@@ -24,5 +24,9 @@ return [
     'leave' => [
         'date_invalid' => 'Ngày xin nghỉ hợp lệ!',
         'date_uninvalid' => 'Ngày xin nghỉ không hợp lệ!'
+    ],
+    'score' => [
+        'update_successful' => 'Cập nhập điểm thành công!',
+        "can't_feedback" => 'Bạn chỉ có thể phản hồi điểm trong vòng 3 ngày, tính từ khi nhận được thông báo cập nhập điểm!'
     ]
 ];

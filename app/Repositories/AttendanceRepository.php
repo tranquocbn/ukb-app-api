@@ -23,18 +23,40 @@ class AttendanceRepository extends BaseRepository
      */
     public function insertStudent($lessonId, $classId)
     {
-        $data = DB::table('users')
-        ->selectRaw("(array)(id AS user_id, $lessonId AS lesson_id)")
-        ->where('userable_id', $classId)
-        ->where('role_id', 2)
-        ->get();
-        // dd($data->toArray());
         return $this->model
-            ->insert( $data->toArray());
-       
-           
+            ->insert(
+                (array) DB::table('users')
+                        ->selectRaw("id AS user_id, $lessonId AS lesson_id")
+                        ->where('userable_id', $classId)
+                        ->where('role_id', 2)
+                        ->get()
+            ); 
     }
 
+    /**
+     * delete function
+     *
+     * @param [type] $lessonId
+     * @return 
+     */
+    public function delete($lessonId)
+    {
+        return $this->model
+                ->where('lesson_id', $lessonId)
+                ->delete();
+    }
+    /**
+     * check student isExist
+     *
+     * @param userId
+     * @return mixed
+     */
+    public function isExist($userId)
+    {
+        return $this->model
+                ->where('user_id', $userId)
+                ->get();
+    }
     /**
      * checkStateAttendance function
      * @param $userId, $lessonId
