@@ -41,7 +41,7 @@ class UserService extends BaseService
         return $this->resSuccessOrFail([
             'user' => $user,
             'token' => $tokenResult
-        ], trans('text.account.login_successfully'));
+        ], trans('text.account.login.successfully'));
     }
 
     public function test()
