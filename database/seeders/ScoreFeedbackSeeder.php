@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ScoreFeedbackSeeder extends Seeder
+class ScoreFeedBackSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,18 +15,23 @@ class ScoreFeedbackSeeder extends Seeder
      */
     public function run()
     {
-        //
-        DB::table('score_feedbacks') ->insert([
+        DB::table('score_feedbacks')
+        ->insert([
             [
                 'score_id' => 1,
-                'reason' => 'sao điểm em thấp vậy thầy?',
-                'reason_feedback' => 'do em sai nhiều'
+                'reason' => 'Điểm quá thấp',
+                'created_at' => '2022-01-11'
             ],
             [
-                'score_id' => 3,
-                'reason' => 'sao điểm em thấp vậy thầy? em sai phần nào ạ?',
-                'reason_feedback' => 'sai câu cuối!'
-            ]
+                'score_id' => 2,
+                'reason' => 'Đề sai câu 13',
+                'created_at' => '2022-02-11'
+            ],
+            [
+                'score_id' => 1,
+                'reason' => 'Điểm thấp lắm',
+                'created_at' => '2022-01-17'
+            ],
         ]);
     }
 }

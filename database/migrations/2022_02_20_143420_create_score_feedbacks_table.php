@@ -17,7 +17,7 @@ class CreateScoreFeedbacksTable extends Migration
             $table->increments('id');
             $table->integer('score_id')->unsigned();
             $table->text('reason');
-            $table->text('reason_feedback');
+            $table->text('reason_feedback')->nullable();
             $table->timestamps();
 
             $table->foreign('score_id')->references('id')->on('scores');

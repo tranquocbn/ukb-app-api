@@ -18,10 +18,10 @@ class CreateLessonsTable extends Migration
             $table->integer('schedule_id')->unsigned();
             $table->date('date_learn')->nullable();
             $table->text('content')->nullable();
-            $table->tinyInteger('radius')->nullable()->unsigned()->min(5);
-            $table->text('latitude')->nullable();
-            $table->text('longitude')->nullable();
-            $table->tinyInteger('evaluate')->nullable()->comment('0: excellent, 1: good, 2: average, 3: poor');
+            $table->integer('radius')->nullable()->unsigned()->min(5);
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->tinyInteger('assessment')->nullable()->comment('0: excellent, 1: good, 2: average, 3: below average');
             $table->text('comment')->nullable();
             $table->tinyInteger('state')->comment('1: not on | 2: on | 3: off');
             $table->timestamps();
