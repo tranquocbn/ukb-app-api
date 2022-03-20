@@ -43,4 +43,13 @@ class Score extends Model
     {
         return $this->hasMany(ScoreFeedback::class);
     }
+
+    /**
+     *
+     * @return morphOne
+     */
+    public function notify()
+    {
+        return $this->morphOne(Notify::class, 'notifiable', 'notifiable_type', 'notifiable_id');
+    }
 }

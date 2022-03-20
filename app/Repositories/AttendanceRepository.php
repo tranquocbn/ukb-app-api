@@ -34,6 +34,30 @@ class AttendanceRepository extends BaseRepository
     }
 
     /**
+     * delete function
+     *
+     * @param [type] $lessonId
+     * @return 
+     */
+    public function delete($lessonId)
+    {
+        return $this->model
+                ->where('lesson_id', $lessonId)
+                ->delete();
+    }
+    /**
+     * check student isExist
+     *
+     * @param userId
+     * @return mixed
+     */
+    public function isExist($userId)
+    {
+        return $this->model
+                ->where('user_id', $userId)
+                ->get();
+    }
+    /**
      * checkStateAttendance function
      * @param $userId, $lessonId
      * @return mixed

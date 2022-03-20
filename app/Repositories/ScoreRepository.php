@@ -61,18 +61,20 @@ class ScoreRepository extends BaseRepository
             ->get();
     }
     
-    public function updateScore($data)
+    public function updateScore($data, $array)
     {
+        // return $this->model
+        //     ->where('user_id', $data['studentId'])
+        //     ->where('schedule_id', $data['scheduleId'])
+        //     ->update([
+        //         'diligent' => $data['diligent'],
+        //         'test_one' => $data['test_one'],
+        //         'test_two' => $data['test_two'],
+        //         'exam_first' => $data['exam_first'],
+        //         'exam_second' => $data['exam_second']
+        //     ]);
         return $this->model
-            ->where('user_id', $data['studentId'])
-            ->where('schedule_id', $data['scheduleId'])
-            ->update([
-                'diligent' => $data['diligent'],
-                'test_one' => $data['test_one'],
-                'test_two' => $data['test_two'],
-                'exam_first' => $data['exam_first'],
-                'exam_second' => $data['exam_second']
-            ]);
+            ->updateOrCreate($data, $array);
     }
 
     /**
@@ -88,5 +90,20 @@ class ScoreRepository extends BaseRepository
             ->where('user_id', $userId)
             ->where('id', $scheduleId)
             ->get();
+    }
+
+    public function isEnableFeedback($userId, $subjectId, $date)
+    {
+        return $this->model
+                ->where('user_id', $userId)
+                ->whereHas('schedule', function($e) use($subjectId) {
+                    $e->where('subject_id', $subjectId);
+                })
+                ->when('updated_at', function($e) use ($date) {
+                    $e->whereRaw("DATEDIFF(?, updated_at) <= 3", $date);
+                }, function($e) use ($date) {
+                    $e->whereRaw("DATEDIFF(?, create_at) <= 3", $date);
+                })
+                ->get();
     }
 }

@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Repositories\ClassRepository;
 use App\Repositories\LessonRepository;
+use App\Repositories\NotifyRepository;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\ScoreFeedbackRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScoreRepository;
@@ -17,6 +19,9 @@ class ScoreService extends BaseService
     protected ClassRepository $classRepository;
     protected ScheduleRepository $scheduleRepository;
     protected LessonRepository $lessonRepository;
+    protected NotifyRepository $notifyRepository;
+    protected ScoreFeedbackRepository $scoreFeedbackRepository;
+
 
     /**
      * @param ScoreRepository $scoreRepository
@@ -24,13 +29,16 @@ class ScoreService extends BaseService
      * @param ClassRepository $classRepository
      * @param ScheduleRepository $scheduleRepository 
      * @param LessonRepository $lessonRepository
+     * @param NotifyRepository $notifyRepository
      */
     public function __construct(
         ScoreRepository $scoreRepository,
         SubjectRepository $subjectRepository, 
         ClassRepository $classRepository,
         ScheduleRepository $scheduleRepository,
-        LessonRepository $lessonRepository
+        LessonRepository $lessonRepository,
+        NotifyRepository $notifyRepository,
+        ScoreFeedbackRepository $scoreFeedbackRepository
     )
     {
         $this->scoreRepository = $scoreRepository;
@@ -38,6 +46,8 @@ class ScoreService extends BaseService
         $this->classRepository = $classRepository;
         $this->scheduleRepository = $scheduleRepository;
         $this->lessonRepository = $lessonRepository;
+        $this->notifyRepository = $notifyRepository;
+        $this->scoreFeedbackRepository = $scoreFeedbackRepository;
     }
 
     public function getScores(Request $request, $scheduleId)
@@ -83,7 +93,6 @@ class ScoreService extends BaseService
 
         $studentId = $request->studentId;
         $scheduleId = $request->scheduleId;
-        $subjectId = $request->subjectId;
         $credit = $request->credit;
         $diligent = $test_one = $test_two = $exam_first = $exam_second = null;
         $countLesson = $this->lessonRepository->countLessonCurrent($scheduleId, $dateCurrent['date']);
@@ -105,11 +114,31 @@ class ScoreService extends BaseService
             $exam_second = $request->exam_second;
         }
 
-        $data = compact('scheduleId', 'studentId', 'diligent', 'test_one', 
-                        'test_two', 'exam_first', 'exam_second');
-        $this->scoreRepository->updateScore($data);
+        $data = [
+            'schedule_id' => $scheduleId,
+            'user_id' => $studentId,
+        ];
 
-        return $this->resSuccessOrFail(null, trans('text.score.update_successful'));
+        $info = [
+            'schedule_id' => $scheduleId,
+            'user_id' => $studentId,
+            'diligent' => $diligent,
+            'test_one' => $test_one, 
+            'test_two' => $test_two, 
+            'exam_first' => $exam_first, 
+            'exam_second' => $exam_second
+        ];
+
+        $run = $this->scoreRepository->updateScore($data, $info)->toArray();
+        $arr = [
+            'user_id' => $studentId,
+            'notifiable_id' => $run['id'],
+            'notifiable_type' => 'scores'
+        ];
+
+        $notify = $this->notifyRepository->notifyScore($arr);
+
+        return $this->resSuccessOrFail(['notify' => $notify], trans('text.score.update_successful'));
     }
 
     /**
@@ -121,5 +150,22 @@ class ScoreService extends BaseService
     public function studentGetScore(Request $request)
     {
         return $this->scoreRepository->studentGetScore($request->user()->id, $request->schedule_id);
+    }
+
+    public function feedbackScore(Request $request)
+    {
+        $userId = $request->user()->id;
+        if(isset($request->notifiable_id) && $request->notifiable_type == 'scores') {
+            $scoreId = $request->notifiable_id;
+        }
+
+        return $this->scoreFeedbackRepository->createFeedback($scoreId, $request->reason);
+
+        $subjectId = $request->subjectId;
+        $date = $this->getDateCurrent();
+        $isEnable = $this->scoreRepository->isEnableFeedback($userId, $subjectId, $date['date'])->toArray();
+        if(!$isEnable) {
+            return $this->resSuccessOrFail(null, trans("text.score.can't_feedback"));
+        }
     }
 }

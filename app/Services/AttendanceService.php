@@ -62,6 +62,7 @@ class AttendanceService extends BaseService
         if($state[0] == 2) {
             $run = $this->lessonRepository->teacherTurnOffAttendance($lessonId);
             if($run)
+                $this->attendanceRepository->delete($lessonId);
                 return $this->resSuccessOrFail(null, trans('text.attendance.turn_off_attendance'));
         }
     }
@@ -75,7 +76,13 @@ class AttendanceService extends BaseService
     {
         $userId = $request->user()->id;
         $device = $request->device;
-        $lessonId = $request->lesson_id;
+        $isExist = $this->attendanceRepository->isExist($userId);
+        $lessonId = $isExist[0]['lesson_id'];
+        if(!$lessonId) {
+            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_METHOD_NOT_ALLOWED);
+        }
+
+        $infoLesson = $this->lessonRepository->getInfoLesson($lessonId)->toArray();
         $stateLesson = $this->lessonRepository->checkStateLesson($lessonId)->toArray();
 
         if($stateLesson[0] != 2) {
@@ -87,7 +94,7 @@ class AttendanceService extends BaseService
         if($state[0] != 1) {
             $attendance = $this->attendanceRepository->studentAttendance($userId, $lessonId, $device);
             if($attendance) {
-                return $this->resSuccessOrFail(null, trans('text.attendance.successfully'));
+                return $this->resSuccessOrFail(['info' =>$infoLesson], trans('text.attendance.successfully'));
             }
             return $this->resSuccessOrFail(null, trans('text.attendance.fail'), Response::HTTP_METHOD_NOT_ALLOWED);
         }
