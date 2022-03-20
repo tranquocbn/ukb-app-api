@@ -57,7 +57,7 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     Route::group(['prefix' => 'score'], function() {
         Route::get('get-semesters', [StudentScheduleController::class, 'getSemesters']);
         Route::get('get-scores/{schedule_id}', [StudentScoreController::class, 'getScore']);
-        Route::post('feedback-score', [StudentScoreController::class, 'feedbackScore']);
+        Route::post('s-feedback-score', [StudentScoreController::class, 'feedbackScore']);
     });
 });
 
@@ -76,6 +76,7 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
         Route::get('get-scores/{schedule_id}/{class_id}', [TeacherScoreController::class, 'getScores']);
         Route::get('get-score/{schedule_id}/{student_id}', [TeacherScoreController::class, 'getScoreByStudentId']);
         Route::post('update-score', [TeacherScoreController::class, 'updateScore']);
+        Route::post('t-feedback-score', [TeacherScoreController::class, 'feedbackScore']);
     });
 });
 

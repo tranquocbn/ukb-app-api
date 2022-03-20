@@ -60,21 +60,48 @@ class ScoreRepository extends BaseRepository
             ->where('schedule_id', $scheduleId)
             ->get();
     }
+
+    /**
+     * updateScore function
+     * @param array $data
+     * @return mixed
+     */
     
-    public function updateScore($data, $array)
+    public function updateScore(array $data)
     {
-        // return $this->model
-        //     ->where('user_id', $data['studentId'])
-        //     ->where('schedule_id', $data['scheduleId'])
-        //     ->update([
-        //         'diligent' => $data['diligent'],
-        //         'test_one' => $data['test_one'],
-        //         'test_two' => $data['test_two'],
-        //         'exam_first' => $data['exam_first'],
-        //         'exam_second' => $data['exam_second']
-        //     ]);
+        $count = $data['count'];
+        $credit = $data['credit'];
         return $this->model
-            ->updateOrCreate($data, $array);
+            ->where('user_id', $data['studentId'])
+            ->where('schedule_id', $data['scheduleId'])
+            ->when(($credit == 2 && $count >= 8) || ($credit == 3 && $count >= 11), 
+                function($e) use ($data){
+                    $e->update([
+                        'test_one' => $data['test_one'],
+                        'test_two' => $data['test_two'],
+                        'diligent' => $data['diligent'],
+                        'exam_first' => $data['exam_first'],
+                        'exam_second' => $data['exam_second']
+                    ]);
+                },
+                function($e) use($count, $credit, $data){
+                    $e->when(($credit == 2 && $count >= 6) || ($credit == 3 && $count >= 10),
+                        function($e) use ($data) {
+                            $e->update([
+                                'test_one' => $data['test_one'],
+                                'test_two' => $data['test_two'],
+                            ]);
+                        },
+                        function($e) use($count, $credit, $data){
+                            $e->when(($credit == 2 && $count >= 3) || ($credit == 3 && $count >= 4),
+                                function($e) use ($data) {
+                                    $e->update([
+                                        'test_one' => $data['test_one']
+                                    ]);                              
+                                });
+                        });
+                })
+            ->get();
     }
 
     /**
@@ -92,18 +119,35 @@ class ScoreRepository extends BaseRepository
             ->get();
     }
 
-    public function isEnableFeedback($userId, $subjectId, $date)
+    /**
+     * isEnableFeedback function
+     * @param [type] $scoreId
+     * @param [type] $date
+     * @return 
+     */
+    public function isEnableFeedback($scoreId, $date)
     {
         return $this->model
-                ->where('user_id', $userId)
-                ->whereHas('schedule', function($e) use($subjectId) {
-                    $e->where('subject_id', $subjectId);
-                })
-                ->when('updated_at', function($e) use ($date) {
-                    $e->whereRaw("DATEDIFF(?, updated_at) <= 3", $date);
-                }, function($e) use ($date) {
-                    $e->whereRaw("DATEDIFF(?, create_at) <= 3", $date);
-                })
-                ->get();
+            ->where('id', $scoreId)
+            ->when('updated_at', function($e) use ($date) {
+                $e->whereRaw("DATEDIFF(?, updated_at) <= 3", $date);
+            }, function($e) use ($date) {
+                $e->whereRaw("DATEDIFF(?, create_at) <= 3", $date);
+            })
+            ->get();
+    }
+
+    /**
+     * getScheduleByScoreId function
+     *
+     * @param [type] $scoreId
+     * @return mixed
+     */
+    public function getScheduleByScoreId($scoreId)
+    {
+        return $this->model
+            ->where('id', $scoreId)
+            ->with('schedule')
+            ->get();
     }
 }

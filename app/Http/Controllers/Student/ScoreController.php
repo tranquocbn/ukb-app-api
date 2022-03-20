@@ -43,8 +43,14 @@ class ScoreController extends Controller
         return $this->scoreService->studentGetScore($request);
     }
 
+    /**
+     * feedbackScore function
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function feedbackScore(Request $request)
     {
-        return $this->scoreService->feedbackScore($request);
+        return $this->scoreService->studentScoreFeedback($request);
     }
 }

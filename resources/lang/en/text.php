@@ -27,6 +27,7 @@ return [
     ],
     'score' => [
         'update_successful' => 'Cập nhập điểm thành công!',
-        "can't_feedback" => 'Bạn chỉ có thể phản hồi điểm trong vòng 3 ngày, tính từ khi nhận được thông báo cập nhập điểm!'
+        'feedback_successful' => 'có phản hồi điểm mới!',
+        'error_feedback' => 'Bạn chỉ có thể phản hồi điểm trong vòng 3 ngày, tính từ khi nhận được thông báo cập nhập điểm!'
     ]
 ];
