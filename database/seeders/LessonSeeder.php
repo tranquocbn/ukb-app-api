@@ -15,22 +15,6 @@ class LessonSeeder extends Seeder
      */
     public function run()
     {
-
-        /**
-         * $table->increments('id');
-            $table->integer('schedule_id')->unsigned();
-            $table->date('date_learn')->nullable();
-            $table->text('content')->nullable();
-            $table->tinyInteger('radius')->nullable()->unsigned()->min(5);
-            $table->text('latitude')->nullable();
-            $table->text('longitude')->nullable();
-            $table->tinyInteger('evaluate')->nullable()->comment('0: excellent, 1: good, 2: average, 3: poor');
-            $table->text('comment')->nullable();
-            $table->boolean('state')->comment('1: not on | 2: on | 3: off');
-            $table->timestamps();
-
-            $table->foreign('schedule_id')->references('id')->on('schedules');
-         */
         DB::table('lessons')
         ->insert([
             [
@@ -40,7 +24,7 @@ class LessonSeeder extends Seeder
                 'radius'      => 30,
                 'latitude'    => '1232.2424.234',
                 'longitude'   => '3252.324.334',
-                'evaluate'    => 0,
+                'assessment'    => 0,
                 'comment'     => 'Sôi nổi',
                 'state'       => 3
             ],
@@ -51,7 +35,7 @@ class LessonSeeder extends Seeder
                 'radius'      => 30,
                 'latitude'    => '1232.2424.234',
                 'longitude'   => '3252.324.334',
-                'evaluate'    => 0,
+                'assessment'    => 0,
                 'comment'     => 'Sôi nổi',
                 'state'       => 3
             ],
@@ -62,7 +46,7 @@ class LessonSeeder extends Seeder
                 'radius'      => 30,
                 'latitude'    => '1232.2424.234',
                 'longitude'   => '3252.324.334',
-                'evaluate'    => 0,
+                'assessment'    => 0,
                 'comment'     => 'Sôi nổi',
                 'state'       => 3
             ]

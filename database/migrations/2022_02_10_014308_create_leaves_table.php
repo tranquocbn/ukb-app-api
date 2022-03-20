@@ -22,7 +22,7 @@ class CreateLeavesTable extends Migration
             $table->date('date_want');
             $table->date('date_change')->nullable()->comment('null: student, not null: teacher');
             $table->string('reason');
-            $table->string('reason_refusal')->nullable()->comment('null: agree, not null: not agree');
+            $table->string('reason_deny')->nullable()->comment('null: allow, not null: deny');
 
             $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->foreign('user_id')->references('id')->on('users');

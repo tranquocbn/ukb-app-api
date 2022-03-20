@@ -14,7 +14,7 @@ class AcademicDepartmentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('academic_department')->insert([
+        DB::table('academic_departments')->insert([
             [
                 'id' => 1,
                 'academic_id' => 1,
