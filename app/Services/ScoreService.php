@@ -157,15 +157,24 @@ class ScoreService extends BaseService
         $userId = $request->user()->id;
         if(isset($request->notifiable_id) && $request->notifiable_type == 'scores') {
             $scoreId = $request->notifiable_id;
-        }
+            $updated_at = date_create($request->updated_at);
+            $date = date_create(now('Asia/Ho_Chi_Minh'));
+            $diff = date_diff($updated_at, $date)->format('%R%a');
+            if($diff <= 3) {
+                $data = $this->scoreFeedbackRepository->createFeedback($scoreId, $request->reason);
 
-        return $this->scoreFeedbackRepository->createFeedback($scoreId, $request->reason);
-
-        $subjectId = $request->subjectId;
-        $date = $this->getDateCurrent();
-        $isEnable = $this->scoreRepository->isEnableFeedback($userId, $subjectId, $date['date'])->toArray();
-        if(!$isEnable) {
+                return $this->resSuccessOrFail(['data' => $data], trans("text.score.can't_feedback"));
+            }
             return $this->resSuccessOrFail(null, trans("text.score.can't_feedback"));
         }
+
+        // return $this->scoreFeedbackRepository->createFeedback($scoreId, $request->reason);
+
+        // $subjectId = $request->subjectId;
+        // $date = $this->getDateCurrent();
+        // $isEnable = $this->scoreRepository->isEnableFeedback($userId, $subjectId, $date['date'])->toArray();
+        // if(!$isEnable) {
+        //     return $this->resSuccessOrFail(null, trans("text.score.can't_feedback"));
+        // }
     }
 }
