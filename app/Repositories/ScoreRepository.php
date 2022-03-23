@@ -67,41 +67,10 @@ class ScoreRepository extends BaseRepository
      * @return mixed
      */
     
-    public function updateScore(array $data)
+    public function updateScore($data, $array)
     {
-        $count = $data['count'];
-        $credit = $data['credit'];
         return $this->model
-            ->where('user_id', $data['studentId'])
-            ->where('schedule_id', $data['scheduleId'])
-            ->when(($credit == 2 && $count >= 8) || ($credit == 3 && $count >= 11), 
-                function($e) use ($data){
-                    $e->update([
-                        'test_one' => $data['test_one'],
-                        'test_two' => $data['test_two'],
-                        'diligent' => $data['diligent'],
-                        'exam_first' => $data['exam_first'],
-                        'exam_second' => $data['exam_second']
-                    ]);
-                },
-                function($e) use($count, $credit, $data){
-                    $e->when(($credit == 2 && $count >= 6) || ($credit == 3 && $count >= 10),
-                        function($e) use ($data) {
-                            $e->update([
-                                'test_one' => $data['test_one'],
-                                'test_two' => $data['test_two'],
-                            ]);
-                        },
-                        function($e) use($count, $credit, $data){
-                            $e->when(($credit == 2 && $count >= 3) || ($credit == 3 && $count >= 4),
-                                function($e) use ($data) {
-                                    $e->update([
-                                        'test_one' => $data['test_one']
-                                    ]);                              
-                                });
-                        });
-                })
-            ->get();
+            ->updateOrCreate($data, $array);
     }
 
     /**

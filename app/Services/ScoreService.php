@@ -11,9 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScoreRepository;
 use App\Repositories\SubjectRepository;
-
+use App\Traits\DateCalculateTrait;
 class ScoreService extends BaseService
 {
+    use DateCalculateTrait;
+
     protected ScoreRepository $scoreRepository;
     protected SubjectRepository $subjectRepository;
     protected ClassRepository $classRepository;
@@ -90,31 +92,48 @@ class ScoreService extends BaseService
     public function updateScore(Request $request)
     {
         $dateCurrent = $this->getDateCurrent();
+
         $studentId = $request->studentId;
         $scheduleId = $request->scheduleId;
         $credit = $request->credit;
+        $diligent = $test_one = $test_two = $exam_first = $exam_second = null;
         $countLesson = $this->lessonRepository->countLessonCurrent($scheduleId, $dateCurrent['date']);
 
-        $score = [
-            'test_one' => isset($request->test_one) ? $request->test_one : null,
-            'test_two' => isset($request->test_two) ? $request->test_two : null,
-            'diligent' => isset($request->diligent) ? $request->diligent : null,
-            'exam_first' => isset($request->exam_first) ? $request->exam_first : null,
-            'exam_second' => isset($request->exam_second) ? $request->exam_second : null
-        ];
+        $credit = 2; $countLesson = 8;
+        if(($credit == 2 && $countLesson >= 8) || ($credit == 3 && $countLesson >= 11)) {
+            $diligent = isset($request->diligent) ? $request->diligent : null;
+            $test_one = isset($request->test_one) ? $request->test_one : null;
+            $test_two = isset($request->test_two) ? $request->test_two : null;
+            $exam_first = isset($request->exam_first) ? $request->exam_first : null;
+            $exam_second = isset($request->exam_second) ? $request->exam_second : null;
+
+        } elseif(($credit == 2 && $countLesson >= 6) || ($credit == 3 && $countLesson >= 10)) {
+            $test_one = isset($request->test_one) ? $request->test_one : null;
+            $test_two = isset($request->test_two) ? $request->test_two : null;
+            
+        } elseif(($credit == 2 && $countLesson >= 3) || ($credit == 3 && $countLesson >= 4)) {
+            $test_one = isset($request->test_one) ? $request->test_one : null;
+        } 
         
-        $info = array_merge($score, [   
-                                'studentId' => $studentId,
-                                'scheduleId' => $scheduleId,
-                                'count' => $countLesson, 
-                                'credit' => $credit
-                            ]);
+        $data = [
+            'schedule_id' => $scheduleId,
+            'user_id' => $studentId,
+        ];
 
-        $run = $this->scoreRepository->updateScore($info)->toArray();
+        $info = [
+            'schedule_id' => $scheduleId,
+            'user_id' => $studentId,
+            'diligent' => $diligent,
+            'test_one' => $test_one, 
+            'test_two' => $test_two, 
+            'exam_first' => $exam_first, 
+            'exam_second' => $exam_second
+        ];
 
+        $run = $this->scoreRepository->updateScore($data, $info)->toArray();
         $arr = [
             'user_id' => $studentId,
-            'notifiable_id' => $run[0]['id'],
+            'notifiable_id' => $run['id'],
             'notifiable_type' => 'scores'
         ];
 
