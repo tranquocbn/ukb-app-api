@@ -67,10 +67,13 @@ class ScoreRepository extends BaseRepository
      * @return mixed
      */
     
-    public function updateScore($data, $array)
+    public function updateScore($data)
     {
         return $this->model
-            ->updateOrCreate($data, $array);
+            ->where('user_id', $data['user_id'])
+            ->where('schedule_id', $data['schedule_id'])
+            ->where()
+            ->get();
     }
 
     /**

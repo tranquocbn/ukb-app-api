@@ -115,10 +115,10 @@ class ScoreService extends BaseService
             $test_one = isset($request->test_one) ? $request->test_one : null;
         } 
         
-        $data = [
-            'schedule_id' => $scheduleId,
-            'user_id' => $studentId,
-        ];
+        // $data = [
+        //     'schedule_id' => $scheduleId,
+        //     'user_id' => $studentId,
+        // ];
 
         $info = [
             'schedule_id' => $scheduleId,
@@ -130,7 +130,8 @@ class ScoreService extends BaseService
             'exam_second' => $exam_second
         ];
 
-        $run = $this->scoreRepository->updateScore($data, $info)->toArray();
+        $run = $this->scoreRepository->updateScore($info)->toArray();
+        return $run;
         $arr = [
             'user_id' => $studentId,
             'notifiable_id' => $run['id'],
