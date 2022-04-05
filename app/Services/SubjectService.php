@@ -91,12 +91,7 @@ class SubjectService extends BaseService
         $month = $dateCurrent ['month'];
 
         //0: kì chẵn, 1: kì lẻ
-        if ($month >= 1 && $month <= 6) {
-            $semester = 0;
-        }
-        else {
-            $semester = 1;
-        }
+        $semester = ($month >= 1 && $month <= 6) ? 0 : 1;
 
         $data = array_merge($dateCurrent, ['user_id' => $user_id], ['semester' => $semester]);
         return $this->subjectRepository->teacherGetSubjects($data);

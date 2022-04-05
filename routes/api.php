@@ -14,6 +14,8 @@ use App\Http\Controllers\Teacher\ScoreController as TeacherScoreController;
 use App\Http\Controllers\Teacher\SubjectController as TeacherSubjectController;
 use App\Http\Controllers\Teacher\ClassController as TeacherClassController;
 use App\Http\Controllers\Teacher\LeaveController as TeacherLeaveController;
+use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController;
+
 
 
 
@@ -31,11 +33,13 @@ use App\Http\Controllers\Teacher\LeaveController as TeacherLeaveController;
 |
 */
 
+
+
 Route::post('login', [LoginController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
-    Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
+    // Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
     Route::get('test', [StudentUserController::class, 'test']);
 
@@ -66,10 +70,12 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     //route teacher
-    Route::group(['prefix' => 'leave'], function() {
-        Route::get('subjects', [TeacherSubjectController::class, 'getSubjects']);
-        Route::get('date-learn', [TeacherLeaveController::class], 'dateLearn');
+   
+    Route::group(['prefix' => 'lesson'], function() {
+        Route::get('/', [TeacherScheduleController::class, 'yearLearn']);
     });
+
+    
 
     Route::group(['prefix'=>'attendance'],function() {
         Route::get('get-info-lesson', [TeacherLessonController::class, 'getInfoLesson']);

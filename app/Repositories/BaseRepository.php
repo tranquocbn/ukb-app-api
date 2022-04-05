@@ -13,6 +13,11 @@ abstract class BaseRepository
         $this->model = app($this->model());
     }
 
+    public function store(array $data)
+    {
+        
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);

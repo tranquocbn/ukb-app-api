@@ -73,5 +73,12 @@ class ScheduleRepository extends BaseRepository
             ->with('subject')
             ->get();
     }
+
+    public function yearLearn($userId)
+    {
+        return $this->model
+        ->where('user_id', $userId)
+        ->get();
+    }
     
 }

@@ -89,4 +89,13 @@ class LessonRepository extends BaseRepository
             ->where('date_learn', '<=', $date)
             ->count();
     }
+
+    public function yearLearn(array $data)
+    {
+        return $this->model
+        ->whereHas('schedule', function($query) use ($data) {
+            $query->where('user_id', $data['user_id']);
+        })
+        ->get();
+    }
 }

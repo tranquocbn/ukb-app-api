@@ -124,4 +124,14 @@ class LessonService extends BaseService
         }
         return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
     }
+
+    public function yearLearn(Request $request)
+    {
+        $dt = now('Asia/Ho_Chi_Minh');
+        $data = [
+            'year' => date_format($dt,"Y"),
+            'user_id' => $request->user()->id
+        ];
+        return $this->lessonRepository->yearLearn($data);
+    }
 }
