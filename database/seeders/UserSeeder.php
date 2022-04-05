@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'code' => '06d4800036',
-                'name' => 'Tran Quoc',
-                'email' => 'tranquocbn@gmail.com',
+                'name' => 'Nguyễn Văn A',
+                'email' => 'nguyenvana@gmail.com',
                 'phone' => '0988088943',
                 'address' => 'Bac Ninh',
                 'birthday' => '1997-09-22',
@@ -32,8 +32,8 @@ class UserSeeder extends Seeder
             ],
             [
                 'code' => '06d4800035',
-                'name' => 'Le Thi Thue',
-                'email' => 'thueth@gmail.com',
+                'name' => 'Nguyễn Văn B',
+                'email' => 'nguyenvanb@gmail.com',
                 'phone' => '095555555',
                 'address' => 'Thanh Hoa',
                 'birthday' => '1998-11-10',
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'code' => 'gv01',
-                'name' => 'Nguyen Thi Muoi Phuong',
+                'name' => 'Giảng Viên Nguyễn Thị A',
                 'email' => 'nguyenmuoiphuong@gmail.com',
                 'phone' => '0988888888',
                 'address' => 'Ha Noi',

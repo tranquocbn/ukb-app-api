@@ -18,4 +18,9 @@ class ScheduleController extends Controller
         $this->scheduleService = $scheduleService;
     }
 
+    public function yearLearn(Request $request)
+    {
+        return $this->scheduleService->yearLearn($request);
+    }
+
 }
