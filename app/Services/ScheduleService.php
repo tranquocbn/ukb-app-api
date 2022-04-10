@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\ScheduleRepository;
 use App\Repositories\UserRepository;
-use App\Traits\DateCalculateTrait;
+use App\Traits\DateCalculateTrait; 
 class ScheduleService extends BaseService
 {
     use DateCalculateTrait;
-
     protected UserRepository $userRepository;
     protected ScheduleRepository $scheduleRepository;
 
@@ -45,5 +44,11 @@ class ScheduleService extends BaseService
         
         return $this->scheduleRepository->getSemesters($data);
     }
+
+    public function yearLearn(Request $request)
+    {
+        return $this->scheduleRepository->yearLearn($request->user()->id);
+    }
+
 }
 

@@ -27,8 +27,8 @@ class LessonController extends Controller
         return $this->lessonService->teacherGetInfoLesson($request);
     }
 
-    public function checkStateLesson($lessonId)
+    public function yearLearn(Request $request)
     {
-        return $this->lessonService->checkStateLesson($lessonId);
+        return $this->lessonService->yearLearn($request);
     }
 }

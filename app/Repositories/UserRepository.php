@@ -19,7 +19,9 @@ class UserRepository extends BaseRepository {
       */
     public function getByCode(string $code)
     {
-        return $this->model->whereCode($code)->first();
+        return $this->model
+        ->whereCode($code)
+        ->first();
     }
 
      public function test()

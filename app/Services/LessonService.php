@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\LessonRepository;
 use App\Repositories\ScheduleRepository;
+use App\Traits\DateCalculateTrait;
 class LessonService extends BaseService
 {
+    use DateCalculateTrait;
     protected LessonRepository $lessonRepository;
     protected LeaveRepository $leaveRepository;
     protected ScheduleRepository $scheduleRepository;
@@ -29,40 +31,6 @@ class LessonService extends BaseService
     }
 
     /**
-     * checkStateLesson function
-     * @param $lessonId
-     * @return mixed
-     */
-    public function checkStateLesson($lessonId)
-    {
-        return $this->lessonRepository->checkStateLesson($lessonId);
-    }
-
-    /**
-     * getTime function
-     * @return array
-     */
-    public function getTime()
-    {
-        $dt = now('Asia/Ho_Chi_Minh');
-        $date = date_format($dt,"Y-m-d");
-        $time = date_format($dt,"H");
-        $year = date_format($dt,"Y");
-        $session = 0;
-
-        if($time >= 8 && $time <= 12) {
-            $session = 1;
-        } 
-        if($time >= 13 && $time <= 16) {
-            $session = 2;
-        }
-        return [
-            'date' => $date,
-            'session' => $session,
-            'year' => $year
-        ];
-    }
-    /**
      * teacherGetInfoLesson function
      * @param Request $request
      * @return mixed
@@ -70,28 +38,18 @@ class LessonService extends BaseService
     public function teacherGetInfoLesson(Request $request)
     {
         $userId = $request->user()->id;
-        $data = $this->getTime();
-        $date = $data['date']; 
+        $data = $this->getDateCurrent();
+        $date = $data['date'];
+        $lesson = $this->lessonRepository->checkSchedule('user_id', $userId, $date, $data['session'])->toArray();
+        
+        if(empty($lesson))
+            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
 
-        $dateWant = $this->leaveRepository->getDateWant($userId, $date)->toArray();
-
-        if(!$dateWant) {
-            $schedule = $this->scheduleRepository->checkSchedule('user_id', $userId, $date, $data['session'], $data['year'])->toArray();
-            
-            if(!$schedule) {
-                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
-            }
-
-            $scheduleId = $schedule[0]['id'];
-            $lessons = $this->lessonRepository->getInfoLesson($scheduleId)->toArray();
-
-            foreach ($lessons as $lesson){
-                if($lesson['date_learn'] === $date){
-                    return array_merge($lesson, ['count' => count($lessons)]);
-                };
-            }
-        }
-        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+        $info = $this->lessonRepository->getInfoLesson($lesson[0]['id'])->toArray();
+        $count = $this->lessonRepository->countLessonCurrent($lesson[0]['schedule_id'], $date);
+        $info = array_merge($info[0], ['count_lesson' => $count]);
+        
+        return $info;
     }
 
     /**
@@ -101,27 +59,29 @@ class LessonService extends BaseService
      */
     public function studentGetInfoLesson(Request $request)
     {
-        $data = $this->getTime();
+        $data = $this->getDateCurrent();
         $date = $data['date'];
         $classId = $request->user()->userable_id;
 
-        $isLeave = $this->scheduleRepository->isLeave($classId, $date)->toArray();
-        if(!$isLeave) {
-            $schedule = $this->scheduleRepository->checkSchedule('class_id', $classId, $date, $data['session'], $data['year'])->toArray();
-            
-            if(!$schedule) {
-                return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
-            }
-
-            $scheduleId = $schedule[0]['id'];
-            $lessons = $this->lessonRepository->getInfoLesson($scheduleId)->toArray();
-
-            foreach ($lessons as $lesson){
-                if($lesson['date_learn'] === $date){
-                    return array_merge($lesson, ['count' => count($lessons)]);
-                };
-            }
+        $lesson = $this->lessonRepository->checkSchedule('class_id', $classId, $date, $data['session'])->toArray();
+        
+        if(empty($lesson)) {
+            return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
         }
-        return $this->resSuccessOrFail(null, trans('text.attendance.check_schedule'), Response::HTTP_NOT_FOUND);
+        $info = $this->lessonRepository->getInfoLesson($lesson[0]['id'])->toArray();
+        $count = $this->lessonRepository->countLessonCurrent($lesson[0]['schedule_id'], $date);
+        $info = array_merge($info[0], ['count_lesson' => $count]);
+        
+        return $info;
+    }
+
+    public function yearLearn(Request $request)
+    {
+        $dt = now('Asia/Ho_Chi_Minh');
+        $data = [
+            'year' => date_format($dt,"Y"),
+            'user_id' => $request->user()->id
+        ];
+        return $this->lessonRepository->yearLearn($data);
     }
 }

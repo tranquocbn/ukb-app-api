@@ -21,9 +21,11 @@ class ScheduleSeeder extends Seeder
                 'class_id' => 1,
                 'subject_id' => 1,
                 'room_id' => 1,
+                'year_start' => '2019',
+                'year_end' => '2020',
                 'date_start' => '2019-06-22',
                 'session' => true,
-                'semester' => 6
+                'semester' => 1
             ],
             [
                 'id' => 2,
@@ -31,9 +33,11 @@ class ScheduleSeeder extends Seeder
                 'class_id' => 1,
                 'subject_id' => 2,
                 'room_id' => 1,
-                'date_start' => '2018-06-22',
+                'year_start' => '2018',
+                'year_end' => '2029',
+                'date_start' => '2018-06-20',
                 'session' => true,
-                'semester' => 4
+                'semester' => 1
             ],
             [
                 'id' => 3,
@@ -41,9 +45,11 @@ class ScheduleSeeder extends Seeder
                 'class_id' => 2,
                 'subject_id' => 1,
                 'room_id' => 1,
-                'date_start' => '2021-06-22',
+                'year_start' => '2021',
+                'year_end' => '2022',
+                'date_start' => '2021-06-19',
                 'session' => true,
-                'semester' => 6
+                'semester' => 1
             ]
         ]);
     }

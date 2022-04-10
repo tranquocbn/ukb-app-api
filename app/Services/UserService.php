@@ -37,6 +37,8 @@ class UserService extends BaseService
             return $this->resSuccessOrFail(null, trans('text.account.login.fail.password'), Response::HTTP_UNAUTHORIZED);
         }
 
+        unset($user['password'], $user['current_password']);
+        // unset($user['current_password']);
         $tokenResult = $user->createToken('ukb-api-token')->plainTextToken;
         return $this->resSuccessOrFail([
             'user' => $user,

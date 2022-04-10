@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\DB;
 
 class LessonSeeder extends Seeder
 {
+
+    public function insert(array $data)     
+    {       
+        $lessons = $data['credit'] == 3 ? 11: 8;
+        for($i=0; $i <= $lessons; $i++) {
+            $s = $i * 7;
+            $date = date_create($data['date']);
+            date_add($date, date_interval_create_from_date_string("$s days"));
+            $dateLearn = date_format($date, 'Ymd');
+            DB::table('lessons')
+            ->insert([
+                'schedule_id' => $data['schedule_id'],
+                'date_learn'  => $dateLearn,
+                'state'       => 0
+            ]);
+        }
+    }
+
     /**
      * Run the database seeds.
      *
@@ -15,42 +33,26 @@ class LessonSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('lessons')
-        ->insert([
+        $data = [
             [
-                'schedule_id' => 1,
-                'date_learn'  => '2019-06-29',
-                'content'     => 'Khái niệm tư tương hcm',
-                'radius'      => 30,
-                'latitude'    => '1232.2424.234',
-                'longitude'   => '3252.324.334',
-                'assessment'    => 0,
-                'comment'     => 'Sôi nổi',
-                'state'       => 3
+                'credit' => 2,
+                'schedule_id'   => 1,
+                'date'  => '2019-06-22'
             ],
             [
-                'schedule_id' => 1,
-                'date_learn'  => '2019-07-06',
-                'content'     => 'chương 1',
-                'radius'      => 30,
-                'latitude'    => '1232.2424.234',
-                'longitude'   => '3252.324.334',
-                'assessment'    => 0,
-                'comment'     => 'Sôi nổi',
-                'state'       => 3
+                'credit' => 3,
+                'schedule_id'   => 2,
+                'date'  => '2018-06-20'
             ],
             [
-                'schedule_id' => 1,
-                'date_learn'  => '2019-07-14',
-                'content'     => 'chương 2',
-                'radius'      => 30,
-                'latitude'    => '1232.2424.234',
-                'longitude'   => '3252.324.334',
-                'assessment'    => 0,
-                'comment'     => 'Sôi nổi',
-                'state'       => 3
+                'credit' => 2,
+                'schedule_id' => 3,
+                'date' => '2021-06-19'
             ]
-
-        ]);
+        ];   
+        foreach($data as $value) {
+            $this->insert($value);
+        }     
+        return;
     }
 }
