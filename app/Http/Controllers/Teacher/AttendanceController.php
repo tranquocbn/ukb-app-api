@@ -24,8 +24,8 @@ class AttendanceController extends Controller
         return $this->attendanceService->teacherTurnOnAttendance($request);
     }
 
-    public function turnOffAttendance($lessonId)
+    public function turnOffAttendance($lessonId, $state)
     {
-        return $this->attendanceService->teacherTurnOffAttendance($lessonId);
+        return $this->attendanceService->teacherTurnOffAttendance($lessonId, $state);
     }
 }

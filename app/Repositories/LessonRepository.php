@@ -13,15 +13,56 @@ class LessonRepository extends BaseRepository
     }
 
     /**
-     * getInfoLesson function
+     * teacher, student check Schedule 
+     * @param $field, $id, $date, $session
+     * @return mixed
+     */
+    public function checkSchedule($field, $id, $date, $session)
+    {
+        // return $this->model
+        //     ->where('date_learn', $date)
+        //     ->whereHas('schedule', function($e) use ($field, $id, $session){
+        //         $e-> where($field, $id)
+        //         ->where('session', $session);
+        //     }) 
+        //     ->get();
+        return $this->model
+            ->where('date_learn', '2019-06-22')
+            ->whereHas('schedule', function($e) use ($field, $id, $session){
+                $e-> where($field, $id)
+                ->where('session', 1);
+            }) 
+            ->get();
+    }
+
+    /**
+     * countLessonCurrent function
+     *
      * @param $scheduleId, $date
      * @return mixed
      */
-    public function getInfoLesson($scheduleId)
+    public function countLessonCurrent($scheduleId, $date)
     {
+        // return $this->model
+        //     ->where('schedule_id', $scheduleId)
+        //     ->where('date_learn', '<=', $date)
+        //     ->count();
+
         return $this->model
             ->where('schedule_id', $scheduleId)
-            ->where('state', '<>', 1)
+            ->where('date_learn', '<=', '2019-07-13')
+            ->count();
+    }
+
+    /**
+     * getInfoLesson function
+     * @param $lessonId
+     * @return mixed
+     */
+    public function getInfoLesson($lessonId)
+    {
+        return $this->model
+            ->where('id', $lessonId)
             ->with(['schedule' => function($query) {
                 $query->select('id', 'user_id', 'class_id', 'subject_id', 'room_id')
                     ->with('teacher:id,name')
@@ -36,20 +77,6 @@ class LessonRepository extends BaseRepository
             }])
             ->get();
     }
-
-    /**
-     * check state attendance lesson
-     * @param $scheduleId, $dateLearn
-     * @return mixed
-     */
-    public function checkStateLesson($lessonId)
-    {
-        return $this->model
-                    ->where('id', $lessonId)
-                    ->get()
-                    ->pluck('state');
-    }
-
 
     /**
      * teacherTurnOnAttendance function
@@ -80,14 +107,6 @@ class LessonRepository extends BaseRepository
         return $this->model
                     ->where('id', $lessonId)
                     ->update(['state'=> 3]);
-    }
-
-    public function countLessonCurrent($scheduleId, $date)
-    {
-        return $this->model
-            ->where('schedule_id', $scheduleId)
-            ->where('date_learn', '<=', $date)
-            ->count();
     }
 
     public function yearLearn(array $data)
