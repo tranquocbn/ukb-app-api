@@ -45,18 +45,7 @@ class AttendanceRepository extends BaseRepository
                 ->where('lesson_id', $lessonId)
                 ->delete();
     }
-    /**
-     * check student isExist
-     *
-     * @param userId
-     * @return mixed
-     */
-    public function isExist($userId)
-    {
-        return $this->model
-                ->where('user_id', $userId)
-                ->get();
-    }
+    
     /**
      * checkStateAttendance function
      * @param $userId, $lessonId
@@ -65,7 +54,6 @@ class AttendanceRepository extends BaseRepository
     public function checkStateAttendance($userId, $lessonId)
     {
         return $this->model
-            ->select('state')
             ->where('user_id', $userId)
             ->where('lesson_id', $lessonId)
             ->get();
@@ -81,7 +69,7 @@ class AttendanceRepository extends BaseRepository
         return $this->model
                     ->where('lesson_id', $lessonId)
                     ->where('user_id', $userId)
-                    ->where('device', $device)
+                    ->where('uuid_device', $device)
                     ->update(['state'=> 1]);
     }
 }

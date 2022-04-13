@@ -17,7 +17,13 @@ class NotifyRepository extends BaseRepository
         return Notify::class;
     }
 
-    public function notifyScore(array $arr)
+    /**
+     * updateOrCreateNotify function
+     *
+     * @param array $arr
+     * @return mixed
+     */
+    public function updateOrCreateNotify(array $arr)
     {
         return $this->model
                 ->updateOrCreate($arr, $arr);

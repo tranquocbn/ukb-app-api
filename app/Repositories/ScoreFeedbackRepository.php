@@ -12,7 +12,14 @@ class ScoreFeedbackRepository extends BaseRepository
         return ScoreFeedback::class;
     }
 
-    public function createFeedback($scoreId, $reason)
+    /**
+     * studentScoreFeedback function
+     *
+     * @param [type] $scoreId
+     * @param [type] $reason
+     * @return mixed
+     */
+    public function studentScoreFeedback($scoreId, $reason)
     {
         return $this->model
             ->updateOrCreate(
@@ -24,5 +31,40 @@ class ScoreFeedbackRepository extends BaseRepository
                     'reason' => $reason
                 ]
             );
+    }
+
+    /**
+     * teacherScoreFeedback function
+     *
+     * @param [type] $scoreId
+     * @param [type] $reasonFeedback
+     * @return mixed
+     */
+    public function teacherScoreFeedback($scoreFeedbackId, $reasonFeedback)
+    {
+        return $this->model
+            ->updateOrCreate(
+                [
+                    'id' => $scoreFeedbackId
+                ], 
+                [
+                    'id' => $scoreFeedbackId,
+                    'reason_feedback' => $reasonFeedback
+                ]
+            );
+    }
+
+    /**
+     * getStudentByScoreFeedbackId function
+     *
+     * @param [type] $scoreFeedbackId
+     * @return mixed
+     */
+    public function getStudentByScoreFeedbackId($scoreFeedbackId)
+    {
+        return $this->model
+            ->where('id', $scoreFeedbackId)
+            ->with('score')
+            ->get();
     }
 }
