@@ -38,7 +38,7 @@ class UserService extends BaseService
         }
 
         unset($user['password'], $user['current_password']);
-        // unset($user['current_password']);
+        
         $tokenResult = $user->createToken('ukb-api-token')->plainTextToken;
         return $this->resSuccessOrFail([
             'user' => $user,

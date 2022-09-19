@@ -16,11 +16,6 @@ class Classroom extends Model
         'academic_department_id'
     ];
 
-    public function users()
-    {
-        return $this->morphMany(User::class, 'userable', 'userable_type', 'userable_id');
-    }
-
     /**
      * @return belongsTo
      */

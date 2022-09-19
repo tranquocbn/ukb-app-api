@@ -20,21 +20,21 @@ class AttendanceSeeder extends Seeder
                 'lesson_id' => 1,
                 'user_id' => 1,
                 'state' => 0,
-                'uuid_device' =>'357631050052050'
+                'device' =>'357631050052050'
             ],
             [
                 'id' => 2,
                 'lesson_id' => 1,
                 'user_id' => 2,
                 'state' => 0,
-                'uuid_device' =>'357631050052052'
+                'device' =>'357631050052052'
             ],
             [
                 'id' => 3,
                 'lesson_id' => 2,
                 'user_id' => 2,
                 'state' => 0,
-                'uuid_device' =>'357631050052052'
+                'device' =>'357631050052052'
             ]
         ]);
 

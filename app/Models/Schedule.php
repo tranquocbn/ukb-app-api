@@ -16,7 +16,6 @@ class Schedule extends Model
         'subject_id',
         'room_id',
         'date_start',
-        'date_change',
         'session',
         'semester'
     ];
@@ -77,4 +76,21 @@ class Schedule extends Model
         return $this->hasMany(Lesson::class, 'schedule_id', 'id');
     }
 
+    /**
+     *
+     * @return hasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'schedule_id', 'id');
+    }
+
+    /**
+     *
+     * @return hasMany
+     */
+    public function document()
+    {
+        return $this->hasOne(Comment::class, 'schedule_id', 'id');
+    }
 }

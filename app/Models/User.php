@@ -20,8 +20,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'service_id',
-        'relation_id',
-        'role_id',
+        'class_id',
+        'role',
         'code',
         'name',
         'gender',
@@ -53,31 +53,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * @return belongsTo
-     */
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
     public function class()
     {
         return $this->belongsTo(Classes::class);
-    }
-
-    /**
-     * getRole function
-     * @return string
-     */
-    public function getRole()
-    {
-        return optional(optional($this)->role)->name;
-    }
-
-    public function userable()
-    {
-        return $this->morphTo(null, 'userable_type', 'userable_id');
     }
 
     /**
@@ -121,6 +99,24 @@ class User extends Authenticatable
     }
 
     /**
+     *
+     * @return hasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id', 'id');
+    }
+
+    /**
+     *
+     * @return hasMany
+     */
+    public function commentReplies()
+    {
+        return $this->hasMany(CommentReply::class, 'user_id', 'id');
+    }
+
+    /**
      * @return hasMany
      */
     public function schedules()
@@ -142,5 +138,13 @@ class User extends Authenticatable
     public function notifies()
     {
         return $this->hasMany(Notify::class);
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'user_id', 'id');
     }
 }

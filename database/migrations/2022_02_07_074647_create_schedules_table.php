@@ -18,12 +18,10 @@ class CreateSchedulesTable extends Migration
             $table->integer('user_id')->unsigned()->comment('teacher id');
             $table->integer('class_id')->unsigned();
             $table->integer('subject_id')->unsigned();
-            $table->integer('room_id')->unsigned()->nullable();
+            $table->integer('room_id')->unsigned();
             
-            $table->year('year_start');
-            $table->year('year_end');
-            $table->date('date_start')->nullable();
-            $table->boolean('session')->nullable();
+            $table->date('date_start');
+            $table->boolean('session');
             $table->tinyInteger('semester');
             $table->timestamps();
 
