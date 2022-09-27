@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class User extends Authenticatable
 {
@@ -146,5 +147,9 @@ class User extends Authenticatable
     public function documents()
     {
         return $this->hasMany(Document::class, 'user_id', 'id');
+    }
+
+    public function getRole() {
+        return $this->role;
     }
 }
