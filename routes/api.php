@@ -37,9 +37,11 @@ use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController
 
 
 Route::post('login', [LoginController::class, 'login']);
+
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::group(['prefix' => 'user'],function(){
-        Route::get('info-user', [UserController::class, 'getInfoUser']); //thừa
+    Route::group(['prefix' => 'account'], function(){
+        Route::get('info-account', [UserController::class, 'getInfoAccount']); 
+        Route::post('update-account', [UserController::class, 'updateAccount']); 
     });
 });
 

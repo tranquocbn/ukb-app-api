@@ -50,4 +50,18 @@ class UserService extends BaseService
     {
         return $this->userRepository->getInfo();
     }
+
+    public function updateAccount(Request $request)
+    {
+        if($request->email == null) {
+            return $this->resSuccessOrFail(null, trans('text.account.update.fail'), Response::HTTP_NOT_FOUND);
+        }
+        
+        $data = $request->toArray();
+        $data['code'] = $request->user()->code;
+
+        if($this->userRepository->updateAccount($data)) {
+            return $this->resSuccessOrFail(null, trans('text.account.update.successfully'));
+        }
+    }
 }

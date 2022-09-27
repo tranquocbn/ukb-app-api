@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Services\UserService;
 use Illuminate\Http\Request;
-
+use App\Services\UserService;
 class UserController extends Controller
 {
     protected UserService $userService;
@@ -15,9 +13,13 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function getInfoUser()
+    public function getInfoAccount()
     {
         return $this->userService->getInfo();
     }
 
+    public function updateAccount(Request $request)
+    {
+        return $this->userService->updateAccount($request);
+    }
 }

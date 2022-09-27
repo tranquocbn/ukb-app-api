@@ -25,9 +25,27 @@ class UserRepository extends BaseRepository {
         ->first();
     }
 
+    /**
+     * getInfo function
+     *
+     * @return array
+     */
     public function getInfo()
     {
-        dd(Auth::user());
         return Auth::user();
+    }
+
+    public function updateAccount(array $data)
+    {
+        return $this->model
+        ->where('code', $data['code'])
+        ->update([
+                'gender' => $data['gender'],
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'email' => $data['email'],
+                'birthday' => $data['birthday'],
+                'avatar' => $data['avatar'],
+            ]);
     }
 }

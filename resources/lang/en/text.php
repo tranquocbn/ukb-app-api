@@ -9,6 +9,10 @@ return [
                 'user'      => 'Tài khoản không tồn tại',
                 'password'  => 'Mật khẩu sai'
             ]
+        ],
+        'update' => [
+            'successfully' => 'Cập nhập thành công!',
+            'fail' => 'Email không được bỏ trống!'
         ]
     ],
     'attendance' => [
