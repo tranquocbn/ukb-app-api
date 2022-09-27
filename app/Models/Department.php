@@ -23,11 +23,4 @@ class Department extends Model
         return $this->belongsToMany(Academic::class, 'academic_department', 'academic_id', 'department_id');
     }
 
-    /**
-     * @return morphMany
-     */
-    public function users()
-    {
-        return $this->morphMany(User::class, 'userable', 'userable_type', 'userable_id');
-    }
 }

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class NotifySeeder extends Seeder
+class CommentReplySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,13 +14,13 @@ class NotifySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('notifies')->insert([
+        DB::table('comment_replies')->insert([
             [
+                'id' => 1,
+                'comment_id' => 1,
                 'user_id' => 3,
-                'notifiable_id' => 1,
-                'notifiable_type' => 1,
-                'state' => 0
-            ],
+                'content' => 'Bài tập nộp trên link driver'
+            ]
         ]);
     }
 }

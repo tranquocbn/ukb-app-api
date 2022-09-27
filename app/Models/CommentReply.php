@@ -5,33 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notify extends Model
+class CommentReply extends Model
 {
     use HasFactory;
-    
-    protected $table = 'notifies';
+
+    protected $table = 'comment_replies';
     protected $fillable = [
+        'comment_id',
         'user_id',
-        'notifiable_id',
-        'notifiable_type',
-        'state'
+        'content'
     ];
+
+    /**
+     * @return belongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id','id');
+    }
 
     /**
      *
      * @return belongsTo
      */
-    public function user()
+    public function comment()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     *
-     * @return morphTo
-     */
-    public function notifiable()
-    {
-        return $this->morphTo(null, 'notifiable_type', 'notifiable_id');
+        return $this->belongsTo(Comment::class, 'comment_id','id');
     }
 }

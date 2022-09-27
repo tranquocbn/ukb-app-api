@@ -26,9 +26,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'current_password' => 'password',
                 'service_id' => 1,
-                'userable_id' => 1,
-                'userable_type' => 'classes',
-                'role_id' => 2
+                'class_id' => 1,
+                'role' => 2
             ],
             [
                 'code' => '06d4800035',
@@ -40,9 +39,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'current_password' => 'password',
                 'service_id' => 1,
-                'userable_id' => 1,
-                'userable_type' => 'classes',
-                'role_id' => 2
+                'class_id' => 1,
+                'role' => 2
             ],
             [
                 'code' => 'gv01',
@@ -54,9 +52,8 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'current_password' => 'password',
                 'service_id' => 1,
-                'userable_id' => 1,
-                'userable_type' => 'classes',
-                'role_id' => 1
+                'class_id' => 1,
+                'role' => 1
             ]
         ]);
     }
