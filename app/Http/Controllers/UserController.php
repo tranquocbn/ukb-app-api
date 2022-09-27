@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\student;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
@@ -15,8 +15,9 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function test()
+    public function getInfoUser()
     {
-        return $this->userService->test();
+        return $this->userService->getInfo();
     }
+
 }

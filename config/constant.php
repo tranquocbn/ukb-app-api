@@ -1,4 +1,7 @@
 <?php
-    define('STUDENT', 1);
-    define('TEACHER', 2);
+//role:
+    define('TEACHER', 1);
+    define('STUDENT', 2);
+    define('HOMEROOM_TEACHER', 3);
+
     

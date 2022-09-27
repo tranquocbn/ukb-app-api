@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class UserRepository extends BaseRepository {
@@ -22,5 +23,11 @@ class UserRepository extends BaseRepository {
         return $this->model
         ->whereCode($code)
         ->first();
+    }
+
+    public function getInfo()
+    {
+        dd(Auth::user());
+        return Auth::user();
     }
 }

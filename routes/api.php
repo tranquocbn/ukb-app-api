@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Student\LeaveController as StudentLeaveController;
 use App\Http\Controllers\Student\ScoreController as StudentScoreController;
@@ -37,12 +38,14 @@ use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController
 
 
 Route::post('login', [LoginController::class, 'login']);
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::group(['prefix' => 'user'],function(){
+        Route::get('info-user', [UserController::class, 'getInfoUser']); //thừa
+    });
+});
 
-Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
-
-    // Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
-
-    Route::get('test', [StudentUserController::class, 'test']);
+Route::middleware(['auth:sanctum', 'role:2'])->group(function() {
+    Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
 
     Route::group(['prefix' => 'leave'],function(){
         Route::get('subjects-schedule', [StudentSubjectController::class, 'getSubjectsSchedule']); //thừa
@@ -70,7 +73,7 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
     });
 });
 
-Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
+Route::middleware(['auth:sanctum', 'role:1'])->group(function() {
     //route teacher
    
     Route::group(['prefix' => 'lesson'], function() {
@@ -95,7 +98,7 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     });
 });
 
-Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
+Route::middleware(['auth:sanctum', 'role:3'])->group(function() {
     //route homeroom_teacher
 });
 

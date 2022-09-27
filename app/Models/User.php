@@ -147,4 +147,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class, 'user_id', 'id');
     }
+
+    /**
+     * getRole function
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return optional($this)->role;
+    }
 }
