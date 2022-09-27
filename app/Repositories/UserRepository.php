@@ -23,14 +23,4 @@ class UserRepository extends BaseRepository {
         ->whereCode($code)
         ->first();
     }
-
-     public function test()
-     {
-         return $this->model
-         ->select("*")
-         ->with(['role' => function($e) {
-             $e->where('id', 2);
-         }])
-         ->get();
-     }
 }
