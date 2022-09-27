@@ -149,11 +149,9 @@ class User extends Authenticatable
     }
 
     /**
-     * getRole function
-     * @return mixed
+     * @return int
      */
-    public function getRole()
-    {
-        return optional($this)->role;
+    public function getRole() {
+        return $this->role;
     }
 }

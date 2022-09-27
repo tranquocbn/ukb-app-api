@@ -17,12 +17,23 @@ class checkRole
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if($request->user()->getRole() == $role) {
+        if($request->user()->getRole() === $this->_getRole($role)) {
             return $next($request);
         }
+
         return response()->json([
             'message' => trans('text.account.http_unauthorized'),
             'status' => Response::HTTP_UNAUTHORIZED
         ], Response::HTTP_UNAUTHORIZED);
+    }
+    
+
+    private function _getRole(string $roleName) {
+        $roles = [
+            'student' => STUDENT,
+            'teacher' => TEARCHER,
+            'homeroom_teacher' => HOMEROOM_TEACHER
+        ];
+        return key_exists($roleName, $roles) ? $roles[$roleName] : '';
     }
 }
