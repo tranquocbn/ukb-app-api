@@ -47,14 +47,25 @@ class UserService extends BaseService
         ], trans('text.account.login.successfully'));
     }
 
+    /**
+     * info function
+     *
+     * @return mixed
+     */
     public function info()
     {
         return $this->userRepository->info();
     }
 
+    /**
+     * update function
+     *
+     * @param AccountRequest $request
+     * @return mixed
+     */
     public function update(AccountRequest $request)
     {
-        $request = $request->merge(['code' => $request->user()->code]);
+        $request->merge(['code' => $request->user()->code]);
 
         if($this->userRepository->update($request->toArray())) {
             return $this->resSuccessOrFail(null, trans('text.account.update.successfully'));

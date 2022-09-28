@@ -26,15 +26,21 @@ class UserRepository extends BaseRepository {
     }
 
     /**
-     * getInfo function
+     * info function
      *
-     * @return array
+     * @return mixed
      */
     public function info()
     {
         return Auth::user();
     }
 
+    /**
+     * update function
+     *
+     * @param array $data
+     * @return mixed
+     */
     public function update(array $data)
     {
         return $this->model

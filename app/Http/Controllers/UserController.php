@@ -14,11 +14,22 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * info function
+     *
+     * @return mixed
+     */
     public function info()
     {
         return $this->userService->info();
     }
 
+    /**
+     * update function
+     *
+     * @param AccountRequest $request
+     * @return mixed
+     */
     public function update(AccountRequest $request)
     {
         return $this->userService->update($request);

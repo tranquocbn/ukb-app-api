@@ -143,15 +143,14 @@ return [
     'custom' => [
         'email' => [
             'required' => 'Email không được bỏ trống!',
-            'unique' => 'Email đã được dùng bởi tài khoản khác!',
             'email' => 'Email không đúng định dạng!'
         ],
         'phone' => [
-            'regex' => 'Số điện thoại phải là 10 kí tự số , bắt đầu bằng số 0!'
+            'numeric' => 'Số điện thoại phải là các kí tự số!',
+            'digits' => 'Số điện thoại phải có 10 ký tự!'
         ],
         'birthday' => [
-            'dateformat' => 'Ngày sinh phải có dạng d-m-Y!',
-            'before' => 'Bạn chưa đủ 18 tuổi?'
+            'date' => 'Ngày sinh phải có dạng YYYY-m-d!',
         ]
     ],
 

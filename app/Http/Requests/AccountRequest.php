@@ -24,9 +24,19 @@ class AccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'nullable|regex:/(0)[0-9]{9}/',
+            'phone' => 'numeric|digits:10',
             'birthday' => 'nullable|date',
             'email' => 'bail|required|email'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => trans('validation.custom.email.required'),
+            'email.email' => trans('validation.custom.email.email'),
+            'phone.numeric' => trans('validation.custom.phone.numeric'),
+            'birthday.date' => trans('validation.custom.birthday.date')
         ];
     }
 }
