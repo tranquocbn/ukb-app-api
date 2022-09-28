@@ -40,8 +40,8 @@ Route::post('login', [LoginController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::group(['prefix' => 'account'], function(){
-        Route::get('info-account', [UserController::class, 'getInfoAccount']); 
-        Route::post('update-account', [UserController::class, 'updateAccount']); 
+        Route::get('info', [UserController::class, 'info']); 
+        Route::post('update', [UserController::class, 'update']); 
     });
 });
 
@@ -97,6 +97,6 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     });
 });
 
-Route::middleware(['auth:sanctum', 'role:3'])->group(function() {
+Route::middleware(['auth:sanctum', 'role:homeroom_teacher'])->group(function() {
     //route homeroom_teacher
 });

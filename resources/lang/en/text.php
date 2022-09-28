@@ -12,7 +12,6 @@ return [
         ],
         'update' => [
             'successfully' => 'Cập nhập thành công!',
-            'fail' => 'Email không được bỏ trống!'
         ]
     ],
     'attendance' => [

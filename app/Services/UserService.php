@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\AccountRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Validator;
 class UserService extends BaseService
 {
     protected UserRepository $userRepository;
@@ -46,21 +47,16 @@ class UserService extends BaseService
         ], trans('text.account.login.successfully'));
     }
 
-    public function getInfo()
+    public function info()
     {
-        return $this->userRepository->getInfo();
+        return $this->userRepository->info();
     }
 
-    public function updateAccount(Request $request)
+    public function update(AccountRequest $request)
     {
-        if($request->email == null) {
-            return $this->resSuccessOrFail(null, trans('text.account.update.fail'), Response::HTTP_NOT_FOUND);
-        }
-        
-        $data = $request->toArray();
-        $data['code'] = $request->user()->code;
+        $request = $request->merge(['code' => $request->user()->code]);
 
-        if($this->userRepository->updateAccount($data)) {
+        if($this->userRepository->update($request->toArray())) {
             return $this->resSuccessOrFail(null, trans('text.account.update.successfully'));
         }
     }

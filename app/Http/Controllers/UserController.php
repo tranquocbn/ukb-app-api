@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AccountRequest;
 use App\Services\UserService;
 class UserController extends Controller
 {
@@ -13,13 +14,13 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function getInfoAccount()
+    public function info()
     {
-        return $this->userService->getInfo();
+        return $this->userService->info();
     }
 
-    public function updateAccount(Request $request)
+    public function update(AccountRequest $request)
     {
-        return $this->userService->updateAccount($request);
+        return $this->userService->update($request);
     }
 }

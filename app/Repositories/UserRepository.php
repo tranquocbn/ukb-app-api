@@ -30,12 +30,12 @@ class UserRepository extends BaseRepository {
      *
      * @return array
      */
-    public function getInfo()
+    public function info()
     {
         return Auth::user();
     }
 
-    public function updateAccount(array $data)
+    public function update(array $data)
     {
         return $this->model
         ->where('code', $data['code'])

@@ -141,9 +141,18 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'required' => 'Email không được bỏ trống!',
+            'unique' => 'Email đã được dùng bởi tài khoản khác!',
+            'email' => 'Email không đúng định dạng!'
         ],
+        'phone' => [
+            'regex' => 'Số điện thoại phải là 10 kí tự số , bắt đầu bằng số 0!'
+        ],
+        'birthday' => [
+            'dateformat' => 'Ngày sinh phải có dạng d-m-Y!',
+            'before' => 'Bạn chưa đủ 18 tuổi?'
+        ]
     ],
 
     /*

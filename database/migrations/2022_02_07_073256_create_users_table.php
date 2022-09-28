@@ -19,10 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->boolean('gender')->default(0)->comment('0: female, 1: male');
-            $table->string('phone');
-            $table->text('address');
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
             $table->string('email')->unique();
-            $table->date('birthday');
+            $table->date('birthday')->nullable();
             $table->text('avatar')->nullable();
             $table->string('password');
             $table->string('current_password');
