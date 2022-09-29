@@ -141,9 +141,17 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'required' => 'Email không được bỏ trống!',
+            'email' => 'Email không đúng định dạng!'
         ],
+        'phone' => [
+            'numeric' => 'Số điện thoại phải là các kí tự số!',
+            'digits' => 'Số điện thoại phải có 10 ký tự!'
+        ],
+        'birthday' => [
+            'date' => 'Ngày sinh phải có dạng YYYY-m-d!',
+        ]
     ],
 
     /*

@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Student\LeaveController as StudentLeaveController;
 use App\Http\Controllers\Student\ScoreController as StudentScoreController;
@@ -37,6 +38,13 @@ use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController
 
 Route::post('login', [LoginController::class, 'login']);
 
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::group(['prefix' => 'account'], function(){
+        Route::get('info', [UserController::class, 'info']); 
+        Route::put('update', [UserController::class, 'update']); 
+    });
+});
+
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
     Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
@@ -66,6 +74,7 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
         Route::post('s-feedback-score', [StudentScoreController::class, 'feedbackScore']);
     });
 });
+
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
     Route::group(['prefix' => 'lesson'], function() {
