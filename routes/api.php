@@ -41,7 +41,7 @@ Route::post('login', [LoginController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::group(['prefix' => 'account'], function(){
         Route::get('info', [UserController::class, 'info']); 
-        Route::put('update', [UserController::class, 'update']); 
+        Route::put('update/{code}', [UserController::class, 'update']); 
     });
 });
 

@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\AccountRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 class UserService extends BaseService
 {
     protected UserRepository $userRepository;
@@ -60,14 +58,12 @@ class UserService extends BaseService
     /**
      * update function
      *
-     * @param AccountRequest $request
+     * @param Request $request
      * @return mixed
      */
-    public function update(AccountRequest $request)
+    public function update(Request $request)
     {
-        $request->merge(['code' => $request->user()->code]);
-
-        if($this->userRepository->update($request->toArray())) {
+        if($this->userRepository->update($request)) {
             return $this->resSuccessOrFail(null, trans('text.account.update.successfully'));
         }
     }

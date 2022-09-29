@@ -33,10 +33,10 @@ class AccountRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => trans('validation.custom.email.required'),
-            'email.email' => trans('validation.custom.email.email'),
-            'phone.numeric' => trans('validation.custom.phone.numeric'),
-            'birthday.date' => trans('validation.custom.birthday.date')
+            'email.required' => trans('validation.account.email.required'),
+            'email.email' => trans('validation.account.email.email'),
+            'phone.numeric' => trans('validation.account.phone.numeric'),
+            'birthday.date' => trans('validation.account.birthday.date')
         ];
     }
 }
