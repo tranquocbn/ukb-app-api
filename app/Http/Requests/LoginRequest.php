@@ -28,4 +28,12 @@ class LoginRequest extends FormRequest
             'password' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'code.required' => trans('validation.account.code.required'),
+            'password.required' => trans('validation.account.password.required')
+        ];
+    }
 }

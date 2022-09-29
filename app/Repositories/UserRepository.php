@@ -38,20 +38,24 @@ class UserRepository extends BaseRepository {
     /**
      * update function
      *
-     * @param array $data
+     * @param $data
      * @return mixed
      */
-    public function update(array $data)
+    public function update($data)
     {
+        if($data->has('_method')) {
+            unset($data['_method']);
+        }
         return $this->model
         ->where('code', $data['code'])
-        ->update([
-                'gender' => $data['gender'],
-                'phone' => $data['phone'],
-                'address' => $data['address'],
-                'email' => $data['email'],
-                'birthday' => $data['birthday'],
-                'avatar' => $data['avatar'],
-            ]);
+        ->update($data->toArray());
+        // ->update([
+        //         'gender' => $data['gender'],
+        //         'phone' => $data['phone'],
+        //         'address' => $data['address'],
+        //         'email' => $data['email'],
+        //         'birthday' => $data['birthday'],
+        //         'avatar' => $data['avatar'],
+        //     ]);
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\AccountRequest;
 use App\Services\UserService;
 class UserController extends Controller
 {
-    protected UserService $userService;
+    private UserService $userService;
 
+    /**
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -27,11 +29,12 @@ class UserController extends Controller
     /**
      * update function
      *
-     * @param AccountRequest $request
+     * @param Request $request
      * @return mixed
      */
-    public function update(AccountRequest $request)
+    public function update(Request $request, string $code)
     {
+        $request->merge(['code' => $code]);
         return $this->userService->update($request);
     }
 }

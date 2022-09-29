@@ -140,7 +140,7 @@ return [
     |
     */
 
-    'custom' => [
+    'account' => [
         'email' => [
             'required' => 'Email không được bỏ trống!',
             'email' => 'Email không đúng định dạng!'
@@ -151,7 +151,13 @@ return [
         ],
         'birthday' => [
             'date' => 'Ngày sinh phải có dạng YYYY-m-d!',
-        ]
+        ],
+        'code' => [
+            'required' => 'Tài khỏan là bắt buộc!'
+        ],
+        'password' => [
+            'required' => 'Mật khẩu là bắt buộc!'
+        ],
     ],
 
     /*
