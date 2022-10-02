@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\LoginRequest;
 use App\Services\UserService;
 class UserController extends Controller
 {
@@ -14,6 +16,28 @@ class UserController extends Controller
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
+    }
+
+    /**
+     * login function
+     *
+     * @param LoginRequest $request
+     * @return mixed
+     */
+    public function login(LoginRequest $request)
+    {
+       return $this->userService->login($request);
+    }
+
+    /**
+     * logout function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function logout(Request $request)
+    {
+        return $this->userService->logout($request);
     }
 
     /**

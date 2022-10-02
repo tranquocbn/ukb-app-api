@@ -1,6 +1,5 @@
 <?php
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LogoutController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -37,13 +36,13 @@ use App\Http\Controllers\Teacher\ScheduleController as TeacherScheduleController
 */
 
 
-Route::post('login', [LoginController::class, 'login']);
+Route::post('login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::group(['prefix' => 'account'], function(){
         Route::get('info', [UserController::class, 'info']); 
         Route::put('update/{code}', [UserController::class, 'update']); 
-        Route::post('logout', [LogoutController::class, 'logout']);
+        Route::post('logout', [UserController::class, 'logout']);
     });
 });
 
