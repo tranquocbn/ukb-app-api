@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AccountRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +26,9 @@ class AccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'numeric|digits:10',
-            'birthday' => 'nullable|date',
-            'email' => 'bail|required|email'
+            'phone' => 'nullable|numeric|digits:10',
+            'birthday' => 'nullable|date_format:Y-m-d',
+            'email' => 'required|email|unique:users,email,'.Auth::user()->id,
         ];
     }
 
@@ -35,8 +37,10 @@ class AccountRequest extends FormRequest
         return [
             'email.required' => trans('validation.account.email.required'),
             'email.email' => trans('validation.account.email.email'),
+            'email.unique' => trans('validation.account.email.unique'),
             'phone.numeric' => trans('validation.account.phone.numeric'),
-            'birthday.date' => trans('validation.account.birthday.date')
+            'phone.digits' => trans('validation.account.phone.digits'),
+            'birthday.date_format' => trans('validation.account.birthday.date_format')
         ];
     }
 }

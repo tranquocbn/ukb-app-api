@@ -10,6 +10,9 @@ return [
                 'password'  => 'Mật khẩu sai'
             ]
         ],
+        'logout' => [
+            'successfully' => 'Tài khoản đã được đăng xuất!'
+        ],
         'update' => [
             'successfully' => 'Cập nhập thành công!',
         ]

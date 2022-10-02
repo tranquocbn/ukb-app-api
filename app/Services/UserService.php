@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
+use Lcobucci\JWT\Parser;
 class UserService extends BaseService
 {
     protected UserRepository $userRepository;
@@ -58,13 +60,27 @@ class UserService extends BaseService
     /**
      * update function
      *
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @return mixed
      */
-    public function update(Request $request)
+    public function update(UpdateUserRequest $request)
     {
         if($this->userRepository->update($request)) {
             return $this->resSuccessOrFail(null, trans('text.account.update.successfully'));
+        }
+    }
+
+    /**
+     * logout function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function logout(Request $request)
+    {
+        $user = $request->user()->toArray();
+        if($request->user()->tokens()->delete()) {
+            return $this->resSuccessOrFail($user, trans('text.account.logout.successfully'));
         }
     }
 }

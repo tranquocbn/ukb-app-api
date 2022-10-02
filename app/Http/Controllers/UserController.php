@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 class UserController extends Controller
 {
@@ -29,10 +29,11 @@ class UserController extends Controller
     /**
      * update function
      *
-     * @param Request $request
+     * @param UpdateUserRequest $request
+     * @param string $code
      * @return mixed
      */
-    public function update(Request $request, string $code)
+    public function update(UpdateUserRequest $request, string $code)
     {
         $request->merge(['code' => $code]);
         return $this->userService->update($request);

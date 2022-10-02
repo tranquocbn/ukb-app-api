@@ -143,14 +143,15 @@ return [
     'account' => [
         'email' => [
             'required' => 'Email không được bỏ trống!',
-            'email' => 'Email không đúng định dạng!'
+            'email' => 'Email không đúng định dạng!',
+            'unique' => 'Email đã tồn tại trong hệ thống!'
         ],
         'phone' => [
             'numeric' => 'Số điện thoại phải là các kí tự số!',
-            'digits' => 'Số điện thoại phải có 10 ký tự!'
+            'digits' => 'Số điện thoại phải có 10 chữ số!'
         ],
         'birthday' => [
-            'date' => 'Ngày sinh phải có dạng YYYY-m-d!',
+            'date_format' => 'Ngày sinh phải có dạng YYYY-m-d!',
         ],
         'code' => [
             'required' => 'Tài khỏan là bắt buộc!'

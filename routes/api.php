@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -42,6 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::group(['prefix' => 'account'], function(){
         Route::get('info', [UserController::class, 'info']); 
         Route::put('update/{code}', [UserController::class, 'update']); 
+        Route::post('logout', [LogoutController::class, 'logout']);
     });
 });
 
