@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class UserRepository extends BaseRepository {
 
@@ -49,13 +49,5 @@ class UserRepository extends BaseRepository {
         return $this->model
         ->where('code', $data['code'])
         ->update($data->toArray());
-        // ->update([
-        //         'gender' => $data['gender'],
-        //         'phone' => $data['phone'],
-        //         'address' => $data['address'],
-        //         'email' => $data['email'],
-        //         'birthday' => $data['birthday'],
-        //         'avatar' => $data['avatar'],
-        //     ]);
     }
 }
