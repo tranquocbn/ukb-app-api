@@ -16,8 +16,26 @@ class LessonController extends Controller
         $this->lessonService = $lessonService;
     }
     
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function getInfoLesson(Request $request)
     {
         return $this->lessonService->studentGetInfoLesson($request);
+    }
+
+    
+    /**
+     * get date learn > date current function
+     *
+     * @param $schedule_id
+     * @return mixed
+     */
+    public function getDateLearn($schedule_id)
+    {
+        return $this->lessonService->getDateLearn($schedule_id);
     }
 }

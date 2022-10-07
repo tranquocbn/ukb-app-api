@@ -11,6 +11,13 @@ class LeaveRepository extends BaseRepository{
         return Leave::class;
     }
 
+    public function countLeaveStuent($scheduleId, $studentId)
+    {
+        return $this->model
+        ->where('schedule_id', $scheduleId)
+        ->where('user_id', $studentId)
+        ->count();
+    }
     /**
      * teacher get date want 
      * @param $userId, $date

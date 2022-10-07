@@ -9,8 +9,6 @@ class AttendanceRepository extends BaseRepository
      * @var Attendance
      */
 
-    protected Attendance $attendance;
-
     public function model()
     {
         return Attendance::class;

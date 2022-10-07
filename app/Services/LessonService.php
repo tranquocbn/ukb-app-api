@@ -31,6 +31,16 @@ class LessonService extends BaseService
     }
 
     /**
+     * get date_learn function
+     *
+     * @param $scheduleId
+     * @return mixed
+     */
+    public function getDateLearn($scheduleId)
+    {
+        return $this->lessonRepository->getDateLearn($scheduleId);
+    }
+    /**
      * teacherGetInfoLesson function
      * @param Request $request
      * @return mixed

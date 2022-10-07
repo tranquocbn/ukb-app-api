@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 class NotifyRepository extends BaseRepository
 {
-    /**
-     * @var Notify
-     */
-
-    protected Notify $notify;
-
     public function model()
     {
         return Notify::class;

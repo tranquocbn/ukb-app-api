@@ -22,7 +22,7 @@ class Classroom extends Model
 
     public function academicDepartment()
     {
-        return $this->belongsTo(AcademicDepartment::class);
+        return $this->belongsTo(AcademicDepartment::class, 'academic_department_id', 'id');
     }
 
     /**
@@ -38,7 +38,7 @@ class Classroom extends Model
     */
     public function students()
     {
-        return $this->hasMany(User::class, 'userable_id', 'id');
+        return $this->hasMany(User::class, 'class_id', 'id');
     }
 
     /**
@@ -64,5 +64,4 @@ class Classroom extends Model
     {
         return $this->hasMany(Schedule::class, 'class_id', 'id');
     }
-
 }

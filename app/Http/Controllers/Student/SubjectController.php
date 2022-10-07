@@ -17,14 +17,14 @@ class SubjectController extends Controller
     }
 
     /**
-     * get subjects insemester current
+     * get subjects in semester current
      *
      * @param Request $request
      * @return mix
      */
     public function getSubjectsInSemesterCurrent(Request $request)
     {
-        return $this->subjectService->getSubjectsInSemesterCurrent($request);
+        return $this->subjectService->getSubjectsStudent($request);
     }
 
     /**

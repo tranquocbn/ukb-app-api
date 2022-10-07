@@ -6,31 +6,42 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\AcademicRepository;
 use App\Traits\DateCalculateTrait;
 
 class SubjectService extends BaseService
 {
     use DateCalculateTrait;
-    protected SubjectRepository $subjectRepository;
-    protected ScheduleRepository $scheduleRepository;
+    private SubjectRepository $subjectRepository;
+    private ScheduleRepository $scheduleRepository;
+    private AcademicRepository $academicRepository;
 
     /**
+     *
      * @param SubjectRepository $subjectRepository
+     * @param ScheduleRepository $scheduleRepository
+     * @param AcademicRepository $academicRepository
      */
     public function __construct(
         SubjectRepository $subjectRepository,
-        ScheduleRepository $scheduleRepository
+        ScheduleRepository $scheduleRepository,
+        AcademicRepository $academicRepository,
     )
     {
         $this->subjectRepository = $subjectRepository;
         $this->scheduleRepository = $scheduleRepository;
+        $this->academicRepository = $academicRepository;
     }
 
     /**
-     * @param year_current, month_current
+     * Undocumented function
      *
+     * @param int $year_start
+     * @param int $year_current
+     * @param int $month_current
+     * @return mixed
      */
-    public function semester($year_start, $year_current, $month_current)
+    public function semester(int $year_start, int $year_current, int $month_current)
     {           
         if ($year_current === $year_start) {
             return 1;
@@ -47,18 +58,18 @@ class SubjectService extends BaseService
 
 
     /**
-     * get subjects in semester current
-     * 
-     * @param REquest $req
-     * 
-     * @return mixed
+     * get subjects in semester current of student function
+     *
+     * @param Request $request
+     * @return void
      */
-    public function getSubjectsInSemesterCurrent(Request $req)
+    public function getSubjectsStudent(Request $request)
     {
-        $semester = $this->semester((int)$req->year_start, (int)$req->year_current, (int)$req->month_current);
-        $subjects = $this->subjectRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
-
-        return $subjects;
+        $class_id = $request->user()->class_id;
+        $academic = $this->academicRepository->getYearStart($class_id);
+        $semester = $this->semester($academic['year_start'], date('Y'), date('m'));
+        return $this->subjectRepository
+        ->getSubjectsInSemesterCurrent('class_id', $class_id, $semester);
     }
 
     /**
@@ -69,8 +80,8 @@ class SubjectService extends BaseService
      */
     public function getSubjectsScheduleStudent(Request $request)
     {
-        $subjects = $this->subjectRepository->getSubjectsScheduleStudent($request->user()['userable_id'])->toArray();
-        return $this->resSuccessOrFail($subjects);
+        // $subjects = $this->subjectRepository->getSubjectsScheduleStudent($request->user()['userable_id'])->toArray();
+        // return $this->resSuccessOrFail($subjects);
     }
 
     public function getSubjectsSemesterStudent(Request $request)

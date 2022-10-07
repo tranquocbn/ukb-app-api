@@ -160,6 +160,17 @@ return [
             'required' => 'Mật khẩu là bắt buộc!'
         ],
     ],
+    'leave' => [
+        'schedule_id' => ['numeric' => 'Id của lịch trình phải là số.'],
+        'date_want' => [
+            'date_format' => 'Ngày muốn nghỉ phải có dạng YYYY-m-d!',
+            'after_or_equal' => 'Ngày muốn nghỉ phải lớn hơn hoặc bằng ngày hiện tại!',
+        ],
+        'reason' => [
+            'required' => 'Lí do nghỉ không được bỏ trống!',
+            'max' => 'Nhập nội dung không vượt quá 255 ký tự!'
+        ]
+    ],
 
     /*
     |--------------------------------------------------------------------------

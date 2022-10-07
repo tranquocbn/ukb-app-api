@@ -4,12 +4,6 @@ namespace App\Traits;
 
 trait DateCalculateTrait 
 {
-
-    public function test()
-    {
-        echo '1';
-    }
-
     /**
      * dateDiff
      *
@@ -35,14 +29,15 @@ trait DateCalculateTrait
         $year = date_format($dt,"Y");
         $date = date_format($dt, "Y-m-d");
 
-        $time = date_format($dt,"H");
+        $time = date_format($dt,"H:i:s");
+        $hour = date_format($dt,"H");
         $session = 0;
 
         if($time >= 8 && $time <= 12) {
-            $session = 1;
+            $session = AM;
         } 
         if($time >= 13 && $time <= 16) {
-            $session = 2;
+            $session = PM;
         }
         return [
             'day' => $day,
@@ -50,6 +45,7 @@ trait DateCalculateTrait
             'year' => $year,
             'date' => $date,
             'time' => $time,
+            'hour' => $hour,
             'session' => $session,
         ];
     }

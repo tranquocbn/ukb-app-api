@@ -3,39 +3,80 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Student\CreateLeaveRequest;
 use Illuminate\Http\Response;
 use App\Repositories\LeaveRepository;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\NotifyRepository;
 use App\Traits\DateCalculateTrait;
 
 class LeaveService extends BaseService
 {
     use DateCalculateTrait;
-    protected ScheduleRepository $scheduleRepository;
-    protected LeaveRepository $leaveRepository;
+    private ScheduleRepository $scheduleRepository;
+    private LeaveRepository $leaveRepository;
+    private NotifyRepository $notifyRepository;
 
     /**
+     * Undocumented function
+     *
      * @param ScheduleRepository $scheduleRepository
      * @param LeaveRepository $leaveRepository
+     * @param NotifyRepository $notifyRepository
      */
     public function __construct(
         ScheduleRepository $scheduleRepository,
-        LeaveRepository $leaveRepository
+        LeaveRepository $leaveRepository,
+        NotifyRepository $notifyRepository
     )
     {
         $this->scheduleRepository = $scheduleRepository;
         $this->leaveRepository = $leaveRepository;
+        $this->notifyRepository = $notifyRepository;
     }
 
+    public function notifyCreateLeave($scheduleId, $id)
+    {
+        $teacher = $this->scheduleRepository->getTeacher($scheduleId);
+        $data = [
+            'user_id' => $teacher['user_id'],
+            'notifiable_id' => $id,
+            'notifiable_type' => 'leaves'
+        ];
+        
+        return $this->notifyRepository->updateOrCreate($data);
+    }
     /**
      * student create leave
      *
-     * @param Request $request
+     * @param CreateLeaveRequest $request
      * @return mix
      */
-    public function studentStore(Request $request)
+    public function studentStore(CreateLeaveRequest $request)
     {
-        return $this->leaveRepository->studentCreate($request->toArray());
+        if($this->leaveRepository->countLeaveStuent($request->schedule_id, $request->user()->id)>=2) {
+            return $this->resSuccessOrFail(null, trans('text.leave.limited'));
+        }
+
+        $dataDate = $this->getDateCurrent();
+
+        if($dataDate['date'] == $request->date_want) {
+            if(AM_START - $dataDate['hour'] < 1 || PM_START - $dataDate['hour'] < 1) {
+                return $this->resSuccessOrFail(null, trans('text.leave.overtime'), Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        $request->merge([
+            'user_id' => $request->user()->id,
+            'date_application' => $dataDate['date']
+        ]);
+        $create = $this->leaveRepository->studentCreate($request->toArray());
+
+        if($create) {
+            $request->merge(['notifiable_id'=> $create['id']]);
+            $this->notifyCreateLeave($request['schedule_id'], $create['id']);
+        }
+        return $this->resSuccessOrFail($create->toArray(), trans('text.leave.successfully'), Response::HTTP_CREATED);
     }
 
     /**

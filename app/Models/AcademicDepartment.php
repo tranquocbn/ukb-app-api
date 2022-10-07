@@ -9,7 +9,7 @@ class AcademicDepartment extends Model
 {
     use HasFactory;
 
-    protected $table = 'academic_department';
+    protected $table = 'academic_departments';
     protected $fillable = [
         'academic_id',
         'department_id'

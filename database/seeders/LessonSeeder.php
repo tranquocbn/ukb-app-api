@@ -47,7 +47,7 @@ class LessonSeeder extends Seeder
             [
                 'credit' => 2,
                 'schedule_id' => 3,
-                'date' => '2021-06-19'
+                'date' => '2022-8-19'
             ]
         ];   
         foreach($data as $value) {

@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'current_password' => 'password',
                 'service_id' => 1,
-                'class_id' => 1,
+                'class_id' => null,
                 'role' => 1
             ]
         ]);

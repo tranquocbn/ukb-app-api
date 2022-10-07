@@ -16,11 +16,18 @@ class ClassRepository extends BaseRepository
     public function teacherGetClasses($scheduleId)
     {
         return $this->model
-            ->whereHas('schedules', function($e) use ($scheduleId) {
-                $e->where('id', $scheduleId);
-            })
-            ->get();
+        ->whereHas('schedules', function($e) use ($scheduleId) {
+            $e->where('id', $scheduleId);
+        })
+        ->get();
     }
 
-
+    public function getYearStart($classId)
+    {
+        return $this->model
+        ->whereHas('academics', function($e) use ($classId) {
+            $e->where('id', $classId);
+        })
+        ->get();
+    }
 }
