@@ -11,7 +11,6 @@ class LeaveController extends Controller
     private LeaveService $leaveService;
 
     /**
-     * UserController Constructor
      * @param LeaveService $LeaveService
      */
     public function __construct(LeaveService $leaveService)
@@ -33,12 +32,13 @@ class LeaveController extends Controller
     /**
      * student create leave function
      * @param CreateLeaveRequest $request
-     * @return mix
+     * @return mixed
      */
-    public function studentStore(CreateLeaveRequest $request)
+    public function store(CreateLeaveRequest $request)
     {
         return $this->leaveService->studentStore($request);
     }
+
 
     public function leavesSemester(Request $request)
     {

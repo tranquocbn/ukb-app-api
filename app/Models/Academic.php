@@ -28,7 +28,7 @@ class Academic extends Model
     /**
      * hasManyThrough function
      *
-     * @return void
+     * @return hasManyThrough
      */
     public function classes()
     {

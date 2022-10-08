@@ -35,9 +35,16 @@ class LeaveService extends BaseService
         $this->notifyRepository = $notifyRepository;
     }
 
-    public function notifyCreateLeave($scheduleId, $id)
+    /**
+     * notifyCreateLeave function
+     *
+     * @param integer $scheduleId
+     * @param integer $id
+     * @return mixed
+     */
+    public function notifyCreateLeave(int $scheduleId, int $id)
     {
-        $teacher = $this->scheduleRepository->getTeacher($scheduleId);
+        $teacher = $this->scheduleRepository->getTeacherId($scheduleId);
         $data = [
             'user_id' => $teacher['user_id'],
             'notifiable_id' => $id,
@@ -46,11 +53,12 @@ class LeaveService extends BaseService
         
         return $this->notifyRepository->updateOrCreate($data);
     }
+
     /**
      * student create leave
      *
      * @param CreateLeaveRequest $request
-     * @return mix
+     * @return mixed
      */
     public function studentStore(CreateLeaveRequest $request)
     {

@@ -48,10 +48,4 @@ class Subject extends Model
    {
       return $this->belongsToMany(Room::class, 'schedules', 'subject_id', 'room_id');
    }
-
-   public function scopeWithWhereHas($query, $relation, $constraint)
-   {
-      return $query->whereHas($relation, $constraint)
-      ->with([$relation => $constraint]);
-   }
 }

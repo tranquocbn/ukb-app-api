@@ -21,6 +21,8 @@ class AcademicRepository extends BaseRepository {
         ->whereHas('classes', function($e) use ($classId) {
             $e->where('classes.id', $classId);
         })
-        ->first();
+        ->get()
+        ->pluck('year_start')
+        ->toArray();
     }
 }

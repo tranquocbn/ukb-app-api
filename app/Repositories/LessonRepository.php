@@ -15,10 +15,10 @@ class LessonRepository extends BaseRepository
     /**
      * get date_learn function
      *
-     * @param $scheduleId
+     * @param integer $scheduleId
      * @return mixed
      */
-    public function getDateLearn($scheduleId)
+    public function getDateLearn(int $scheduleId)
     {
         return $this->model
         ->select('date_learn')
@@ -26,6 +26,8 @@ class LessonRepository extends BaseRepository
         ->whereDate('date_learn', '>=', date('Y-m-d'))
         ->get();
     }
+
+    
     /**
      * teacher, student check Schedule 
      * @param $field, $id, $date, $session
