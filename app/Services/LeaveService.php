@@ -60,7 +60,7 @@ class LeaveService extends BaseService
      * @param CreateLeaveRequest $request
      * @return mixed
      */
-    public function studentStore(CreateLeaveRequest $request)
+    public function storeStudent(CreateLeaveRequest $request)
     {
         if($this->leaveRepository->countLeaveStuent($request->schedule_id, $request->user()->id)>=2) {
             return $this->resSuccessOrFail(null, trans('text.leave.limited'));
@@ -78,7 +78,7 @@ class LeaveService extends BaseService
             'user_id' => $request->user()->id,
             'date_application' => $dataDate['date']
         ]);
-        $create = $this->leaveRepository->studentCreate($request->toArray());
+        $create = $this->leaveRepository->storeStudent($request->toArray());
 
         if($create) {
             $request->merge(['notifiable_id'=> $create['id']]);

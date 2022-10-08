@@ -37,7 +37,7 @@ class LeaveRepository extends BaseRepository{
      * @param array $data
      * @return mix
      */
-    public function studentCreate(array $data)
+    public function storeStudent(array $data)
     {
         return $this->create($data);
     }
