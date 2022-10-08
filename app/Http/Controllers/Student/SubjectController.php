@@ -9,10 +9,9 @@ use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
 {
-    protected SubjectService $subjectService;
+    private SubjectService $subjectService;
 
     /**
-     *
      * @param SubjectService $subjectService
      */
     public function __construct(SubjectService $subjectService)
@@ -24,7 +23,7 @@ class SubjectController extends Controller
      * get subjects in semester current
      *
      * @param Request $request
-     * @return mix
+     * @return mixed
      */
     public function getSubjects(Request $request)
     {
