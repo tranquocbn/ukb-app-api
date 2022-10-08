@@ -18,7 +18,6 @@ class LeaveService extends BaseService
     private NotifyRepository $notifyRepository;
 
     /**
-     * Undocumented function
      *
      * @param ScheduleRepository $scheduleRepository
      * @param LeaveRepository $leaveRepository
@@ -44,7 +43,7 @@ class LeaveService extends BaseService
      */
     public function notifyCreateLeave(int $scheduleId, int $id)
     {
-        $teacher = $this->scheduleRepository->getTeacherId($scheduleId);
+        $teacher = $this->scheduleRepository->getTeacherByScheduleId($scheduleId);
         $data = [
             'user_id' => $teacher['user_id'],
             'notifiable_id' => $id,
@@ -60,9 +59,9 @@ class LeaveService extends BaseService
      * @param CreateLeaveRequest $request
      * @return mixed
      */
-    public function storeStudent(CreateLeaveRequest $request)
+    public function createStudent(CreateLeaveRequest $request)
     {
-        if($this->leaveRepository->countLeaveStuent($request->schedule_id, $request->user()->id)>=2) {
+        if($this->leaveRepository->countLeaveStudent($request->schedule_id, $request->user()->id)>=2) {
             return $this->resSuccessOrFail(null, trans('text.leave.limited'));
         }
 
@@ -78,7 +77,7 @@ class LeaveService extends BaseService
             'user_id' => $request->user()->id,
             'date_application' => $dataDate['date']
         ]);
-        $create = $this->leaveRepository->storeStudent($request->toArray());
+        $create = $this->leaveRepository->createStudent($request->toArray());
 
         if($create) {
             $request->merge(['notifiable_id'=> $create['id']]);

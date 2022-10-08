@@ -41,12 +41,12 @@ class ScheduleRepository extends BaseRepository
     }
 
     /**
-     * get teacher by id of schedule function
+     * get teacher by scheduleId function
      *
      * @param integer $id
      * @return mixed
      */
-    public function getTeacherId(int $scheduleId)
+    public function getTeacherByScheduleId(int $scheduleId)
     {
         return $this->model
         ->select('user_id')
