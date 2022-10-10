@@ -27,8 +27,9 @@ return [
         'fail' => 'Thiết bị không chính xác!'
     ],
     'leave' => [
-        'date_invalid' => 'Ngày xin nghỉ hợp lệ!',
-        'date_uninvalid' => 'Ngày xin nghỉ không hợp lệ!'
+        'limited' => 'Bạn đã nghỉ quá 2 buổi học!',
+        'overtime' => 'Bạn chỉ có thể tạo đơn trước buổi học 1 giờ!',
+        'successfully' => 'Tạo đơn xin nghỉ thành công!'
     ],
     'score' => [
         'update_successful' => 'Cập nhập điểm thành công!',

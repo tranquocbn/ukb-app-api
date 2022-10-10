@@ -22,6 +22,23 @@ class Academic extends Model
      */
     public function departments()
     {
-        return $this->belongsToMany(Department::class, 'academic_department', 'academic_id', 'department_id');
+        return $this->belongsToMany(Department::class, 'academic_departments', 'academic_id', 'department_id');
+    }
+
+    /**
+     * hasManyThrough function
+     *
+     * @return hasManyThrough
+     */
+    public function classes()
+    {
+        return $this->hasManyThrough(
+            Classroom::class, 
+            AcademicDepartment::class, 
+            'academic_id', 
+            'academic_department_id', 
+            'id', 
+            'id'
+        );
     }
 }

@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\LeaveService;
-
+use App\Http\Requests\Student\CreateLeaveRequest;
 class LeaveController extends Controller
 {
     private LeaveService $leaveService;
 
     /**
-     * UserController Constructor
      * @param LeaveService $LeaveService
      */
     public function __construct(LeaveService $leaveService)
@@ -31,15 +30,15 @@ class LeaveController extends Controller
     }
 
     /**
-     * student create leave
-     *
-     * @param Request $request
-     * @return mix
+     * student create leave function
+     * @param CreateLeaveRequest $request
+     * @return mixed
      */
-    public function create(Request $request)
+    public function store(CreateLeaveRequest $request)
     {
-        // return $this->leaveService->studentCreate($request);
+        return $this->leaveService->createStudent($request);
     }
+
 
     public function leavesSemester(Request $request)
     {

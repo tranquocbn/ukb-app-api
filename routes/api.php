@@ -47,21 +47,10 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
-
-    Route::get('scores/{schedule_id}', [StudentScoreController::class, 'showScores']);
-
     Route::group(['prefix' => 'leave'],function(){
-        Route::get('subjects-schedule', [StudentSubjectController::class, 'getSubjectsSchedule']); //thừa
-        Route::get('leaves-semester/{schedule_id}', [StudentLeaveController::class, 'leavesSemester']);
-        Route::get('subjects-semester/{schedule_id}');
-
-        Route::post('subjects-current', [StudentSubjectController::class, 'getSubjectsInSemesterCurrent']);
-        Route::post('check-date', [StudentLeaveController::class, 'checkDate']);
-        Route::post('create', [StudentLeaveController::class, 'studentStore']);
-    });
-
-    Route::group(['prefix' => 'notify'], function() {
-        
+        Route::get('subjects-current', [StudentSubjectController::class, 'getSubjects']);
+        Route::get('date-learn/{schedule_id}', [StudentLessonController::class, 'getDateLearn']);
+        Route::post('create', [StudentLeaveController::class, 'store']);
     });
 
     Route::group(['prefix'=>'attendance'],function() {

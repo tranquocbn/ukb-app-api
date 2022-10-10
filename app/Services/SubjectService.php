@@ -6,95 +6,70 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Repositories\SubjectRepository;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\AcademicRepository;
 use App\Traits\DateCalculateTrait;
 
 class SubjectService extends BaseService
 {
     use DateCalculateTrait;
-    protected SubjectRepository $subjectRepository;
-    protected ScheduleRepository $scheduleRepository;
+    private SubjectRepository $subjectRepository;
+    private ScheduleRepository $scheduleRepository;
+    private AcademicRepository $academicRepository;
 
     /**
+     *
      * @param SubjectRepository $subjectRepository
+     * @param ScheduleRepository $scheduleRepository
+     * @param AcademicRepository $academicRepository
      */
     public function __construct(
         SubjectRepository $subjectRepository,
-        ScheduleRepository $scheduleRepository
+        ScheduleRepository $scheduleRepository,
+        AcademicRepository $academicRepository,
     )
     {
         $this->subjectRepository = $subjectRepository;
         $this->scheduleRepository = $scheduleRepository;
+        $this->academicRepository = $academicRepository;
     }
 
     /**
-     * @param year_current, month_current
+     * semester function
      *
+     * @param int $year_start
+     * @param int $year_current
+     * @param int $month_current
+     * @return mixed
      */
-    public function semester($year_start, $year_current, $month_current)
+    public function semester(int $yearStart, int $yearCurrent, int $monthCurrent)
     {           
-        if ($year_current === $year_start) {
+        if ($yearCurrent === $yearStart) {
             return 1;
         }
 
-        if ($month_current >= 1 && $month_current < 6) {
-            return ($year_current - $year_start) * 2;
+        if ($monthCurrent >= 1 && $monthCurrent < 6) {
+            return ($yearCurrent - $yearStart) * 2;
         }
 
-        if ($month_current >= 6 && $month_current <= 12) {
-            return ($year_current - $year_start) * 2 + 1;
+        if ($monthCurrent >= 6 && $monthCurrent <= 12) {
+            return ($yearCurrent - $yearStart) * 2 + 1;
         }
     }
 
 
     /**
-     * get subjects in semester current
-     * 
-     * @param REquest $req
-     * 
-     * @return mixed
-     */
-    public function getSubjectsInSemesterCurrent(Request $req)
-    {
-        $semester = $this->semester((int)$req->year_start, (int)$req->year_current, (int)$req->month_current);
-        $subjects = $this->subjectRepository->getSubjectsInSemesterCurrent($req->class_id, $semester);
-
-        return $subjects;
-    }
-
-    /**
-     * get subjects schedule student
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function getSubjectsScheduleStudent(Request $request)
-    {
-        $subjects = $this->subjectRepository->getSubjectsScheduleStudent($request->user()['userable_id'])->toArray();
-        return $this->resSuccessOrFail($subjects);
-    }
-
-    public function getSubjectsSemesterStudent(Request $request)
-    {
-        
-    }
-
-    /**
-     * teacherGetSubjects
+     * get subjects in semester current of student function
      *
      * @param Request $request
      * @return mixed
      */
-    public function teacherGetSubjects(Request $request)
+    public function getSubjectStudent(Request $request)
     {
-        $user_id = $request->user()->id;
-        $dateCurrent = $this->getDateCurrent();
-        $month = $dateCurrent ['month'];
-
-        //0: kì chẵn, 1: kì lẻ
-        $semester = ($month >= 1 && $month <= 6) ? 0 : 1;
-
-        $data = array_merge($dateCurrent, ['user_id' => $user_id], ['semester' => $semester]);
-        return $this->subjectRepository->teacherGetSubjects($data);
+        $classId = $request->user()->class_id;
+        $academic = $this->academicRepository->getYearStart($classId);
+        $semester = $this->semester($academic[0], date('Y'), date('m'));
+        return $this->subjectRepository
+        ->getSubjectsStudent('class_id', $classId, $semester);
     }
 }
 

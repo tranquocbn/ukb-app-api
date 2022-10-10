@@ -48,5 +48,4 @@ class Subject extends Model
    {
       return $this->belongsToMany(Room::class, 'schedules', 'subject_id', 'room_id');
    }
-
 }

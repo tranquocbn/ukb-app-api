@@ -31,11 +31,22 @@ class LessonService extends BaseService
     }
 
     /**
-     * teacherGetInfoLesson function
+     * get date learn function
+     *
+     * @param integer $scheduleId
+     * @return mixed
+     */
+    public function getDateLearn(int $scheduleId)
+    {
+        return $this->lessonRepository->getDateLearn($scheduleId);
+    }
+
+    /**
+     * getInfoLessonTeacher function
      * @param Request $request
      * @return mixed
      */
-    public function teacherGetInfoLesson(Request $request)
+    public function getInfoLessonTeacher(Request $request)
     {
         $userId = $request->user()->id;
         $data = $this->getDateCurrent();
@@ -57,7 +68,7 @@ class LessonService extends BaseService
      * @param Request $request
      * @return mixed
      */
-    public function studentGetInfoLesson(Request $request)
+    public function getInfoLessonStudent(Request $request)
     {
         $data = $this->getDateCurrent();
         $date = $data['date'];

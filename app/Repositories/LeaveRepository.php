@@ -12,6 +12,20 @@ class LeaveRepository extends BaseRepository{
     }
 
     /**
+     * countLeaveStudent function
+     *
+     * @param integer $scheduleId
+     * @param integer $studentId
+     * @return mixed
+     */
+    public function countLeaveStudent(int $scheduleId, int $studentId)
+    {
+        return $this->model
+        ->where('schedule_id', $scheduleId)
+        ->where('user_id', $studentId)
+        ->count();
+    }
+    /**
      * teacher get date want 
      * @param $userId, $date
      * @return mix
@@ -30,7 +44,7 @@ class LeaveRepository extends BaseRepository{
      * @param array $data
      * @return mix
      */
-    public function studentCreate(array $data)
+    public function createStudent(array $data)
     {
         return $this->create($data);
     }
