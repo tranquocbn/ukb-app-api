@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-// use App\Services\UserService;
+use App\Http\Requests\Teacher\CreateLeaveRequest;
 use App\Services\LeaveService;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +12,6 @@ class LeaveController extends Controller
     private LeaveService $leaveService;
 
     /**
-     * UserController Constructor
      * @param LeaveService $LeaveService
      */
     public function __construct(LeaveService $leaveService)
@@ -21,6 +19,16 @@ class LeaveController extends Controller
         $this->leaveService = $leaveService;
     }
 
+    /**
+     * create leave function
+     * @param CreateLeaveRequest $request
+     * @return mixed
+     */
+    public function store(CreateLeaveRequest $request)
+    {
+        return $this->leaveService->createTeacher($request);
+    }
+    
     /**
      * get subjects in semester
      * 

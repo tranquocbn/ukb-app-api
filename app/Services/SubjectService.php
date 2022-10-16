@@ -36,10 +36,10 @@ class SubjectService extends BaseService
     /**
      * semester function
      *
-     * @param int $year_start
-     * @param int $year_current
-     * @param int $month_current
-     * @return mixed
+     * @param integer $yearStart
+     * @param integer $yearCurrent
+     * @param integer $monthCurrent
+     * @return integer
      */
     public function semester(int $yearStart, int $yearCurrent, int $monthCurrent)
     {           
@@ -47,12 +47,12 @@ class SubjectService extends BaseService
             return 1;
         }
 
-        if ($monthCurrent >= 1 && $monthCurrent < 6) {
-            return ($yearCurrent - $yearStart) * 2;
+        if ($monthCurrent >= START_SEMESTER_1 && $monthCurrent <= END_SEMESTER_1) {
+            return ($yearCurrent - $yearStart) * 2 + 1;
         }
 
-        if ($monthCurrent >= 6 && $monthCurrent <= 12) {
-            return ($yearCurrent - $yearStart) * 2 + 1;
+        if ($monthCurrent >= START_SEMESTER_2 && $monthCurrent < END_SEMESTER_2) {
+            return ($yearCurrent - $yearStart) * 2;
         }
     }
 
@@ -63,13 +63,33 @@ class SubjectService extends BaseService
      * @param Request $request
      * @return mixed
      */
-    public function getSubjectStudent(Request $request)
+    public function getSubjectsByStudent(Request $request)
     {
         $classId = $request->user()->class_id;
         $academic = $this->academicRepository->getYearStart($classId);
         $semester = $this->semester($academic[0], date('Y'), date('m'));
         return $this->subjectRepository
-        ->getSubjectsStudent('class_id', $classId, $semester);
+        ->getSubjectsByStudent($classId, $semester);
+    }
+
+    /**
+     * get Subjects and Classes current by teacher function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getSubjectsClasses(Request $request)
+    {
+        $userId = $request->user()->id;
+        if (date('m') >= START_SEMESTER_1 && date('m') < END_SEMESTER_1) {
+            $monthStart = 6;
+        }
+
+        if (date('m') >= START_SEMESTER_2 && date('m') <= END_SEMESTER_2) {
+            $monthStart = 1;
+        }
+
+        return $this->subjectRepository->getSubjectsClasses($userId, $monthStart);
     }
 }
 

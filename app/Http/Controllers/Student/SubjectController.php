@@ -27,6 +27,6 @@ class SubjectController extends Controller
      */
     public function getSubjects(Request $request)
     {
-        return $this->subjectService->getSubjectStudent($request);
+        return $this->subjectService->getSubjectsByStudent($request);
     }
 }

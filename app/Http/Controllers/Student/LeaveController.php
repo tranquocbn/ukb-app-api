@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\LeaveService;
 use App\Http\Requests\Student\CreateLeaveRequest;
+use App\Http\Requests\Student\GetLeaveRequest;
+
 class LeaveController extends Controller
 {
     private LeaveService $leaveService;
@@ -30,13 +32,35 @@ class LeaveController extends Controller
     }
 
     /**
-     * student create leave function
+     * create leave function
      * @param CreateLeaveRequest $request
      * @return mixed
      */
     public function store(CreateLeaveRequest $request)
     {
         return $this->leaveService->createStudent($request);
+    }
+
+    /**
+     * getYearsLearn function
+     *
+     * @param integer $classId
+     * @return array
+     */
+    public function getYearsLearn(int $classId)
+    {
+        return $this->leaveService->getYearsLearnOfStudent($classId);
+    }
+
+    /**
+     * getLeaves function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getLeaves(Request $request)
+    {
+        return $this->leaveService->getLeavesStudent($request);
     }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\teacher;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Services\SubjectService;
@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    protected SubjectService $subjectService;
+    private SubjectService $subjectService;
 
     /**
-     * constructor 
      * @param SubjectService $subjectService
      */
 
@@ -20,9 +19,15 @@ class SubjectController extends Controller
         $this->subjectService = $subjectService;
     }
 
-    public function getSubjects(Request $request)
+    /**
+     * getSubjectsClasses function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getSubjectsClasses(Request $request)
     {
-        return $this->subjectService->teacherGetSubjects($request);
+        return $this->subjectService->getSubjectsClasses($request);
     }
 
 }

@@ -9,12 +9,23 @@ class LessonController extends Controller
 {
     private LessonService $lessonService;
     /**
-     * LessonController Constructor
      * @param LessonService $lessonService
      */
     public function __construct(LessonService $lessonService)
     {
         $this->lessonService = $lessonService;
+    }
+
+    /**
+     * getDateLearn function
+     *
+     * @param Request $request
+     * @param integer $scheduleId
+     * @return mixed
+     */
+    public function getDateLearn(Request $request, int $scheduleId)
+    {
+        return $this->lessonService->getDateLearn($scheduleId);
     }
 
     /**

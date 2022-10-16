@@ -47,10 +47,12 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
-    Route::group(['prefix' => 'leave'],function(){
+    Route::group(['prefix' => 'stuent-leave'],function(){
         Route::get('subjects-current', [StudentSubjectController::class, 'getSubjects']);
         Route::get('date-learn/{schedule_id}', [StudentLessonController::class, 'getDateLearn']);
         Route::post('create', [StudentLeaveController::class, 'store']);
+        Route::get('get-years-learn/{class_id}', [StudentLeaveController::class, 'getYearsLearn']);
+        Route::get('get-leaves/{year_learn}/{semester}', [StudentLeaveController::class, 'getLeaves']);
     });
 
     Route::group(['prefix'=>'attendance'],function() {
@@ -67,6 +69,12 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
 
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
+    Route::group(['prefix' => 'teacher-leave'], function(){
+        Route::get('subjects-classes-current', [TeacherSubjectController::class, 'getSubjectsClasses']);
+        Route::get('date-learn/{schedule_id}', [TeacherLessonController::class, 'getDateLearn']);
+        Route::post('create', [TeacherLeaveController::class, 'store']);
+    });
+
     Route::group(['prefix' => 'lesson'], function() {
         Route::get('/', [TeacherScheduleController::class, 'yearLearn']);
     });
