@@ -161,15 +161,23 @@ return [
         ],
     ],
     'leave' => [
-        'schedule_id' => ['numeric' => 'Id của lịch trình phải là số.'],
+        'schedule_id' => [
+            'numeric' => 'Id của lịch trình phải là số.',
+            'required' => 'Id của lịch trình không được bỏ trống!'
+        ],
         'date_want' => [
+            'required' => 'Ngày muốn nghỉ không được bỏ trống!',
             'date_format' => 'Ngày muốn nghỉ phải có dạng YYYY-m-d!',
             'after_or_equal' => 'Ngày muốn nghỉ phải lớn hơn hoặc bằng ngày hiện tại!',
         ],
         'reason' => [
             'required' => 'Lí do nghỉ không được bỏ trống!',
             'max' => 'Nhập nội dung không vượt quá 255 ký tự!'
-        ]
+        ],
+        'date_change' => [
+            'date_format' => 'Ngày dạy bù phải có dạng YYYY-m-d!',
+            'after' => 'Ngày dạy bù phải sau ngày hiện tại ít nhất 2 ngày!'
+        ],
     ],
 
     /*

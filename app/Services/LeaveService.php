@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\Student\CreateLeaveRequest;
+use App\Http\Requests\Student\CreateLeaveRequest as StudentCreateLeaveRequest;
+use App\Http\Requests\Teacher\CreateLeaveRequest as TeacherCreateLeaveRequest;
+use App\Repositories\AcademicRepository;
 use Illuminate\Http\Response;
 use App\Repositories\LeaveRepository;
 use App\Repositories\ScheduleRepository;
 use App\Repositories\NotifyRepository;
 use App\Traits\DateCalculateTrait;
+use CreateUsersTable;
 
 class LeaveService extends BaseService
 {
@@ -16,32 +19,37 @@ class LeaveService extends BaseService
     private ScheduleRepository $scheduleRepository;
     private LeaveRepository $leaveRepository;
     private NotifyRepository $notifyRepository;
+    private AcademicRepository $academicRepository;
 
     /**
      *
      * @param ScheduleRepository $scheduleRepository
      * @param LeaveRepository $leaveRepository
      * @param NotifyRepository $notifyRepository
+     * @param AcademicRepository $academicRepository
+     * 
      */
     public function __construct(
         ScheduleRepository $scheduleRepository,
         LeaveRepository $leaveRepository,
-        NotifyRepository $notifyRepository
+        NotifyRepository $notifyRepository, 
+        AcademicRepository $academicRepository,
     )
     {
         $this->scheduleRepository = $scheduleRepository;
         $this->leaveRepository = $leaveRepository;
         $this->notifyRepository = $notifyRepository;
+        $this->academicRepository = $academicRepository;
     }
 
     /**
-     * notifyCreateLeave function
+     * notify student create leave function
      *
      * @param integer $scheduleId
      * @param integer $id
      * @return mixed
      */
-    public function notifyCreateLeave(int $scheduleId, int $id)
+    public function notifyStudentCreateLeave(int $scheduleId, int $id)
     {
         $teacher = $this->scheduleRepository->getTeacherByScheduleId($scheduleId);
         $data = [
@@ -56,15 +64,15 @@ class LeaveService extends BaseService
     /**
      * student create leave
      *
-     * @param CreateLeaveRequest $request
+     * @param StudentCreateLeaveRequest $request
      * @return mixed
      */
-    public function createStudent(CreateLeaveRequest $request)
+    public function createStudent(StudentCreateLeaveRequest $request)
     {
-        if($this->leaveRepository->countLeaveStudent($request->schedule_id, $request->user()->id)>=2) {
+        if($this->leaveRepository->countLeaveStudent($request->schedule_id, $request->user()->id) >= MAX_LEAVE) {
             return $this->resSuccessOrFail(null, trans('text.leave.limited'));
         }
-
+        
         $dataDate = $this->getDateCurrent();
 
         if($dataDate['date'] == $request->date_want) {
@@ -77,12 +85,58 @@ class LeaveService extends BaseService
             'user_id' => $request->user()->id,
             'date_application' => $dataDate['date']
         ]);
-        $create = $this->leaveRepository->createStudent($request->toArray());
+        $create = $this->leaveRepository->create($request->toArray());
 
         if($create) {
             $request->merge(['notifiable_id'=> $create['id']]);
-            $this->notifyCreateLeave($request['schedule_id'], $create['id']);
+            $this->notifyStudentCreateLeave($request->schedule_id, $create['id']);
         }
+        return $this->resSuccessOrFail($create->toArray(), trans('text.leave.successfully'), Response::HTTP_CREATED);
+    }
+
+    /**
+     * getYearsLearnOfStudent function
+     *
+     * @param integer $classId
+     * @return array
+     */
+    public function getYearsLearnOfStudent(int $classId)
+    {
+        $academic = $this->academicRepository->getYearStart($classId);
+        $year = [];
+        for ($i= $academic[0]; $i < date('Y'); $i++) { 
+            array_push($year, $i);
+        }
+        return $year;
+    }
+
+    /**
+     * student get list leaves function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getLeavesStudent(Request $request)
+    {
+        return $this->leaveRepository->getLeavesStudent($request->user()->id, $request->year_learn, $request->semester);
+
+    }
+    
+    /**
+     * createTeacher function
+     *
+     * @param TeacherCreateLeaveRequest $request
+     * @return mixed
+     */
+    public function createTeacher(TeacherCreateLeaveRequest $request)
+    {
+        $request->merge([
+            'user_id' => $request->user()->id,
+            'date_application' => date('Y-m-d')
+        ]);
+        
+        $create = $this->leaveRepository->create($request->toArray());
+
         return $this->resSuccessOrFail($create->toArray(), trans('text.leave.successfully'), Response::HTTP_CREATED);
     }
 

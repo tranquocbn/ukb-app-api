@@ -25,6 +25,23 @@ class LeaveRepository extends BaseRepository{
         ->where('user_id', $studentId)
         ->count();
     }
+
+    public function getLeavesStudent(int $userId, int $yearLearn, int $semester)
+    {
+        return $this->model
+        ->where('user_id', $userId)
+        ->whereYear('date_want', $yearLearn)
+        ->when($semester == SEMESTER_1, function($e) {
+            $e->whereMonth('date_want', '>=', START_SEMESTER_1)
+            ->orWhereMonth('date_want', '<=', END_SEMESTER_1);
+        },
+        function($e) {
+            $e->whereMonth('date_want', '>=', START_SEMESTER_2)
+            ->orWhereMonth('date_want', '<=', END_SEMESTER_2);
+        })
+        ->with(['schedule'=> fn($e) => $e -> with('subject:id,name')])
+        ->get();
+    }
     /**
      * teacher get date want 
      * @param $userId, $date
@@ -36,17 +53,6 @@ class LeaveRepository extends BaseRepository{
             ->where('user_id', $userId)
             ->where('date_want', $date)
             ->get();
-    }
-
-    /**
-     * student create leave
-     *
-     * @param array $data
-     * @return mix
-     */
-    public function createStudent(array $data)
-    {
-        return $this->create($data);
     }
 
     /**
