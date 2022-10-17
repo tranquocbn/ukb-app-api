@@ -104,22 +104,27 @@ class LeaveService extends BaseService
     {
         $academic = $this->academicRepository->getYearStart($classId);
         $year = [];
-        for ($i= $academic[0]; $i < date('Y'); $i++) { 
+        for ($i= (int) date('Y'); $i >= $academic[0]; $i--) { 
             array_push($year, $i);
         }
         return $year;
     }
 
     /**
-     * student get list leaves function
+     * get list leaves by student or teacher function
      *
      * @param Request $request
      * @return mixed
      */
-    public function getLeavesStudent(Request $request)
+    public function getLeaves(Request $request)
     {
-        return $this->leaveRepository->getLeavesStudent($request->user()->id, $request->year_learn, $request->semester);
+        if ($request->user()->role == STUDENT) {
+            return $this->leaveRepository->getLeavesStudent($request->user()->id, $request->year_learn, $request->semester);
+        }
 
+        if ($request->user()->role == TEARCHER) {
+            return $this->leaveRepository->getLeavesTeacher($request->user()->id, $request->year_learn, $request->semester);
+        }
     }
     
     /**
@@ -138,6 +143,21 @@ class LeaveService extends BaseService
         $create = $this->leaveRepository->create($request->toArray());
 
         return $this->resSuccessOrFail($create->toArray(), trans('text.leave.successfully'), Response::HTTP_CREATED);
+    }
+
+    /**
+     * get teacher's 5 learn years nearest function
+     *
+     * @return array
+     */
+    public function getYears()
+    {
+        $yearCurrent = (int) date("Y");
+        $years = [];
+        for ($i = $yearCurrent; $i >= $yearCurrent - 4; $i--) { 
+            array_push($years, $i);
+        }
+        return $years;
     }
 
     /**

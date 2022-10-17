@@ -26,6 +26,14 @@ class LeaveRepository extends BaseRepository{
         ->count();
     }
 
+    /**
+     * getLeavesStudent function
+     *
+     * @param integer $userId
+     * @param integer $yearLearn
+     * @param integer $semester
+     * @return mixed
+     */
     public function getLeavesStudent(int $userId, int $yearLearn, int $semester)
     {
         return $this->model
@@ -39,7 +47,35 @@ class LeaveRepository extends BaseRepository{
             $e->whereMonth('date_want', '>=', START_SEMESTER_2)
             ->orWhereMonth('date_want', '<=', END_SEMESTER_2);
         })
-        ->with(['schedule'=> fn($e) => $e -> with('subject:id,name')])
+        ->with(['schedule'=> fn($e) => $e->with('subject:id,name')])
+        ->get();
+    }
+
+    /**
+     * getLeavesTeacher function
+     *
+     * @param integer $userId
+     * @param integer $yearLearn
+     * @param integer $semester
+     * @return mixed
+     */
+    public function getLeavesTeacher(int $userId, int $yearLearn, int $semester)
+    {
+        return $this->model
+        ->where('user_id', $userId)
+        ->whereYear('date_want', $yearLearn)
+        ->when($semester == SEMESTER_1, function($e) {
+            $e->whereMonth('date_want', '>=', START_SEMESTER_1)
+            ->orWhereMonth('date_want', '<=', END_SEMESTER_1);
+        },
+        function($e) {
+            $e->whereMonth('date_want', '>=', START_SEMESTER_2)
+            ->orWhereMonth('date_want', '<=', END_SEMESTER_2);
+        })
+        ->with(['schedule'=> function($e) {
+            $e->with('subject:id,name')
+            ->with('class:id,name');
+        }])
         ->get();
     }
     /**

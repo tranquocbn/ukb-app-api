@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\LeaveService;
 use App\Http\Requests\Student\CreateLeaveRequest;
-use App\Http\Requests\Student\GetLeaveRequest;
 
 class LeaveController extends Controller
 {
@@ -60,7 +59,7 @@ class LeaveController extends Controller
      */
     public function getLeaves(Request $request)
     {
-        return $this->leaveService->getLeavesStudent($request);
+        return $this->leaveService->getLeaves($request);
     }
 
 

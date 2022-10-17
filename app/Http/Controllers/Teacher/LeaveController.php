@@ -30,6 +30,27 @@ class LeaveController extends Controller
     }
     
     /**
+     * getYearsLearn function
+     *
+     * @return mixed
+     */
+    public function getYearsLearn()
+    {
+        return $this->leaveService->getYears();
+    }
+
+    /**
+     * getLeaves function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getLeaves(Request $request)
+    {
+        return $this->leaveService->getLeaves($request);
+    }
+
+    /**
      * get subjects in semester
      * 
      * 
