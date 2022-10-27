@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Teacher\CreateLeaveRequest;
 use App\Services\LeaveService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateLeaveRequest;
 
 class LeaveController extends Controller
 {
@@ -50,6 +51,30 @@ class LeaveController extends Controller
         return $this->leaveService->getLeaves($request);
     }
 
+    /**
+     * update function
+     *
+     * @param UpdateLeaveRequest $request
+     * @param integer $leaveId
+     * @return mixed
+     */
+    public function update(UpdateLeaveRequest $request, int $leaveId)
+    {
+        $request->merge(['id' => $leaveId]);
+        return $this->leaveService->update($request);
+    }
+
+    /**
+     * delete function
+     *
+     * @param integer $leaveId
+     * @return mixed
+     */
+    public function delete(int $leaveId)
+    {
+        return $this->leaveService->delete($leaveId);
+    }
+    
     /**
      * get subjects in semester
      * 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Student\CreateLeaveRequest as StudentCreateLeaveRequest;
+use App\Http\Requests\UpdateLeaveRequest;
 use App\Http\Requests\Teacher\CreateLeaveRequest as TeacherCreateLeaveRequest;
 use App\Repositories\AcademicRepository;
 use Illuminate\Http\Response;
@@ -127,6 +128,43 @@ class LeaveService extends BaseService
         }
     }
     
+    /**
+     * update leaves function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(UpdateLeaveRequest $request)
+    {
+        $leave = $this->leaveRepository->getLeaveById($request['id']);
+
+        if($leave[0]['status'] === STATUS_APPROVED) {
+            return $this->resSuccessOrFail(null, trans('text.leave.update.fail'));
+        }
+
+        if ($this->leaveRepository->update($request)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.update.successfully'));
+        }
+    }
+
+    /**
+     * delete function
+     *
+     * @param integer $leaveId
+     * @return mixed
+     */
+    public function delete(int $leaveId)
+    {
+        $leave = $this->leaveRepository->getLeaveById($leaveId);
+        if(date('Y-m-d') <= $leave[0]['date_want']) {
+            return $this->resSuccessOrFail(null, trans('text.leave.delete.fail'));
+        }
+
+        if($this->leaveRepository->delete($leaveId)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.delete.successfully'));
+        }
+    }
+
     /**
      * createTeacher function
      *

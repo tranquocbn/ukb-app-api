@@ -13,6 +13,8 @@ define('START_SEMESTER_1', 6);
 define('END_SEMESTER_1', 12);
 define('START_SEMESTER_2', 1);
 define('END_SEMESTER_2', 6);
+define('STATUS_APPROVED', 1);
+
 
 
 

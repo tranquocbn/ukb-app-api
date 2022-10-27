@@ -3,9 +3,8 @@ namespace App\Repositories;
 
 use App\Models\Leave;
 use Illuminate\Support\Facades\DB;
-
-class LeaveRepository extends BaseRepository{
-
+class LeaveRepository extends BaseRepository 
+{
     public function model()
     {
         return Leave::class;
@@ -49,6 +48,42 @@ class LeaveRepository extends BaseRepository{
         })
         ->with(['schedule'=> fn($e) => $e->with('subject:id,name')])
         ->get();
+    }
+
+    /**
+     * getLeaveById function
+     *
+     * @param integer $leaveId
+     * @return mixed
+     */
+    public function getLeaveById(int $leaveId)
+    {
+        return $this->model
+        ->where('id', $leaveId)
+        ->get();
+    }
+    
+    /**
+     * update leaves function
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function update($data)
+    {
+        if($data->has('_method')) {
+            unset($data['_method']);
+        }
+        return $this->model
+        ->where('id', $data['id'])
+        ->update($data->toArray());
+    }
+
+    public function delete(int $leaveId)
+    {
+        return $this->model
+        ->where('id', $leaveId)
+        ->delete();
     }
 
     /**

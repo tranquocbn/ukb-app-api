@@ -53,6 +53,8 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function() {
         Route::post('create', [StudentLeaveController::class, 'store']);
         Route::get('get-years-learn/{class_id}', [StudentLeaveController::class, 'getYearsLearn']);
         Route::get('get-leaves/{year_learn}/{semester}', [StudentLeaveController::class, 'getLeaves']);
+        Route::put('update/{id}', [StudentLeaveController::class, 'update']); 
+        Route::delete('delete/{id}', [StudentLeaveController::class, 'delete']); 
     });
 
     Route::group(['prefix'=>'attendance'],function() {
@@ -75,6 +77,8 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
         Route::post('create', [TeacherLeaveController::class, 'store']);
         Route::get('get-years-learn', [TeacherLeaveController::class, 'getYearsLearn']);
         Route::get('get-leaves/{year_learn}/{semester}', [TeacherLeaveController::class, 'getLeaves']);
+        Route::put('update/{id}', [TeacherLeaveController::class, 'update']); 
+        Route::delete('delete/{id}', [TeacherLeaveController::class, 'delete']); 
     });
 
     Route::group(['prefix' => 'lesson'], function() {
