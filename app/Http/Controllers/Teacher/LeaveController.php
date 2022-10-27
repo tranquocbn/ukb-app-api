@@ -28,7 +28,7 @@ class LeaveController extends Controller
      */
     public function store(CreateLeaveRequest $request)
     {
-        return $this->leaveService->createTeacher($request);
+        return $this->leaveService->createByTeacher($request);
     }
     
     /**

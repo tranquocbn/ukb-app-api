@@ -187,7 +187,7 @@ class LeaveService extends BaseService
      * @param TeacherCreateLeaveRequest $request
      * @return mixed
      */
-    public function createTeacher(TeacherCreateLeaveRequest $request)
+    public function createByTeacher(TeacherCreateLeaveRequest $request)
     {
         $request->merge([
             'user_id' => $request->user()->id,
