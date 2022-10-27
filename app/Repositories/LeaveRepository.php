@@ -79,6 +79,12 @@ class LeaveRepository extends BaseRepository
         ->update($data->toArray());
     }
 
+    /**
+     * delete function
+     *
+     * @param integer $leaveId
+     * @return mixed
+     */
     public function delete(int $leaveId)
     {
         return $this->model
@@ -86,6 +92,12 @@ class LeaveRepository extends BaseRepository
         ->delete();
     }
 
+    public function feedback($data)
+    {
+        return $this->model
+        ->where('id', $data['id'])
+        ->update($data->toArray());
+    }
     /**
      * getLeavesTeacher function
      *

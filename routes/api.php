@@ -79,6 +79,7 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function() {
         Route::get('get-leaves/{year_learn}/{semester}', [TeacherLeaveController::class, 'getLeaves']);
         Route::put('update/{id}', [TeacherLeaveController::class, 'update']); 
         Route::delete('delete/{id}', [TeacherLeaveController::class, 'delete']); 
+        Route::put('feedback/{id}', [TeacherLeaveController::class, 'feedback']); 
     });
 
     Route::group(['prefix' => 'lesson'], function() {

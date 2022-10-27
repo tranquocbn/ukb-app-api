@@ -37,6 +37,9 @@ return [
         'delete' => [
             'fail' => 'Bạn chỉ có thể xóa đơn khi ngày hiện tại nhỏ hơn hoặc bằng ngày muốn nghỉ!',
             'successfully' => 'Đơn xin nghỉ đã được xóa!'
+        ],
+        'feedback' => [
+            'successfully' => 'Đã phản hồi đơn xin nghỉ!'
         ]
     ],
     'score' => [

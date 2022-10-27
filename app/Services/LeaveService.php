@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Student\CreateLeaveRequest as StudentCreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
 use App\Http\Requests\Teacher\CreateLeaveRequest as TeacherCreateLeaveRequest;
+use App\Http\Requests\Teacher\FeedbackLeaveRequest;
 use App\Repositories\AcademicRepository;
 use Illuminate\Http\Response;
 use App\Repositories\LeaveRepository;
@@ -137,7 +138,6 @@ class LeaveService extends BaseService
     public function update(UpdateLeaveRequest $request)
     {
         $leave = $this->leaveRepository->getLeaveById($request['id']);
-
         if($leave[0]['status'] === STATUS_APPROVED) {
             return $this->resSuccessOrFail(null, trans('text.leave.update.fail'));
         }
@@ -165,6 +165,22 @@ class LeaveService extends BaseService
         }
     }
 
+    public function feedback(FeedbackLeaveRequest $request)
+    {
+        $request->merge(['status' => STATUS_APPROVED]);
+
+        if($request->has('_method')) {
+            unset($request['_method']);
+        }
+
+        if($request->has('options')) {
+            unset($request['options']);
+        }
+        
+        if($this->leaveRepository->feedback($request)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.feedback.successfully'));
+        }
+    }
     /**
      * createTeacher function
      *
