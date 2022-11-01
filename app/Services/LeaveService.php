@@ -69,7 +69,7 @@ class LeaveService extends BaseService
      * @param StudentCreateLeaveRequest $request
      * @return mixed
      */
-    public function createStudent(StudentCreateLeaveRequest $request)
+    public function createByStudent(StudentCreateLeaveRequest $request)
     {
         if($this->leaveRepository->countLeaveStudent($request->schedule_id, $request->user()->id) >= MAX_LEAVE) {
             return $this->resSuccessOrFail(null, trans('text.leave.limited'));
@@ -77,15 +77,15 @@ class LeaveService extends BaseService
         
         $dataDate = $this->getDateCurrent();
 
-        if($dataDate['date'] == $request->date_want) {
-            if(AM_START - $dataDate['hour'] < 1 || PM_START - $dataDate['hour'] < 1) {
+        if(date('Y-m-d') == $request->date_want) {
+            if(AM_START - date('H') < 1 || PM_START - date('H') < 1) {
                 return $this->resSuccessOrFail(null, trans('text.leave.overtime'), Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
         $request->merge([
             'user_id' => $request->user()->id,
-            'date_application' => $dataDate['date']
+            'date_application' => date('Y-m-d')
         ]);
         $create = $this->leaveRepository->create($request->toArray());
 
@@ -105,11 +105,13 @@ class LeaveService extends BaseService
     public function getYearsLearnOfStudent(int $classId)
     {
         $academic = $this->academicRepository->getYearStart($classId);
-        $year = [];
-        for ($i= (int) date('Y'); $i >= $academic[0]; $i--) { 
-            array_push($year, $i);
+        $years = [];
+        if (isset($academic[0])) {
+            for ($year= (int) date('Y'); $year >= $academic[0]; $year--) { 
+                array_push($years, $year);
+            }
         }
-        return $year;
+        return $years;
     }
 
     /**
@@ -138,7 +140,8 @@ class LeaveService extends BaseService
     public function update(UpdateLeaveRequest $request)
     {
         $leave = $this->leaveRepository->getLeaveById($request['id']);
-        if($leave[0]['status'] === STATUS_APPROVED) {
+
+        if(isset($leave[0]) && $leave[0]['status'] === STATUS_APPROVED) {
             return $this->resSuccessOrFail(null, trans('text.leave.update.fail'));
         }
 
@@ -156,7 +159,7 @@ class LeaveService extends BaseService
     public function delete(int $leaveId)
     {
         $leave = $this->leaveRepository->getLeaveById($leaveId);
-        if(date('Y-m-d') <= $leave[0]['date_want']) {
+        if(isset($leave[0]) && date('Y-m-d') >= $leave[0]['date_want']) {
             return $this->resSuccessOrFail(null, trans('text.leave.delete.fail'));
         }
 
@@ -208,8 +211,8 @@ class LeaveService extends BaseService
     {
         $yearCurrent = (int) date("Y");
         $years = [];
-        for ($i = $yearCurrent; $i >= $yearCurrent - 4; $i--) { 
-            array_push($years, $i);
+        for ($year = $yearCurrent; $year >= $yearCurrent - 4; $year--) { 
+            array_push($years, $year);
         }
         return $years;
     }
