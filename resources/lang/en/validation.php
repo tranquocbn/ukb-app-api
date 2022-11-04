@@ -174,6 +174,10 @@ return [
             'required' => 'Lí do nghỉ không được bỏ trống!',
             'max' => 'Nhập nội dung không vượt quá 255 ký tự!'
         ],
+        'reason_deny' => [
+            'required_if' => 'Vui lòng nhập lí do từ chối!',
+            'max' => 'Nhập nội dung không vượt quá 255 ký tự!'
+        ],
         'date_change' => [
             'date_format' => 'Ngày dạy bù phải có dạng YYYY-m-d!',
             'after' => 'Ngày dạy bù phải sau ngày hiện tại ít nhất 2 ngày!'

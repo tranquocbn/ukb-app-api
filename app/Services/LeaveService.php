@@ -4,7 +4,9 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Student\CreateLeaveRequest as StudentCreateLeaveRequest;
+use App\Http\Requests\UpdateLeaveRequest;
 use App\Http\Requests\Teacher\CreateLeaveRequest as TeacherCreateLeaveRequest;
+use App\Http\Requests\Teacher\FeedbackLeaveRequest;
 use App\Repositories\AcademicRepository;
 use Illuminate\Http\Response;
 use App\Repositories\LeaveRepository;
@@ -67,7 +69,7 @@ class LeaveService extends BaseService
      * @param StudentCreateLeaveRequest $request
      * @return mixed
      */
-    public function createStudent(StudentCreateLeaveRequest $request)
+    public function createByStudent(StudentCreateLeaveRequest $request)
     {
         if($this->leaveRepository->countLeaveStudent($request->schedule_id, $request->user()->id) >= MAX_LEAVE) {
             return $this->resSuccessOrFail(null, trans('text.leave.limited'));
@@ -75,15 +77,15 @@ class LeaveService extends BaseService
         
         $dataDate = $this->getDateCurrent();
 
-        if($dataDate['date'] == $request->date_want) {
-            if(AM_START - $dataDate['hour'] < 1 || PM_START - $dataDate['hour'] < 1) {
+        if(date('Y-m-d') == $request->date_want) {
+            if(AM_START - date('H') < 1 || PM_START - date('H') < 1) {
                 return $this->resSuccessOrFail(null, trans('text.leave.overtime'), Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
         $request->merge([
             'user_id' => $request->user()->id,
-            'date_application' => $dataDate['date']
+            'date_application' => date('Y-m-d')
         ]);
         $create = $this->leaveRepository->create($request->toArray());
 
@@ -103,32 +105,92 @@ class LeaveService extends BaseService
     public function getYearsLearnOfStudent(int $classId)
     {
         $academic = $this->academicRepository->getYearStart($classId);
-        $year = [];
-        for ($i= $academic[0]; $i < date('Y'); $i++) { 
-            array_push($year, $i);
+        $years = [];
+        if (isset($academic[0])) {
+            for ($year= (int) date('Y'); $year >= $academic[0]; $year--) { 
+                array_push($years, $year);
+            }
         }
-        return $year;
+        return $years;
     }
 
     /**
-     * student get list leaves function
+     * get list leaves by student or teacher function
      *
      * @param Request $request
      * @return mixed
      */
-    public function getLeavesStudent(Request $request)
+    public function getLeaves(Request $request)
     {
-        return $this->leaveRepository->getLeavesStudent($request->user()->id, $request->year_learn, $request->semester);
+        if ($request->user()->role == STUDENT) {
+            return $this->leaveRepository->getLeavesStudent($request->user()->id, $request->year_learn, $request->semester);
+        }
 
+        if ($request->user()->role == TEARCHER) {
+            return $this->leaveRepository->getLeavesTeacher($request->user()->id, $request->year_learn, $request->semester);
+        }
     }
     
+    /**
+     * update leaves function
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(UpdateLeaveRequest $request)
+    {
+        $leave = $this->leaveRepository->getLeaveById($request['id']);
+
+        if(isset($leave[0]) && $leave[0]['status'] === STATUS_APPROVED) {
+            return $this->resSuccessOrFail(null, trans('text.leave.update.fail'));
+        }
+
+        if ($this->leaveRepository->update($request)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.update.successfully'));
+        }
+    }
+
+    /**
+     * delete function
+     *
+     * @param integer $leaveId
+     * @return mixed
+     */
+    public function delete(int $leaveId)
+    {
+        $leave = $this->leaveRepository->getLeaveById($leaveId);
+        if(isset($leave[0]) && date('Y-m-d') >= $leave[0]['date_want']) {
+            return $this->resSuccessOrFail(null, trans('text.leave.delete.fail'));
+        }
+
+        if($this->leaveRepository->delete($leaveId)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.delete.successfully'));
+        }
+    }
+
+    public function feedback(FeedbackLeaveRequest $request)
+    {
+        $request->merge(['status' => STATUS_APPROVED]);
+
+        if($request->has('_method')) {
+            unset($request['_method']);
+        }
+
+        if($request->has('options')) {
+            unset($request['options']);
+        }
+        
+        if($this->leaveRepository->feedback($request)) {
+            return $this->resSuccessOrFail(null, trans('text.leave.feedback.successfully'));
+        }
+    }
     /**
      * createTeacher function
      *
      * @param TeacherCreateLeaveRequest $request
      * @return mixed
      */
-    public function createTeacher(TeacherCreateLeaveRequest $request)
+    public function createByTeacher(TeacherCreateLeaveRequest $request)
     {
         $request->merge([
             'user_id' => $request->user()->id,
@@ -138,6 +200,21 @@ class LeaveService extends BaseService
         $create = $this->leaveRepository->create($request->toArray());
 
         return $this->resSuccessOrFail($create->toArray(), trans('text.leave.successfully'), Response::HTTP_CREATED);
+    }
+
+    /**
+     * get teacher's 5 learn years nearest function
+     *
+     * @return array
+     */
+    public function getYears()
+    {
+        $yearCurrent = (int) date("Y");
+        $years = [];
+        for ($year = $yearCurrent; $year >= $yearCurrent - 4; $year--) { 
+            array_push($years, $year);
+        }
+        return $years;
     }
 
     /**

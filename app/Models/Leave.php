@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Leave extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     
     protected $table = 'leaves';
     protected $fillable = [
@@ -17,7 +19,8 @@ class Leave extends Model
         'date_want',
         'date_change',
         'reason',
-        'reason_refusal'
+        'reason_refusal',
+        'status'
     ];
 
     /**

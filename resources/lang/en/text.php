@@ -29,7 +29,18 @@ return [
     'leave' => [
         'limited' => 'Bạn đã nghỉ quá 2 buổi học!',
         'overtime' => 'Bạn chỉ có thể tạo đơn trước buổi học 1 giờ!',
-        'successfully' => 'Tạo đơn xin nghỉ thành công!'
+        'successfully' => 'Tạo đơn xin nghỉ thành công!',
+        'update' => [
+            'fail' => 'Đơn đã được phê duyệt, không thể cập nhập!',
+            'successfully' => 'Cập nhập đơn xin nghỉ thành công!'
+        ],
+        'delete' => [
+            'fail' => 'Bạn chỉ có thể xóa đơn khi ngày hiện tại nhỏ hơn hoặc bằng ngày muốn nghỉ!',
+            'successfully' => 'Đơn xin nghỉ đã được xóa!'
+        ],
+        'feedback' => [
+            'successfully' => 'Đã phản hồi đơn xin nghỉ!'
+        ]
     ],
     'score' => [
         'update_successful' => 'Cập nhập điểm thành công!',
