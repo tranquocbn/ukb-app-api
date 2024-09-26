@@ -19,8 +19,8 @@ class AcademicDepartment extends Model
      * @return hasMany
      */
 
-     public function classes()
-     {
-         return $this->hasMany(Classroom::class, 'academic_department_id', 'id');
-     }
+    public function classes()
+    {
+        return $this->hasMany(Classroom::class, 'academic_department_id', 'id');
+    }
 }

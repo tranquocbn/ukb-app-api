@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasFactory;
+
+    protected $table = 'rooms';
+    protected $fillable = [
+        'code',
+        'name'
+    ];
+
+    /**
+     * @return hasMany
+     */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'room_id', 'id');
+    }
+
 }

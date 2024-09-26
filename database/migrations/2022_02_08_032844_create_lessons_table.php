@@ -16,14 +16,14 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('schedule_id')->unsigned();
-            $table->date('date_learn');
-            $table->text('content');
-            $table->tinyInteger('radius')->unsigned()->min(5);
-            $table->text('latitude');
-            $table->text('longitude');
-            $table->tinyInteger('evaluate')->comment('0: tốt, 1: khá, 2: trung bình, 3: kém');
-            $table->text('comment');
-            $table->boolean('state')->comment('trạng thái điểm danh');
+            $table->date('date_learn')->nullable();
+            $table->text('content')->nullable();
+            $table->tinyInteger('radius')->nullable()->unsigned()->min(5);
+            $table->text('latitude')->nullable();
+            $table->text('longitude')->nullable();
+            $table->tinyInteger('evaluate')->nullable()->comment('0: excellent, 1: good, 2: average, 3: poor');
+            $table->text('comment')->nullable();
+            $table->tinyInteger('state')->comment('1: not on | 2: on | 3: off');
             $table->timestamps();
 
             $table->foreign('schedule_id')->references('id')->on('schedules');
